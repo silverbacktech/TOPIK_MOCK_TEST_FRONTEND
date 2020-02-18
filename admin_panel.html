@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Admin Panel</title>
+		<link rel="shortcut icon" href="#" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/jquery-ui.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/admin-styles.css" />
+		<script src="js/checkToken.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"
+			crossorigin="anonymous"
+		></script>
+	</head>
+	<body>
+		<!-- Modal to edit language begins-->
+		<div id="editLangDialog" title="Edit this Language">
+			<input class="form-control" type="text" id="inputEditLanguage" />
+			<input type="hidden" id="editLanguageId" />
+			<button
+				class="btn btn-primary"
+				id="saveEditLanguage"
+				style="float:right;margin-top:20px"
+			>
+				Save
+			</button>
+		</div>
+		<!-- Modal to edit language ends here-->
+		<div id="adminContainer">
+			<nav
+				class="header sb-topnav navbar navbar-expand navbar-light bg-light"
+			>
+				<img
+					src="images/sun-png-clear-background-sun-png-2400.png"
+					alt=""
+				/>
+				<h3 class="navbar-brand">
+					OM KOREAN AND JAPANESE LANGUAGE INSTITUTE - TOPIK MOCK TEST
+				</h3>
+				<form
+					class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"
+				>
+					<button class="btn btn-warning btn-sm" id="btnLogOut">
+						Log Out
+					</button>
+				</form>
+				<!-- Navbar-->
+			</nav>
+			<main class="admin-main">
+				<div id="layoutSidenav">
+					<div id="sideNavSection">
+						<nav
+							class="sb-sidenav accordion sb-sidenav-light"
+							id="sidenavAccordion"
+						>
+							<div class="sb-sidenav-menu">
+								<div id="adminName"></div>
+								<div class="nav">
+									<div class="sb-sidenav-menu-heading">
+										Questions
+									</div>
+									<a
+										class="show-content nav-link"
+										data="addSets"
+										id="tabAddSets"
+										>Add a new set</a
+									>
+									<a
+										class="show-content nav-link"
+										data="viewSets"
+										id="tabAddReadingQuestions"
+										>ARQ</a
+									>
+								</div>
+								<div class="nav">
+									<div class="sb-sidenav-menu-heading">
+										Answers
+									</div>
+									<a
+										class="show-content nav-link"
+										data="viewAnswers"
+										>View Answers</a
+									>
+								</div>
+								<div class="nav">
+									<div class="sb-sidenav-menu-heading">
+										Students
+									</div>
+									<a
+										class="show-content nav-link"
+										data="addStudents"
+										>Add a sudent</a
+									>
+									<a
+										class="show-content nav-link"
+										data="viewStudents"
+										>View sudents</a
+									>
+								</div>
+								<div class="nav">
+									<div class="sb-sidenav-menu-heading">
+										Languages
+									</div>
+									<a
+										class="show-content nav-link"
+										data="addLanguages"
+										id="tabAddLanguages"
+										>Add a language</a
+									>
+								</div>
+								<div class="nav">
+									<div class="sb-sidenav-menu-heading">
+										Admins
+									</div>
+									<a
+										class="show-content nav-link"
+										data="addAdmin"
+										>Add a admin</a
+									>
+									<a
+										class="show-content nav-link"
+										data="viewAdmin"
+										>View admins</a
+									>
+								</div>
+							</div>
+						</nav>
+					</div>
+				</div>
+				<div id="mainSection">
+					<!-- add and edit  sets begins here  -->
+					<div class="main-content" id="addSets">
+						<div class="alert alert-success" role="alert">
+							<h5>Add a New Set</h5>
+						</div>
+						<form class="form-inline">
+							<div class="form-group mx-sm-2 mb-3">
+								<select
+									id="languageInputSelect"
+									class="form-control mr-2"
+									required
+								>
+									<option>Choose a language</option>
+								</select>
+								<input
+									type="text"
+									class="form-control"
+									id="inputSet"
+									placeholder="Enter the set name"
+									required
+								/>
+							</div>
+							<input
+								class="btn btn-primary mb-3"
+								type="submit"
+								id="btnAddSet"
+								value="Submit"
+							/>
+						</form>
+						<div class="alert alert-info" role="alert">
+							<h5>Existing Sets</h5>
+						</div>
+						<table class="table" id="setTable">
+							<thead class="thead-light">
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Language Name</th>
+									<th scope="col">Set Name</th>
+									<th scope="col" colspan="4">Actions</th>
+								</tr>
+							</thead>
+							<tbody id="setTableBody"></tbody>
+						</table>
+					</div>
+
+					<!-- add and edit  sets ends here  -->
+
+					<div class="main-content" id="viewSets">
+						Reading Questions
+						<div class="alert alert-success" role="alert">
+							<h5>Add Reading Questions</h5>
+						</div>
+						<form class="form">
+							<div class="form-group">
+								<input
+									type="text"
+									name=""
+									class="form-control"
+									placeholder="Enter Question"
+								/>
+							</div>
+							<div
+								class="form-group form-inline float-right option-form"
+							>
+								<input
+									type="radio"
+									name="readingSelector"
+									class="answerTypeRadio"
+									value="text"
+								/>
+								<input
+									type="text"
+									name=""
+									class="form-control answerText"
+									placeholder="Option 1"
+								/>
+								<input
+									type="text"
+									name=""
+									class="form-control ml-4 answerText"
+									placeholder="Option 2"
+								/>
+								<input
+									type="text"
+									name=""
+									class="form-control ml-4 answerText"
+									placeholder="Option 3"
+								/>
+								<input
+									type="text"
+									name=""
+									class="form-control ml-4 answerText"
+									placeholder="Option 4"
+								/>
+							</div>
+							<div
+								class="form-group form-inline float-right option-form"
+							>
+								<input
+									type="radio"
+									name="readingSelector"
+									class="answerTypeRadio"
+									value="file"
+								/>
+								<input
+									type="file"
+									name=""
+									class="answerFile"
+									placeholder="Option 1"
+								/>
+								<input
+									type="file"
+									name=""
+									class="answerFile"
+									placeholder="Option 2"
+								/>
+								<input
+									type="file"
+									name=""
+									class="answerFile"
+									placeholder="Option 3"
+								/>
+								<input
+									type="file"
+									name=""
+									class="answerFile"
+									placeholder="Option 4"
+								/>
+							</div>
+							<div
+								class="form-group form-inline float-right option-form"
+							>
+								<input
+									type="radio"
+									name="correctOption"
+									class="optionRadio"
+								/>
+								<input
+									type="radio"
+									name="correctOption"
+									class="optionRadio"
+								/>
+								<input
+									type="radio"
+									name="correctOption"
+									class="optionRadio"
+								/>
+								<input
+									type="radio"
+									name="correctOption"
+									class="optionRadio"
+								/>
+							</div>
+						</form>
+					</div>
+					<div class="main-content" id="viewAnswers">
+						View Answers
+					</div>
+					<div class="main-content" id="addStudents">
+						Add a student
+					</div>
+					<div class="main-content" id="viewStudents">
+						View Students
+					</div>
+
+					<!-- add and edit  languages begins here  -->
+
+					<div class="main-content" id="addLanguages">
+						<div class="alert alert-info" role="alert">
+							<h5>Existing Languages</h5>
+						</div>
+						<table class="table" id="languagesTable">
+							<thead class="thead-light">
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Language Name</th>
+									<th scope="col">Edit Language</th>
+									<th scope="col">Delete Language</th>
+								</tr>
+							</thead>
+							<tbody id="languageTableBody"></tbody>
+						</table>
+						<div class="alert alert-success" role="alert">
+							<h5>Add a New Language</h5>
+						</div>
+						<form class="form-inline">
+							<div class="form-group mx-sm-3 mb-2">
+								<input
+									type="text"
+									class="form-control"
+									id="inputLanguage"
+									placeholder="Enter a Language"
+									required
+								/>
+							</div>
+							<input
+								class="btn btn-primary mb-2"
+								type="submit"
+								id="btnAddLanguage"
+								value="Submit"
+							/>
+						</form>
+					</div>
+
+					<!-- add and edit  languages ends here  -->
+
+					<div class="main-content" id="addAdmin">
+						Add admin
+					</div>
+					<div class="main-content" id="viewAdmin">
+						View Admins
+					</div>
+				</div>
+			</main>
+			<footer class="end-note py-4 bg-light mt-auto">
+				Developed by <a href="#">SilverBack Solutions</a>
+			</footer>
+		</div>
+		<script src="js/jquery-3.4.1.min.js"></script>
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
+		<script src="js/jquery-migrate-3.0.0.min.js"></script>
+		<script src="js/custom.js"></script>
+		<script src="js/admin-scripts.js"></script>
+	</body>
+</html>
