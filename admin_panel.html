@@ -70,7 +70,7 @@
 									>
 									<a
 										class="show-content nav-link"
-										data="viewSets"
+										data="viewAddReadingQuestions"
 										id="tabAddReadingQuestions"
 										>ARQ</a
 									>
@@ -178,114 +178,69 @@
 
 					<!-- add and edit  sets ends here  -->
 
-					<div class="main-content" id="viewSets">
+					<!-- add and edit  reading starts here  -->
+
+					<div class="" id="viewAddReadingQuestions">
 						Reading Questions
 						<div class="alert alert-success" role="alert">
-							<h5>Add Reading Questions</h5>
+							<h5>Create a group</h5>
 						</div>
-						<form class="form">
-							<div class="form-group">
-								<input
-									type="text"
-									name=""
-									class="form-control"
-									placeholder="Enter Question"
-								/>
+						<form class="group-form">
+							<div class="row">
+								<div class="col-md-2">
+									<input
+										type="text"
+										readonly
+										class="form-control-plaintext font-weight-bold"
+										id="groupSetName"
+										value=""
+									/>
+								</div>
+								<div class="col-md-2">
+									<input
+										type="text"
+										readonly
+										class="form-control-plaintext font-weight-bold"
+										id="groupLanguageName"
+										value=""
+									/>
+								</div>
 							</div>
-							<div
-								class="form-group form-inline float-right option-form"
-							>
-								<input
-									type="radio"
-									name="readingSelector"
-									class="answerTypeRadio"
-									value="text"
-								/>
-								<input
-									type="text"
-									name=""
-									class="form-control answerText"
-									placeholder="Option 1"
-								/>
-								<input
-									type="text"
-									name=""
-									class="form-control ml-4 answerText"
-									placeholder="Option 2"
-								/>
-								<input
-									type="text"
-									name=""
-									class="form-control ml-4 answerText"
-									placeholder="Option 3"
-								/>
-								<input
-									type="text"
-									name=""
-									class="form-control ml-4 answerText"
-									placeholder="Option 4"
-								/>
-							</div>
-							<div
-								class="form-group form-inline float-right option-form"
-							>
-								<input
-									type="radio"
-									name="readingSelector"
-									class="answerTypeRadio"
-									value="file"
-								/>
-								<input
-									type="file"
-									name=""
-									class="answerFile"
-									placeholder="Option 1"
-								/>
-								<input
-									type="file"
-									name=""
-									class="answerFile"
-									placeholder="Option 2"
-								/>
-								<input
-									type="file"
-									name=""
-									class="answerFile"
-									placeholder="Option 3"
-								/>
-								<input
-									type="file"
-									name=""
-									class="answerFile"
-									placeholder="Option 4"
-								/>
-							</div>
-							<div
-								class="form-group form-inline float-right option-form"
-							>
-								<input
-									type="radio"
-									name="correctOption"
-									class="optionRadio"
-								/>
-								<input
-									type="radio"
-									name="correctOption"
-									class="optionRadio"
-								/>
-								<input
-									type="radio"
-									name="correctOption"
-									class="optionRadio"
-								/>
-								<input
-									type="radio"
-									name="correctOption"
-									class="optionRadio"
-								/>
+							<div class="row">
+								<div class="col-md-6">
+									<input
+										type="text"
+										class="form-control mr-2"
+										id="inputGroupTitle"
+										placeholder="Enter the group title"
+										required
+									/>
+								</div>
+								<div class="col-md-3">
+									<input
+										type="number"
+										class="form-control"
+										id="inputGroupQuestionNo"
+										placeholder="Question no"
+										required
+									/>
+								</div>
+								<div class="col-md-3">
+									<input
+										class="btn btn-primary mb-3"
+										type="submit"
+										id="btnAddGroup"
+										value="Submit"
+									/>
+								</div>
 							</div>
 						</form>
+						<div id="groupInputDiv">
+							<section></section>
+						</table>
 					</div>
+					<!-- add and edit  reading ends here  -->
+
 					<div class="main-content" id="viewAnswers">
 						View Answers
 					</div>

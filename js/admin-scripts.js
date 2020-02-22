@@ -170,18 +170,121 @@ $(document).ready(function() {
 		});
 	});
 
+	// button add reading questions
+
+	$("#setTableBody").on("click", "#addReading", function() {
+		let groupLang = $(this)
+			.parents()
+			.siblings("#setLangName")
+			.html();
+		let groupSet = $(this)
+			.parents()
+			.siblings("#setName")
+			.html();
+		$("#groupSetName").val(groupSet);
+		$("#groupLanguageName").val(groupLang);
+		$("#tabAddReadingQuestions").click();
+	});
+
 	// add reading questions
 
-	$(".answerTypeRadio").change(function() {
-		let ans = $("input[name=readingSelector]:checked").val();
-		if (ans == "text") {
-			$(".answerFile").prop("disabled", true);
-			$(".answerText").prop("disabled", false);
-		} else {
-			$(".answerText").prop("disabled", true);
-			$(".answerFile").prop("disabled", false);
+	$("#btnAddGroup").click(function(e) {
+		e.preventDefault();
+		$("#groupInputDiv")
+			.find("section")
+			.empty();
+		let cols = $("#inputGroupQuestionNo").val();
+		if (cols >= 1) {
+			for (let i = 1; i <= cols; i++) {
+				$("#groupInputDiv")
+					.find("section")
+					.append(
+						$("<div>").append(
+							$("<div>").append(
+								$("<h4>").append(i),
+								$("<input>")
+									.attr("class", "form-control mt-3 mb-3")
+									.attr("type", "text")
+									.attr("name", "question")
+									.attr("placeholder", "Enter Question")
+							),
+							$("<div>").append(
+								$("<input>")
+									.attr(
+										"class",
+										"form-control-file mt-3 mb-3"
+									)
+									.attr("type", "file")
+									.attr("name", "question-file")
+							),
+							$("<div>").append(
+								$("<input>")
+									.attr("class", "form-control")
+									.attr("type", "text")
+									.attr("name", "s")
+									.attr("style", "width:25%;display:inline")
+									.attr("placeholder", "Option 1"),
+								$("<input>")
+									.attr("class", "form-control")
+									.attr("type", "text")
+									.attr("name", "s")
+									.attr("style", "width:25%;display:inline")
+									.attr("placeholder", "Option 2"),
+								$("<input>")
+									.attr("class", "form-control")
+									.attr("type", "text")
+									.attr("name", "s")
+									.attr("style", "width:25%;display:inline")
+									.attr("placeholder", "Option 3"),
+								$("<input>")
+									.attr("class", "form-control")
+									.attr("type", "text")
+									.attr("name", "s")
+									.attr("style", "width:25%;display:inline")
+									.attr("placeholder", "Option 4")
+							),
+							$("<div>").append(
+								$("<input>")
+									.attr("class", "form-control")
+									.attr("type", "radio")
+									.attr("name", "right-answer" + i + "")
+									.attr("style", "width:25%;display:inline"),
+								$("<input>")
+									.attr("class", "form-control")
+									.attr("type", "radio")
+									.attr("name", "right-answer" + i + "")
+									.attr("style", "width:25%;display:inline"),
+								$("<input>")
+									.attr("class", "form-control")
+									.attr("type", "radio")
+									.attr("name", "right-answer" + i + "")
+									.attr("style", "width:25%;display:inline"),
+								$("<input>")
+									.attr("class", "form-control")
+									.attr("type", "radio")
+									.attr("name", "right-answer" + i + "")
+									.attr("style", "width:25%;display:inline")
+							)
+						)
+					);
+			}
+			$("#groupInputDiv")
+				.find("section")
+				.append(
+					$("<div>").append(
+						$("<input>")
+							.attr("class", "btn btn-success")
+							.attr("type", "button")
+							.attr("value", "Add Questions")
+							.attr("name", "btn-group-questions")
+							.attr("id", "btnAddGroupQuestions")
+					)
+				);
 		}
 	});
+
+	$("#groupInputDiv").on("click", "#btnAddGroupQuestions", function() {});
+
 	// add sets ends
 
 	// add languages tab
