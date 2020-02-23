@@ -131,20 +131,16 @@ a {
 	display: block;
 }
 
-input[type="file"] {
-	width: 210px;
+.group-form {
+	border: 1px solid var(--main-grey);
+	padding: 10px;
+	border-radius: 10px;
 }
 
-input[type="radio"] {
-	margin-right: 30px;
-}
-
-.option-form {
-	height: 50px;
-	display: block;
-	width: 900px;
-}
-
-.optionRadio {
-	margin-left: 150px;
+#groupInputDiv section > div {
+	border: 1px solid var(--silver-grey);
+	padding: 10px;
+	border-radius: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
