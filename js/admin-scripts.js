@@ -360,7 +360,7 @@ $(document).ready(function() {
 		console.log(groupId);
 
 		$.ajax({
-			method: "POST",
+			method: "post",
 			url: "http://127.0.0.1:8000/api/add-questions/" + groupId,
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token"),
