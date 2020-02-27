@@ -9,6 +9,7 @@ $(document).ready(function() {
 	// show or hide content
 	let selected;
 	$("a.show-content").click(function() {
+		console.log(selected);
 		var toShow = $(this).attr("data");
 		// $(".main-content").removeClass("show");
 		if (selected !== undefined) selected.removeClass("show");
@@ -248,7 +249,8 @@ $(document).ready(function() {
 										"form-control-file mt-3 mb-3"
 									)
 									.attr("type", "file")
-									.attr("name", "question-file")
+									.attr("name", "questionfile[]")
+									.prop("multiple", true)
 							),
 							$("<div>").append(
 								$("<input>")
@@ -329,6 +331,11 @@ $(document).ready(function() {
 				return $(this).val();
 			})
 			.get();
+		let questionFile = $("input[name='questionfile[]']")
+			.map(function() {
+				return $(this).val();
+			})
+			.get();
 		let option1s = $("input[name='option1[]']")
 			.map(function() {
 				return $(this).val();
@@ -355,9 +362,9 @@ $(document).ready(function() {
 		for (let i = 0; i < noQ; i++) {
 			answers[i] = formDatas.get("right-answer" + i + "");
 		}
-		console.log(questions, option1s, option2s, option3s, option4s, answers);
+		// console.log(questionFile);
 		let groupId = $("#groupSetFormId").val();
-		console.log(groupId);
+		// console.log(groupId);
 
 		$.ajax({
 			method: "post",
@@ -368,6 +375,7 @@ $(document).ready(function() {
 			},
 			data: {
 				question: questions,
+				images: questionFile,
 				option1: option1s,
 				option2: option2s,
 				option3: option3s,
@@ -393,6 +401,7 @@ $(document).ready(function() {
 	// add languages tab
 	// to load all the languages on tab click
 	$("#tabAddLanguages").click(function() {
+		console.log("language");
 		$("#languageTableBody").empty();
 		$.ajax({
 			method: "GET",
