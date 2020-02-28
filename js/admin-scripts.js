@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	// server name
+	var serverName = "http://127.0.0.1:8000";
 	//Initialize dialog
 	$("#editLangDialog").dialog({
 		autoOpen: false,
@@ -52,7 +54,7 @@ $(document).ready(function() {
 		$("#setTableBody").empty();
 		$.ajax({
 			method: "GET",
-			url: "http://127.0.0.1:8000/api/language/show",
+			url: serverName + "/api/language/show",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token")
 			},
@@ -78,7 +80,7 @@ $(document).ready(function() {
 
 		$.ajax({
 			method: "GET",
-			url: "http://127.0.0.1:8000/api/set/show",
+			url: serverName + "/api/set/show",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token")
 			},
@@ -149,7 +151,7 @@ $(document).ready(function() {
 
 		$.ajax({
 			method: "POST",
-			url: "http://127.0.0.1:8000/api/set/" + languageId,
+			url: serverName + "/api/set/" + languageId,
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token")
 			},
@@ -198,7 +200,7 @@ $(document).ready(function() {
 		if ((gpQuestions, gpName, gpId != "")) {
 			$.ajax({
 				method: "POST",
-				url: "http://127.0.0.1:8000/api/add-question-group/" + gpId,
+				url: serverName + "/api/add-question-group/" + gpId,
 				headers: {
 					Authorization: "Bearer " + localStorage.getItem("token")
 				},
@@ -249,7 +251,7 @@ $(document).ready(function() {
 										"form-control-file mt-3 mb-3"
 									)
 									.attr("type", "file")
-									.attr("name", "questionfile[]")
+									.attr("name", "questionfile" + i + "")
 									.prop("multiple", true)
 							),
 							$("<div>").append(
@@ -323,15 +325,11 @@ $(document).ready(function() {
 	});
 
 	$("#groupInputDiv").on("click", "#btnAddGroupQuestions", function() {
-		console.log("warks");
+		// console.log("warks");
+
 		let formDatas = new FormData(questionsForm);
-		console.log(formDatas.get("question"));
+
 		let questions = $("input[name='question[]']")
-			.map(function() {
-				return $(this).val();
-			})
-			.get();
-		let questionFile = $("input[name='questionfile[]']")
 			.map(function() {
 				return $(this).val();
 			})
@@ -362,20 +360,33 @@ $(document).ready(function() {
 		for (let i = 0; i < noQ; i++) {
 			answers[i] = formDatas.get("right-answer" + i + "");
 		}
-		// console.log(questionFile);
+
+		let questionFile = [];
+		for (let i = 0; i < noQ; i++) {
+			questionFile[i] = formDatas.get("questionfile" + i + "");
+		}
+
+		console.log(questionFile);
+		let jsonObject = {};
+
+		// questionFile.forEach(function() {
+
+		// });
+		console.log(jsonObject);
+
 		let groupId = $("#groupSetFormId").val();
 		// console.log(groupId);
 
 		$.ajax({
 			method: "post",
-			url: "http://127.0.0.1:8000/api/add-questions/" + groupId,
+			url: serverName + "/api/add-questions/" + groupId,
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token"),
 				Accept: "application/json"
 			},
 			data: {
 				question: questions,
-				images: questionFile,
+				questionfile: questionFile,
 				option1: option1s,
 				option2: option2s,
 				option3: option3s,
@@ -405,7 +416,7 @@ $(document).ready(function() {
 		$("#languageTableBody").empty();
 		$.ajax({
 			method: "GET",
-			url: "http://127.0.0.1:8000/api/language/show",
+			url: serverName + "/api/language/show",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token")
 			},
@@ -451,7 +462,7 @@ $(document).ready(function() {
 
 		$.ajax({
 			method: "POST",
-			url: "http://127.0.0.1:8000/api/language",
+			url: serverName + "/api/language",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token")
 			},
@@ -479,7 +490,7 @@ $(document).ready(function() {
 			let delId = $(this).attr("data");
 			$.ajax({
 				method: "POST",
-				url: "http://127.0.0.1:8000/api/language/delete/" + delId,
+				url: serverName + "/api/language/delete/" + delId,
 				headers: {
 					Authorization: "Bearer " + localStorage.getItem("token")
 				},
@@ -522,7 +533,7 @@ $(document).ready(function() {
 		let changeId = $("#editLanguageId").val();
 		$.ajax({
 			method: "POST",
-			url: "http://127.0.0.1:8000/api/language/edit/" + changeId,
+			url: serverName + "/api/language/edit/" + changeId,
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token")
 			},
