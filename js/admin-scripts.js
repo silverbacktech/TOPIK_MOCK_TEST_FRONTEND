@@ -8,10 +8,15 @@ $(document).ready(function() {
 		hide: {}
 	});
 
+	$("#changeAdminPasswordDialog").dialog({
+		autoOpen: false,
+		show: {},
+		hide: {}
+	});
+
 	// show or hide content
 	let selected;
 	$("a.show-content").click(function() {
-		console.log(selected);
 		var toShow = $(this).attr("data");
 		// $(".main-content").removeClass("show");
 		if (selected !== undefined) selected.removeClass("show");
@@ -92,9 +97,6 @@ $(document).ready(function() {
 				} else {
 					//when it does match
 					$.each(result, function(key, set) {
-						// $.each(set.language, function(keys, language) {
-						// 	console.log(language.language_name);
-						// });
 						var NewRow = '<tr><td">' + set.id + "</td>";
 						NewRow += '<td id="setId">' + set.id + "</td>";
 
@@ -367,12 +369,14 @@ $(document).ready(function() {
 		}
 
 		console.log(questionFile);
-		let jsonObject = {};
+
+		// var myJsonString = JSON.parse((questionFile).serializeArray());
+		// console.log(myJsonString);
 
 		// questionFile.forEach(function() {
 
 		// });
-		console.log(jsonObject);
+		// console.log(jsonObject);
 
 		let groupId = $("#groupSetFormId").val();
 		// console.log(groupId);
@@ -397,7 +401,7 @@ $(document).ready(function() {
 			success: function(result) {
 				//checking email password
 				if (result.status) {
-					//when it does match
+					alert("the questions has been added");
 					console.log(result);
 				} else {
 					//when it does not match
@@ -409,10 +413,144 @@ $(document).ready(function() {
 
 	// add sets ends
 
+	// student part begins
+
+	// add student begins
+
+	$("#tabAddStudents").click(function() {
+		$("#formAddStudents")
+			.find("button[type=reset]")
+			.click();
+	});
+
+	$("#formAddStudents").submit(function(e) {
+		e.preventDefault();
+		let stname = $("#studentAddName").val();
+		let stemail = $("#studentAddEmail").val();
+		let stpassword = $("#studentAddPassword").val();
+		let strole = "student";
+		console.log(stname, stemail, stpassword, strole);
+		$.ajax({
+			method: "POST",
+			url: serverName + "/api/register/",
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token"),
+				Accept: "application/json"
+			},
+			data: {
+				name: stname,
+				email: stemail,
+				password: stpassword,
+				password_confirmation: stpassword,
+				role: strole
+			},
+			cache: false,
+			success: function(result) {
+				//checking email password
+				if (result.status) {
+					//when it does match
+					alert("The student has been added");
+					$("#tabViewStudents").click();
+				} else {
+					//when it does not match
+				}
+			}
+		});
+	});
+
+	// generate student password
+
+	$("#studentAddEmail,#studentAddPhone").change(function() {
+		$("#studentGeneratePassword").prop("checked", false);
+		$("#studentAddPassword").val("");
+	});
+
+	$("#studentGeneratePassword").click(function() {
+		let email = $("#studentAddEmail")
+			.val()
+			.split("@")[0];
+		let phone = $("#studentAddPhone")
+			.val()
+			.slice(-4);
+		if (email || phone != "") {
+			$("#studentAddPassword").val(email + phone);
+		} else {
+			alert("Enter full information");
+			$("#studentGeneratePassword").prop("checked", false);
+		}
+	});
+
+	// view students starts
+
+	$("#tabViewStudents").click(function() {
+		let role = "student";
+		$("#studentsTableBody").empty();
+		$.ajax({
+			method: "GET",
+			url: serverName + "/api/user/showUsers/" + role,
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token")
+			},
+			cache: false,
+			success: function(result) {
+				//checking email password
+				if (result.status) {
+					//when it does not match
+				} else {
+					// when it does match
+					$.each(result, function(key, student) {
+						var NewRow = '<tr><td">' + student.id + "</td>";
+						NewRow += '<td id="studentId">' + student.id + "</td>";
+						NewRow +=
+							'<td id="studentName">' + student.name + "</td>";
+						NewRow +=
+							'<td id="studentName">' + student.email + "</td>";
+
+						NewRow +=
+							"<td>" +
+							'<button class="btn btn-danger" id="deleteStudent" data=' +
+							student.id +
+							">Delete</button>" +
+							"</td>";
+
+						$("#studentsTableBody").append(NewRow);
+					});
+				}
+			}
+		});
+	});
+
+	$("#studentsTableBody").on("click", "#deleteStudent", function() {
+		if (confirm("Are you sure you want to delete this student?")) {
+			let delId = $(this).attr("data");
+			$.ajax({
+				method: "POST",
+				url: serverName + "/api/user/delete/" + delId,
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token")
+				},
+				cache: false,
+				success: function(result) {
+					//checking email password
+					if (result.status) {
+						//when it does match
+						alert("The student has been deleted");
+						$("#tabViewStudents").click();
+					} else {
+						//when it does not match
+						alert("There was an error deleting the student");
+					}
+				}
+			});
+		} else {
+		}
+	});
+
+	// view students ends
+
 	// add languages tab
 	// to load all the languages on tab click
 	$("#tabAddLanguages").click(function() {
-		console.log("language");
 		$("#languageTableBody").empty();
 		$.ajax({
 			method: "GET",
@@ -527,7 +665,6 @@ $(document).ready(function() {
 	});
 
 	// edit language button
-	// $("#languageTableBody").on("click", "#editLang", function() {
 	$("#saveEditLanguage").click(function() {
 		let changedLang = $("#inputEditLanguage").val();
 		let changeId = $("#editLanguageId").val();
@@ -550,13 +687,261 @@ $(document).ready(function() {
 					$("#tabAddLanguages").click();
 				} else {
 					//when it does not match
-					$("#editLangDialog").dialog("close");
-					alert("There was an error editing the language");
-					console.log(result);
 				}
 			}
 		});
 	});
 
 	// add language ends here
+
+	// admin part begins here
+
+	// add student begins
+
+	// $("#tabAddStudents").click(function() {
+	// 	$("#formAddStudents")
+	// 		.find("button[type=reset]")
+	// 		.click();
+	// });
+
+	// $("#formAddStudents").submit(function(e) {
+	// 	e.preventDefault();
+	// 	let stname = $("#studentAddName").val();
+	// 	let stemail = $("#studentAddEmail").val();
+	// 	let stpassword = $("#studentAddPassword").val();
+	// 	let strole = "student";
+	// 	console.log(stname, stemail, stpassword, strole);
+	// 	$.ajax({
+	// 		method: "POST",
+	// 		url: serverName + "/api/register/",
+	// 		headers: {
+	// 			Authorization: "Bearer " + localStorage.getItem("token"),
+	// 			Accept: "application/json"
+	// 		},
+	// 		data: {
+	// 			name: stname,
+	// 			email: stemail,
+	// 			password: stpassword,
+	// 			password_confirmation: stpassword,
+	// 			role: strole
+	// 		},
+	// 		cache: false,
+	// 		success: function(result) {
+	// 			//checking email password
+	// 			if (result.status) {
+	// 				//when it does match
+	// 				alert("The student has been added");
+	// 				$("#tabViewStudents").click();
+	// 			} else {
+	// 				//when it does not match
+	// 			}
+	// 		}
+	// 	});
+	// });
+
+	// // generate student password
+
+	// $("#studentAddEmail,#studentAddPhone").change(function() {
+	// 	$("#studentGeneratePassword").prop("checked", false);
+	// 	$("#studentAddPassword").val("");
+	// });
+
+	// $("#studentGeneratePassword").click(function() {
+	// 	let email = $("#studentAddEmail")
+	// 		.val()
+	// 		.split("@")[0];
+	// 	let phone = $("#studentAddPhone")
+	// 		.val()
+	// 		.slice(-4);
+	// 	if (email || phone != "") {
+	// 		$("#studentAddPassword").val(email + phone);
+	// 	} else {
+	// 		alert("Enter full information");
+	// 		$("#studentGeneratePassword").prop("checked", false);
+	// 	}
+	// });
+
+	// // view students starts
+
+	$("#tabViewAdmin").click(function() {
+		let role = "admin";
+		$("#adminTableBody").empty();
+		$.ajax({
+			method: "GET",
+			url: serverName + "/api/user/showUsers/" + role,
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token")
+			},
+			cache: false,
+			success: function(result) {
+				//checking email password
+				if (result.status) {
+					//when it does not match
+				} else {
+					// when it does match
+					$.each(result, function(key, admin) {
+						var NewRow = '<tr><td">' + admin.id + "</td>";
+						NewRow += '<td id="adminId">' + admin.id + "</td>";
+						NewRow += '<td id="adminName">' + admin.name + "</td>";
+						NewRow +=
+							'<td id="adminEmail">' + admin.email + "</td>";
+						NewRow +=
+							"<td>" +
+							'<button class="btn btn-primary" id="changeAdminPassword" data=' +
+							admin.id +
+							">Change Password</button>" +
+							"</td>";
+						if (result.length > 1) {
+							NewRow +=
+								"<td>" +
+								'<button class="btn btn-danger" id="deleteAdmin" data=' +
+								admin.id +
+								">Delete</button>" +
+								"</td>";
+						}
+
+						$("#adminTableBody").append(NewRow);
+					});
+				}
+			}
+		});
+	});
+
+	$("#adminTableBody").on("click", "#deleteAdmin", function() {
+		if (confirm("Are you sure you want to delete this admin?")) {
+			let delId = $(this).attr("data");
+			$.ajax({
+				method: "POST",
+				url: serverName + "/api/user/delete/" + delId,
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token")
+				},
+				cache: false,
+				success: function(result) {
+					//checking email password
+					if (result.status) {
+						//when it does match
+						alert("The admin has been deleted");
+						$("#tabViewAdmin").click();
+					} else {
+						//when it does not match
+						alert("There was an error deleting the admin");
+					}
+				}
+			});
+		} else {
+		}
+	});
+
+	// edit password admin
+
+	//Open it when #opener is clicked
+	$("#adminTableBody").on("click", "#changeAdminPassword", function() {
+		let editId = $(this)
+			.parents()
+			.siblings("#adminId")
+			.html();
+		let editEmail = $(this)
+			.parents()
+			.siblings("#adminEmail")
+			.html();
+		let editName = $(this)
+			.parents()
+			.siblings("#adminName")
+			.html();
+		$("#changeAdminPasswordDialog").dialog("open");
+
+		$("#adminIdC").val(editId);
+		$("#adminNameC").val(editName);
+		$("#adminEmailC").html(editEmail);
+	});
+
+	// change password button
+	$("#saveNewPassword").click(function() {
+		if (
+			$("#inputNewPassword").val() == $("#inputNewPasswordC").val() &&
+			$("#inputNewPasswordC").val() != ""
+		) {
+			let adminId = $("#adminIdC").val();
+			let adminEmail = $("#adminEmailC").html();
+			let adminName = $("#adminNameC").val();
+			let adminPassword = $("#inputNewPasswordC").val();
+			let role = "admin";
+
+			$.ajax({
+				method: "POST",
+				url: serverName + "/api/user/edit/" + adminId,
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+					Accept: "application/json"
+				},
+				data: {
+					name: adminName,
+					email: adminEmail,
+					password: adminPassword,
+					password_confirmation: adminPassword,
+					role: role
+				},
+				cache: false,
+				success: function(result) {
+					//checking email password
+					if (result.status) {
+						//when it does match
+						$("#changeAdminPasswordDialog").dialog("close");
+						alert("The password has been changed");
+						$("#tabViewAdmin").click();
+					} else {
+						//when it does not match
+					}
+				}
+			});
+		} else {
+			$("#errorMessageAdminChangePassword").html("Passwords don't match");
+		}
+	});
+
+	// add admin begins
+
+	$("#formAddAdmin").submit(function(e) {
+		e.preventDefault();
+
+		let adname = $("#adminAddName").val();
+		let ademail = $("#adminAddEmail").val();
+		let adpassword = $("#adminAddPassword").val();
+		let adpasswordc = $("#adminAddPasswordC").val();
+		let adrole = "admin";
+
+		if (adpassword != adpasswordc) {
+			$("#addAdminError").html("The passwords don't match");
+		} else {
+			$.ajax({
+				method: "POST",
+				url: serverName + "/api/register/",
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+					Accept: "application/json"
+				},
+				data: {
+					name: adname,
+					email: ademail,
+					password: adpassword,
+					password_confirmation: adpasswordc,
+					role: adrole
+				},
+				cache: false,
+				success: function(result) {
+					//checking email password
+					if (result.status) {
+						//when it does match
+						alert("The admin has been added");
+						$("#tabViewAdmin").click();
+					} else {
+						//when it does not match
+					}
+				}
+			});
+		}
+	});
+
+	// admin part ends here
 });

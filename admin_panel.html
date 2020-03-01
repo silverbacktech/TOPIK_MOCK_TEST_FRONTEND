@@ -29,6 +29,23 @@
 			</button>
 		</div>
 		<!-- Modal to edit language ends here-->
+				<!-- Modal to chagne admin password begins-->
+				<div id="changeAdminPasswordDialog" title="Change Password">
+					<p id="adminEmailC"></p>
+					<input class="form-control" type="password" id="inputNewPassword" placeholder="Enter new password"/><br>
+					<input class="form-control" type="password" id="inputNewPasswordC" placeholder="Confirm new password"/>
+					<small id="errorMessageAdminChangePassword" class="" style="color: red;"></small>
+					<input type="hidden" id="adminIdC" />
+					<input type="hidden" id="adminNameC" />
+					<button
+						class="btn btn-primary"
+						id="saveNewPassword"
+						style="float:right;margin-top:20px"
+					>
+						Change
+					</button>
+				</div>
+				<!-- Modal to change admin password ends here-->
 		<div id="adminContainer">
 			<nav
 				class="header sb-topnav navbar navbar-expand navbar-light bg-light"
@@ -92,11 +109,13 @@
 									<a
 										class="show-content nav-link"
 										data="addStudents"
+										id="tabAddStudents"
 										>Add a sudent</a
 									>
 									<a
 										class="show-content nav-link"
 										data="viewStudents"
+										id="tabViewStudents"
 										>View sudents</a
 									>
 								</div>
@@ -123,6 +142,7 @@
 									<a
 										class="show-content nav-link"
 										data="viewAdmin"
+										id="tabViewAdmin"
 											>View admins</a
 									>
 								</div>
@@ -247,10 +267,50 @@
 						View Answers
 					</div>
 					<div class="main-content" id="addStudents">
-						Add a student
+						<div class="alert alert-success" role="alert">
+							<h5>Add a New Student</h5>
+						</div>
+						<form style="width: 500px" id="formAddStudents">
+							<div class="form-group">
+								<label for="studentAddName">Full Name</label>
+								<input type="text" class="form-control" id="studentAddName" placeholder="Enter full name" required>
+							  </div>
+							<div class="form-group">
+							  <label for="studentAddEmail">Email Address</label>
+							  <input type="email" class="form-control" id="studentAddEmail" placeholder="Enter email" required>
+							</div>
+							<div class="form-group">
+								<label for="studentAddPhone">Phone Number</label>
+								<input type="number" class="form-control" id="studentAddPhone" placeholder="Enter phone number" required>
+							  </div>
+							<div class="form-group form-check">
+								<input type="checkbox" class="form-check-input" id="studentGeneratePassword" required>
+								<label class="form-check-label" for="studentGeneratePassword">Generate Password</label>
+							</div>
+							<div class="form-group">
+							  <label for="studentAddPassword">Password</label>
+							  <input type="text" class="form-control" id="studentAddPassword" placeholder="Password" disabled>
+							  <small id="" class="form-text text-muted">This is an auto-generated sudent password</small>
+							</div>
+							<button type="submit" class="btn btn-success">Add Student</button>
+							<button type="reset" class="btn btn-danger">Reset</button>
+						  </form>
 					</div>
 					<div class="main-content" id="viewStudents">
-						View Students
+						<div class="alert alert-info" role="alert">
+							<h5>Current Students</h5>
+						</div>
+						<table class="table" id="studentsTable">
+							<thead class="thead-light">
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Name</th>
+									<th scope="col">Email</th>
+									<th scope="col" colspan="2">Action</th>
+								</tr>
+							</thead>
+							<tbody id="studentsTableBody"></tbody>
+						</table>
 					</div>
 
 					<!-- add and edit  languages begins here  -->
@@ -295,10 +355,50 @@
 					<!-- add and edit  languages ends here  -->
 
 					<div class="main-content" id="addAdmin">
-						Add admin
+						<div class="alert alert-success" role="alert">
+							<h5>Add a New Admin</h5>
+						</div>
+						<form style="width: 500px" id="formAddAdmin">
+							<div class="form-group">
+								<label for="adminAddName">Full Name</label>
+								<input type="text" class="form-control" id="adminAddName" placeholder="Enter full name" required>
+							  </div>
+							<div class="form-group">
+							  <label for="adminAddEmail">Email Address</label>
+							  <input type="email" class="form-control" id="adminAddEmail" placeholder="Enter email" required>
+							</div>
+							<div class="form-group">
+								<label for="adminAddPhone">Phone Number</label>
+								<input type="number" class="form-control" id="adminAddPhone" placeholder="Enter phone number" required>
+							</div>
+							<div class="form-group">
+								<label for="adminAddPassword">Enter Password</label>
+								<input type="password" class="form-control" id="adminAddPassword" placeholder="Enter password" required>
+							</div>
+							<div class="form-group">
+								<label for="adminAddPasswordC">Confirm Password</label>
+								<input type="password" class="form-control" id="adminAddPasswordC" placeholder="Confirm password" required>
+							</div>
+							<p id="addAdminError" style="color: red;"></p>
+							<button type="submit" class="btn btn-success">Add Admin</button>
+							<button type="reset" class="btn btn-danger">Reset</button>
+						  </form>
 					</div>
 					<div class="main-content" id="viewAdmin">
-						View Admins
+						<div class="alert alert-info" role="alert">
+							<h5>Current Admins</h5>
+						</div>
+						<table class="table" id="adminTable">
+							<thead class="thead-light">
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Name</th>
+									<th scope="col">Email</th>
+									<th scope="col" colspan="2">Action</th>
+								</tr>
+							</thead>
+							<tbody id="adminTableBody"></tbody>
+						</table>
 					</div>
 				</div>
 			</main>
