@@ -4,24 +4,61 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Student Panel</title>
+
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/student-style.css">
+
+		<script src="js/checkToken.js"></script>
 	</head>
 	<body>
-		<div class="container">
-			<div class="header">
-				<img
-					src="images/sun-png-clear-background-sun-png-2400.png"
-					alt=""
-				/>
-				<h3>OM KOREAN AND JAPANESE LANGUAGE INSTITUTE</h3>
-				<h3>TOPIK MOCK TEST</h3>
-			</div>
+		<div class="container-main">
+			<header>
+				<div class="row header-section">
+					<div class="col-lg-1 logo-image">
+						<img
+							src="images/sun-png-clear-background-sun-png-2400.png"
+							alt=""
+						/>
+					</div>
+					<div class="col-lg-10 header-text">
+						<h3>OM KOREAN AND JAPANESE LANGUAGE INSTITUTE</h3>
+					</div>
+					<div class="col-lg-1">
+						<button class="btn btn-warning btn-sm" id="btnLogOut">
+							Log Out
+						</button>
+					</div>
+				</div>
+				<!--Header Top Section ends here-->
+			</header>
 			<!-- header ends here-->
-			<h1>Student Panel</h1>
-			<h2>Student Name:</h2>
-			<h3 id="userName"></h3>
+			<!-- <h1>Student Panel</h1> -->
+			<div class="language_name">
+				<div class= "language_selector">
+					<h4>Choose a LANGUAGE</h4>
+					<div class="languages ">
+						<a><h5>KOREAN</h5></a>
+					</div>
+					
+				</div>
+				<!-- end of language_selector div -->
+				<hr>
+				<div class="choose_set">
+					<div class="set_number">
+						<a><h5>Set 1</h5></a>
+					</div>
+				</div> 
+				<!-- end if choose set div -->
+				<div class="questions">
+					Test questions
+				</div>
+			</div>
+			
+			
+
 			<div class="end-note">
+				
 				Developed by <a href="#">SilverBack Solutions</a>
 			</div>
 		</div>

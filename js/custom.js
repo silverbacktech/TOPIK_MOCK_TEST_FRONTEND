@@ -27,8 +27,8 @@ $(document).ready(function() {
 					if (result.values["role"] == "admin") {
 						window.location.href = "admin_panel.html";
 						// $("#mainContainer").load("admin_panel.html");
-					} else {
-						// window.location.href = "student_panel.html";
+					} else if (result.values["role"] == "student"){
+						window.location.href = "student_panel.html";
 					}
 				} else {
 					//when it match
