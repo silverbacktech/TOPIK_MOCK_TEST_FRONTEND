@@ -1,58 +1,90 @@
-*, *::before, *::after, .main{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+.exam-content {
+	height: 100%;
+	width: 100%;
 }
 
-.clear-fix{
-    clear: both;
+.student-main {
+	background: #e6e6e6;
+	min-height: 70vh;
 }
 
-
-.header-section{
-    height: 56px;
-    width: 100%;    
-}
-.logo-image img{
-    height : 100%;
-    width: 100%;
-    margin-left: 10px;
-}
-.header-text h3{
-    text-align: center;
-    line-height: 56px;
-}
-.header-section button{
-    margin:10px;
+.userName {
+	text-transform: capitalize;
+	text-align: right;
+	font-weight: bolder;
+	margin: 0;
 }
 
-.languages{
-    display: inline-block;
-    margin:  30px 25px 0px 10px;
-}
-.language_name{
-    margin: 25px;
-    padding: 20px;
-}
-
-.language_name .language_selector h4{
-    text-align: center;
-    /* background-color: white; */
-    text-decoration: underline;
-    border-radius: 10px;
+.language-badge {
+	cursor: pointer;
+	padding: 20px;
+	font-size: 12pt;
+	font-weight: bold;
+	letter-spacing: 1pt;
+	background: #6cc0bc;
+	border: 2px solid white;
+	color: white;
+	margin: 10px 20px;
+	border-radius: 10px;
 }
 
-.language_name .language_selector h5{
-    background-color: lightgrey;
-    padding: 10px;
-    border-radius: 10px;
+.language-badge:hover {
+	border-color: black;
+	color: black;
 }
 
-.choose_set{
-    margin: 20px 0px 0px 20px;
+#examLogo {
+	height: 100px;
+	margin-left: 20px;
 }
 
-.questions{
-    margin-top: 50px;
-    background-color: white;
+.exam-main {
+	padding: 50px;
+}
+
+#examQuestionSection {
+	margin: 10px;
+	padding: 10px;
+	background: lightgray;
+	padding-left: 20px;
+	border-radius: 10px;
+}
+
+#examQuestionSection form .group-title {
+	text-decoration: underline;
+	margin-bottom: 20px;
+}
+
+#examQuestionSection form .question-no {
+	font-weight: bolder;
+	color: white;
+	background: black;
+	border-radius: 50%;
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	padding-top: 3px;
+}
+
+#examQuestionSection form .questions {
+	text-transform: capitalize;
+	margin-left: 10px;
+	padding: 0px 10px;
+	font-weight: bold;
+}
+
+#examQuestionSection form .options {
+	/* background: white; */
+	display: inline-block;
+	width: 25%;
+	text-transform: capitalize;
+	padding: 10px 10px;
+	text-align: center;
+}
+
+#examQuestionSection form input[type="radio"] {
+	margin-left: 45%;
+	height: 15px;
+	width: 15px;
 }

@@ -23,11 +23,17 @@ $(document).ready(function() {
 				if (result.status) {
 					//when it does not match
 					let access_token = result.values["access_token"];
+					let access_id = result.values["id"];
+					let access_name = result.values["name"];
+					let access_role = result.values["role"];
 					localStorage.setItem("token", access_token);
+					localStorage.setItem("userName", access_name);
+					localStorage.setItem("userRole", access_role);
+					localStorage.setItem("userId", access_id);
+					console.log(result);
 					if (result.values["role"] == "admin") {
 						window.location.href = "admin_panel.html";
-						// $("#mainContainer").load("admin_panel.html");
-					} else if (result.values["role"] == "student"){
+					} else if (result.values["role"] == "student") {
 						window.location.href = "student_panel.html";
 					}
 				} else {

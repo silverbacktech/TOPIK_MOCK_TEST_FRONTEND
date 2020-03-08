@@ -4,71 +4,83 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Student Panel</title>
-
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/jquery-ui.css" />
 		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/student-style.css">
-
+		<link rel="stylesheet" href="css/student-style.css" />
 		<script src="js/checkToken.js"></script>
-	</head>
-	<body>
-		<div class="container-main">
-			<header>
-				<div class="row header-section">
-					<div class="col-lg-1 logo-image">
-						<img
-							src="images/sun-png-clear-background-sun-png-2400.png"
-							alt=""
-						/>
-					</div>
-					<div class="col-lg-10 header-text">
-						<h3>OM KOREAN AND JAPANESE LANGUAGE INSTITUTE</h3>
-					</div>
-					<div class="col-lg-1">
-						<button class="btn btn-warning btn-sm" id="btnLogOut">
-							Log Out
-						</button>
-					</div>
-				</div>
-				<!--Header Top Section ends here-->
-			</header>
-			<!-- header ends here-->
-			<!-- <h1>Student Panel</h1> -->
-			<div class="language_name">
-				<div class= "language_selector">
-					<h4>Choose a LANGUAGE</h4>
-					<div class="languages ">
-						<a><h5>KOREAN</h5></a>
-					</div>
-					
-				</div>
-				<!-- end of language_selector div -->
-				<hr>
-				<div class="choose_set">
-					<div class="set_number">
-						<a><h5>Set 1</h5></a>
-					</div>
-				</div> 
-				<!-- end if choose set div -->
-				<div class="questions">
-					Test questions
-				</div>
-			</div>
-			
-			
-
-			<div class="end-note">
-				
-				Developed by <a href="#">SilverBack Solutions</a>
-			</div>
-		</div>
-		<!-- .container ends here-->
 		<script
-			src="https://code.jquery.com/jquery-3.4.1.min.js"
-			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"
 			crossorigin="anonymous"
 		></script>
+	</head>
+	<body>
+		<div class="studentContainer">
+			<nav
+				class="header sb-topnav navbar navbar-expand navbar-light bg-light"
+			>
+				<img
+					src="images/sun-png-clear-background-sun-png-2400.png"
+					alt=""
+					id="mainLogo"
+				/>
+				<h3 class="navbar-brand">
+					OM KOREAN AND JAPANESE LANGUAGE INSTITUTE - TOPIK MOCK TEST
+				</h3>
+				<form
+					class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"
+				>
+					<button class="btn btn-warning btn-sm" id="btnLogOut">
+						Log Out
+					</button>
+				</form>
+				<!-- Navbar-->
+			</nav>
+			<main class="student-main p-4">
+				<p class="userName"></p>
+				<div class="alert alert-info" role="alert">
+					<h5>Choose the language for your test</h5>
+				</div>
+				<div class="select-language p-3 mb-4" id="examLanguages">
+					<!-- languages appear here from ajax call  -->
+				</div>
+				<div
+					class="alert alert-info hidecss"
+					id="setAlertHeader"
+					role="alert"
+				>
+					<h5>Select the exam set</h5>
+				</div>
+				<div class="select-set p-3 mb-4" id="languageSet">
+					<!-- sets appear here from ajax call  -->
+					<table
+						class="table table-secondary table-striped hidecss"
+						id="setTable"
+					>
+						<thead>
+							<tr>
+								<th>Set Id</th>
+								<th>
+									Language
+								</th>
+								<th colspan="2">Set Name</th>
+							</tr>
+						</thead>
+						<tbody id="setTableBody"></tbody>
+					</table>
+				</div>
+			</main>
+			<footer class="end-note py-4 bg-light mt-auto">
+				Developed by <a href="#">SilverBack Solutions</a>
+			</footer>
+		</div>
+		<!-- .container ends here-->
+		<script src="js/jquery-3.4.1.min.js"></script>
+		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
+		<script src="js/jquery-migrate-3.0.0.min.js"></script>
 		<script src="js/custom.js"></script>
+		<script src="js/student-scripts.js"></script>
 	</body>
 </html>

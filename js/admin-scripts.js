@@ -1,6 +1,12 @@
 $(document).ready(function() {
 	// server name
 	var serverName = "http://127.0.0.1:8000";
+	let loggedInUser = localStorage.getItem("userName");
+	let loggedInUserRole = localStorage.getItem("userRole");
+	if (loggedInUserRole != "admin") {
+		window.location.href = "student_panel.html";
+	}
+	$("#userName").html("Welcome " + loggedInUser);
 	//Initialize dialog
 	$("#editLangDialog").dialog({
 		autoOpen: false,
@@ -24,34 +30,9 @@ $(document).ready(function() {
 		selected.addClass("show");
 	});
 
-	// get information of logged in user
-	// $.ajax({
-	//     method: "POST",
-	//     url: "http://127.0.0.1:8003/user/show",
-	//     cache: false,
-	//     data: {
-	//         email: formDatas.get("email"),
-	//         password: formDatas.get("password")
-	//     },
-	//     success: function(result) {
-	//         //checking email password
-	//         if (result.status) {
-	//             //when it does not match
-	//             let access_token = result.values["access_token"];
-	//             localStorage.setItem("token", access_token);
-	//             if (result.values["role"] == "admin") {
-	//                 window.location.href = "admin_panel.html";
-	//                 // $("#mainContainer").load("admin_panel.html");
-	//             } else {
-	//                 // window.location.href = "student_panel.html";
-	//             }
-	//         } else {
-	//             //when it match
-	//             console.log(result);
-	//             $("#login-error-message").text(result.message);
-	//         }
-	//     }
-	// });
+	$("#mainLogo").click(function() {
+		location.reload();
+	});
 
 	// add sets starts
 	$("#tabAddSets").click(function() {
@@ -368,7 +349,7 @@ $(document).ready(function() {
 			questionFile[i] = formDatas.get("questionfile" + i + "");
 		}
 
-		console.log(questionFile);
+		// console.log(questionFile);
 
 		// var myJsonString = JSON.parse((questionFile).serializeArray());
 		// console.log(myJsonString);
@@ -390,7 +371,6 @@ $(document).ready(function() {
 			},
 			data: {
 				question: questions,
-				questionfile: questionFile,
 				option1: option1s,
 				option2: option2s,
 				option3: option3s,

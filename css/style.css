@@ -35,12 +35,9 @@ a {
 	font-family: Georgia, "Times New Roman", Times, serif;
 }
 
-.header {
-	padding: 20px;
-	/* border-bottom: 1px solid var(--silver-grey); */
-}
 .header img {
 	height: 100px;
+	cursor: pointer;
 }
 
 .container .form-div {
@@ -79,6 +76,9 @@ a {
 .showcss {
 	display: block;
 }
+.showtable {
+	display: table;
+}
 .hidecss {
 	display: none;
 }
@@ -92,10 +92,6 @@ a {
 	color: red;
 }
 
-#adminContainer {
-	/* display: inline-block; */
-}
-
 #layoutSidenav {
 	width: 15%;
 	/* position: relative; */
@@ -104,13 +100,6 @@ a {
 #sideNavSection {
 	width: 100%;
 	border-bottom: 1px solid var(--silver-grey);
-}
-
-#adminName {
-	color: black;
-	padding-left: 10px;
-	padding-top: 10px;
-	text-decoration: underline;
 }
 
 .admin-main {

@@ -29,23 +29,23 @@
 			</button>
 		</div>
 		<!-- Modal to edit language ends here-->
-				<!-- Modal to chagne admin password begins-->
-				<div id="changeAdminPasswordDialog" title="Change Password">
-					<p id="adminEmailC"></p>
-					<input class="form-control" type="password" id="inputNewPassword" placeholder="Enter new password"/><br>
-					<input class="form-control" type="password" id="inputNewPasswordC" placeholder="Confirm new password"/>
-					<small id="errorMessageAdminChangePassword" class="" style="color: red;"></small>
-					<input type="hidden" id="adminIdC" />
-					<input type="hidden" id="adminNameC" />
-					<button
-						class="btn btn-primary"
-						id="saveNewPassword"
-						style="float:right;margin-top:20px"
-					>
-						Change
-					</button>
-				</div>
-				<!-- Modal to change admin password ends here-->
+		<!-- Modal to chagne admin password begins-->
+		<div id="changeAdminPasswordDialog" title="Change Password">
+			<p id="adminEmailC"></p>
+			<input class="form-control" type="password" id="inputNewPassword" placeholder="Enter new password"/><br>
+			<input class="form-control" type="password" id="inputNewPasswordC" placeholder="Confirm new password"/>
+			<small id="errorMessageAdminChangePassword" class="" style="color: red;"></small>
+			<input type="hidden" id="adminIdC" />
+			<input type="hidden" id="adminNameC" />
+			<button
+				class="btn btn-primary"
+				id="saveNewPassword"
+				style="float:right;margin-top:20px"
+			>
+				Change
+			</button>
+		</div>
+		<!-- Modal to change admin password ends here-->
 		<div id="adminContainer">
 			<nav
 				class="header sb-topnav navbar navbar-expand navbar-light bg-light"
@@ -53,6 +53,7 @@
 				<img
 					src="images/sun-png-clear-background-sun-png-2400.png"
 					alt=""
+					id="mainLogo"
 				/>
 				<h3 class="navbar-brand">
 					OM KOREAN AND JAPANESE LANGUAGE INSTITUTE - TOPIK MOCK TEST
@@ -151,6 +152,10 @@
 					</div>
 				</div>
 				<div id="mainSection">
+
+					<div class="opening-content">
+						<h4 id="userName"></h4>
+					</div>	
 					<!-- add and edit  sets begins here  -->
 					<div class="main-content" id="addSets">
 						<div class="alert alert-success" role="alert">
