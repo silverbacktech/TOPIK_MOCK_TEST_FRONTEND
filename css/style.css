@@ -35,6 +35,11 @@ a {
 	font-family: Georgia, "Times New Roman", Times, serif;
 }
 
+.opening-content {
+	float: right;
+	text-decoration: underline;
+}
+
 .header img {
 	height: 100px;
 	cursor: pointer;
@@ -86,6 +91,7 @@ a {
 #dialog {
 	display: none;
 }
+
 .myTarget {
 	font-weight: bold;
 	font-style: italic;
@@ -93,13 +99,19 @@ a {
 }
 
 #layoutSidenav {
-	width: 15%;
+	width: 20%;
 	/* position: relative; */
 }
 
 #sideNavSection {
 	width: 100%;
-	border-bottom: 1px solid var(--silver-grey);
+	border-bottom: 1px solid white;
+	border-top: 1px solid white;
+}
+
+#sideNavSection .show-content:hover {
+	background: var(--logo-blue);
+	color: white;
 }
 
 .admin-main {

@@ -1,3 +1,5 @@
+var answerOption = [];
+var answerId = [];
 $(document).ready(function() {
 	var serverName = "http://127.0.0.1:8000";
 	var loggedInUser = localStorage.getItem("userName");
@@ -38,7 +40,7 @@ $(document).ready(function() {
 						console.log(result);
 					} else {
 						// when it does match
-						// console.log(result);
+						console.log(result);
 						let cols = result.length;
 						if (cols >= 1) {
 							$.each(result, function(i, data) {
@@ -58,12 +60,12 @@ $(document).ready(function() {
 									$("#examQuestionSection")
 										.find("#examQuestionsForm")
 										.append(
-											$("<div>").append(
-												$("<div>").append(
+											$("<div class='question-part'>")
+												.append(
 													$(
 														"<span class='question-no'>"
 													).append(i + 1),
-													$("<span>")
+													$("<p>")
 														.attr(
 															"class",
 															"mt-3 mb-3 questions"
@@ -80,8 +82,28 @@ $(document).ready(function() {
 															"question"
 														)
 												)
-											)
+												.append(
+													$("<img>", {
+														id: "theImg",
+														src:
+															serverName +
+															"/cover_img/" +
+															questions.question_image
+													})
+												)
 										);
+
+									// adding answer to array
+									answerOption.push(
+										questions.reading_answer[
+											"reading_options_id"
+										]
+									);
+
+									answerId.push(
+										questions.reading_answer["id"]
+									);
+
 									$.each(questions.reading_options, function(
 										j,
 										options
@@ -92,9 +114,6 @@ $(document).ready(function() {
 												$(
 													"<div class='options'>"
 												).append(
-													$("<label for=''>").html(
-														options.reading_options_content
-													),
 													$("<input>")
 														.attr(
 															"class",
@@ -114,7 +133,10 @@ $(document).ready(function() {
 															"right-answer" +
 																options.reading_questions_id +
 																""
-														)
+														),
+													$("<label for=''>").html(
+														options.reading_options_content
+													)
 												)
 											);
 									});
@@ -127,7 +149,7 @@ $(document).ready(function() {
 										$("<input>")
 											.attr("class", "btn btn-success")
 											.attr("type", "button")
-											.attr("value", "Submit")
+											.attr("value", "End Reading Exam")
 											.attr("name", "btn-submit-answers")
 											.attr(
 												"id",
@@ -161,6 +183,7 @@ $(document).ready(function() {
 				})
 				.get();
 
+			console.log(answerId);
 			$.ajax({
 				method: "post",
 				url: serverName + "/api/submitted-answers/" + loggedInUserId,
@@ -170,7 +193,7 @@ $(document).ready(function() {
 				},
 				data: {
 					reading_question_id: questions,
-					reading_answer_id: answers
+					reading_answer_id: answerId
 				},
 				cache: false,
 				success: function(result) {
@@ -184,6 +207,20 @@ $(document).ready(function() {
 					}
 				}
 			});
+
+			let rightAnswer = 0;
+			for (i = 0; i < answerOption.length; i++) {
+				if (answerOption[i] == answers[i]) {
+					rightAnswer++;
+				}
+			}
+			// console.log(rightAnswer);
+			alert(
+				"Total Questions: " +
+					answerOption.length +
+					" Total Correct: " +
+					rightAnswer
+			);
 		}
 	);
 });

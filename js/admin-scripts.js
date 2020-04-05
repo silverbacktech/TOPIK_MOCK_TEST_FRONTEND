@@ -224,7 +224,7 @@ $(document).ready(function() {
 								$("<input>")
 									.attr("class", "form-control mt-3 mb-3")
 									.attr("type", "text")
-									.attr("name", "question[]")
+									.attr("name", "question")
 									.attr("placeholder", "Enter Question")
 							),
 							$("<div>").append(
@@ -234,32 +234,32 @@ $(document).ready(function() {
 										"form-control-file mt-3 mb-3"
 									)
 									.attr("type", "file")
-									.attr("name", "questionfile" + i + "")
+									.attr("name", "questionfile")
 									.prop("multiple", true)
 							),
 							$("<div>").append(
 								$("<input>")
 									.attr("class", "form-control")
 									.attr("type", "text")
-									.attr("name", "option1[]")
+									.attr("name", "option1")
 									.attr("style", "width:25%;display:inline")
 									.attr("placeholder", "Option 1"),
 								$("<input>")
 									.attr("class", "form-control")
 									.attr("type", "text")
-									.attr("name", "option2[]")
+									.attr("name", "option2")
 									.attr("style", "width:25%;display:inline")
 									.attr("placeholder", "Option 2"),
 								$("<input>")
 									.attr("class", "form-control")
 									.attr("type", "text")
-									.attr("name", "option3[]")
+									.attr("name", "option3")
 									.attr("style", "width:25%;display:inline")
 									.attr("placeholder", "Option 3"),
 								$("<input>")
 									.attr("class", "form-control")
 									.attr("type", "text")
-									.attr("name", "option4[]")
+									.attr("name", "option4")
 									.attr("style", "width:25%;display:inline")
 									.attr("placeholder", "Option 4")
 							),
@@ -268,25 +268,25 @@ $(document).ready(function() {
 									.attr("class", "form-control")
 									.attr("type", "radio")
 									.attr("value", "1")
-									.attr("name", "right-answer" + i + "")
+									.attr("name", "right-answer" + i)
 									.attr("style", "width:25%;display:inline"),
 								$("<input>")
 									.attr("class", "form-control")
 									.attr("type", "radio")
 									.attr("value", "2")
-									.attr("name", "right-answer" + i + "")
+									.attr("name", "right-answer" + i)
 									.attr("style", "width:25%;display:inline"),
 								$("<input>")
 									.attr("class", "form-control")
 									.attr("type", "radio")
 									.attr("value", "3")
-									.attr("name", "right-answer" + i + "")
+									.attr("name", "right-answer" + i)
 									.attr("style", "width:25%;display:inline"),
 								$("<input>")
 									.attr("class", "form-control")
 									.attr("type", "radio")
 									.attr("value", "4")
-									.attr("name", "right-answer" + i + "")
+									.attr("name", "right-answer" + i)
 									.attr("style", "width:25%;display:inline")
 							)
 						)
@@ -308,87 +308,40 @@ $(document).ready(function() {
 	});
 
 	$("#groupInputDiv").on("click", "#btnAddGroupQuestions", function() {
-		// console.log("warks");
-
 		let formDatas = new FormData(questionsForm);
+		let formData = new FormData();
 
-		let questions = $("input[name='question[]']")
-			.map(function() {
-				return $(this).val();
-			})
-			.get();
-		let option1s = $("input[name='option1[]']")
-			.map(function() {
-				return $(this).val();
-			})
-			.get();
-		let option2s = $("input[name='option2[]']")
-			.map(function() {
-				return $(this).val();
-			})
-			.get();
-		let option3s = $("input[name='option3[]']")
-			.map(function() {
-				return $(this).val();
-			})
-			.get();
-		let option4s = $("input[name='option4[]']")
-			.map(function() {
-				return $(this).val();
-			})
-			.get();
-
-		let answers = [];
-		let noQ = $("#inputGroupQuestionNo").val();
-		for (let i = 0; i < noQ; i++) {
-			answers[i] = formDatas.get("right-answer" + i + "");
+		for (let entry of formDatas.entries()) {
+			if (entry[0] == "question")
+				formData.append(entry[0] + "[]", entry[1]);
+			else if (entry[0] == "questionfile")
+				formData.append(entry[0] + "[]", entry[1]);
+			else if (entry[0] == "option1")
+				formData.append(entry[0] + "[]", entry[1]);
+			else if (entry[0] == "option2")
+				formData.append(entry[0] + "[]", entry[1]);
+			else if (entry[0] == "option3")
+				formData.append(entry[0] + "[]", entry[1]);
+			else if (entry[0] == "option4")
+				formData.append(entry[0] + "[]", entry[1]);
+			else formData.append("answers[]", entry[1]);
 		}
 
-		let questionFile = [];
-		for (let i = 0; i < noQ; i++) {
-			questionFile[i] = formDatas.get("questionfile" + i + "");
-		}
-
-		// console.log(questionFile);
-
-		// var myJsonString = JSON.parse((questionFile).serializeArray());
-		// console.log(myJsonString);
-
-		// questionFile.forEach(function() {
-
-		// });
-		// console.log(jsonObject);
+		console.log(formData, formDatas);
 
 		let groupId = $("#groupSetFormId").val();
-		// console.log(groupId);
 
-		$.ajax({
-			method: "post",
-			url: serverName + "/api/add-questions/" + groupId,
+		fetch(serverName + "/api/add-questions/" + groupId, {
+			method: "POST",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token"),
 				Accept: "application/json"
 			},
-			data: {
-				question: questions,
-				option1: option1s,
-				option2: option2s,
-				option3: option3s,
-				option4: option4s,
-				answer: answers
-			},
-			cache: false,
-			success: function(result) {
-				//checking email password
-				if (result.status) {
-					alert("the questions has been added");
-					console.log(result);
-				} else {
-					//when it does not match
-					console.log(result);
-				}
-			}
-		});
+			body: formData
+		})
+			.then(response => response.json())
+			.then(json => console.log(json))
+			.catch(err => console.log(err));
 	});
 
 	// add sets ends

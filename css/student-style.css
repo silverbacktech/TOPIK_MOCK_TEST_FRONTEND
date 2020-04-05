@@ -55,6 +55,11 @@
 	margin-bottom: 20px;
 }
 
+#examQuestionSection .question-part {
+	display: flex;
+	flex-direction: column;
+}
+
 #examQuestionSection form .question-no {
 	font-weight: bolder;
 	color: white;
@@ -69,14 +74,21 @@
 
 #examQuestionSection form .questions {
 	text-transform: capitalize;
-	margin-left: 10px;
+	margin-left: 30px;
 	padding: 0px 10px;
 	font-weight: bold;
 }
 
+#examQuestionSection form img {
+	height: 300px;
+	width: 500px;
+	align-self: center;
+	border: 1px solid black;
+	padding: 5px;
+}
+
 #examQuestionSection form .options {
-	/* background: white; */
-	display: inline-block;
+	display: flex;
 	width: 25%;
 	text-transform: capitalize;
 	padding: 10px 10px;
@@ -84,7 +96,12 @@
 }
 
 #examQuestionSection form input[type="radio"] {
-	margin-left: 45%;
-	height: 15px;
-	width: 15px;
+	margin: 0 30%;
+	height: 20px;
+	width: 20px;
+}
+
+#examQuestionSection form input[type="button"] {
+	margin: 2% 45%;
+	height: 50px;
 }
