@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 	// server name
 	var serverName = "http://127.0.0.1:8000";
 	let loggedInUser = localStorage.getItem("userName");
@@ -11,18 +11,18 @@ $(document).ready(function() {
 	$("#editLangDialog").dialog({
 		autoOpen: false,
 		show: {},
-		hide: {}
+		hide: {},
 	});
 
 	$("#changeAdminPasswordDialog").dialog({
 		autoOpen: false,
 		show: {},
-		hide: {}
+		hide: {},
 	});
 
 	// show or hide content
 	let selected;
-	$("a.show-content").click(function() {
+	$("a.show-content").click(function () {
 		var toShow = $(this).attr("data");
 		// $(".main-content").removeClass("show");
 		if (selected !== undefined) selected.removeClass("show");
@@ -30,58 +30,58 @@ $(document).ready(function() {
 		selected.addClass("show");
 	});
 
-	$("#mainLogo").click(function() {
+	$("#mainLogo").click(function () {
 		location.reload();
 	});
 
 	// add sets starts
-	$("#tabAddSets").click(function() {
+	$("#tabAddSets").click(function () {
 		$("#languageInputSelect").empty();
 		$("#setTableBody").empty();
 		$.ajax({
 			method: "GET",
 			url: serverName + "/api/language/show",
 			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token")
+				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			cache: false,
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does not match
 					console.log(result);
 				} else {
 					//when it does match
-					$.each(result, function(i, item) {
+					$.each(result, function (i, item) {
 						$("#languageInputSelect").append(
 							$("<option>", {
 								value: item.id,
-								text: item.language_name
+								text: item.language_name,
 							})
 						);
 					});
 				}
-			}
+			},
 		});
 
 		$.ajax({
 			method: "GET",
 			url: serverName + "/api/set/show",
 			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token")
+				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			cache: false,
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does not match
 				} else {
 					//when it does match
-					$.each(result, function(key, set) {
+					$.each(result, function (key, set) {
 						var NewRow = '<tr><td">' + set.id + "</td>";
 						NewRow += '<td id="setId">' + set.id + "</td>";
 
-						$.each(set.language, function(keys, language) {
+						$.each(set.language, function (keys, language) {
 							NewRow +=
 								'<td id="setLangName" data=' +
 								language.id +
@@ -120,29 +120,27 @@ $(document).ready(function() {
 						$("#setTableBody").append(NewRow);
 					});
 				}
-			}
+			},
 		});
 	});
 
 	// add set button
-	$("#btnAddSet").click(function(e) {
+	$("#btnAddSet").click(function (e) {
 		e.preventDefault();
 		let setName = $("#inputSet").val();
-		let languageId = $("#languageInputSelect")
-			.find(":selected")
-			.val();
+		let languageId = $("#languageInputSelect").find(":selected").val();
 
 		$.ajax({
 			method: "POST",
 			url: serverName + "/api/set/" + languageId,
 			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token")
+				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			cache: false,
 			data: {
-				name: setName
+				name: setName,
 			},
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does match
@@ -152,21 +150,15 @@ $(document).ready(function() {
 					//when it does not match
 					alert("There was an error adding the set");
 				}
-			}
+			},
 		});
 	});
 
 	// button add reading questions
 
-	$("#setTableBody").on("click", "#addReading", function() {
-		let groupLang = $(this)
-			.parents()
-			.siblings("#setLangName")
-			.html();
-		let groupSet = $(this)
-			.parents()
-			.siblings("#setId")
-			.html();
+	$("#setTableBody").on("click", "#addReading", function () {
+		let groupLang = $(this).parents().siblings("#setLangName").html();
+		let groupSet = $(this).parents().siblings("#setId").html();
 		$("#groupSetId").val(groupSet);
 		$("#groupLanguageName").val(groupLang);
 		$("#tabAddReadingQuestions").click();
@@ -174,7 +166,7 @@ $(document).ready(function() {
 
 	// add reading questions
 
-	$("#btnAddGroup").click(function(e) {
+	$("#btnAddGroup").click(function (e) {
 		e.preventDefault();
 		// insert group name into db
 		let gpName = $("#inputGroupTitle").val();
@@ -185,13 +177,13 @@ $(document).ready(function() {
 				method: "POST",
 				url: serverName + "/api/add-question-group/" + gpId,
 				headers: {
-					Authorization: "Bearer " + localStorage.getItem("token")
+					Authorization: "Bearer " + localStorage.getItem("token"),
 				},
 				data: {
-					group_name: gpName
+					group_name: gpName,
 				},
 				cache: false,
-				success: function(result) {
+				success: function (result) {
 					//checking email password
 					if (result.status) {
 						//when it does match
@@ -202,16 +194,14 @@ $(document).ready(function() {
 						//when it does not match
 						console.log("The group has not been added");
 					}
-				}
+				},
 			});
 		} else {
 			alert("Fill in the required data");
 		}
 
 		// rest
-		$("#groupInputDiv")
-			.find("form")
-			.empty();
+		$("#groupInputDiv").find("form").empty();
 		let cols = $("#inputGroupQuestionNo").val();
 		if (cols >= 1) {
 			for (let i = 0; i < cols; i++) {
@@ -307,7 +297,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#groupInputDiv").on("click", "#btnAddGroupQuestions", function() {
+	$("#groupInputDiv").on("click", "#btnAddGroupQuestions", function () {
 		let formDatas = new FormData(questionsForm);
 		let formData = new FormData();
 
@@ -327,21 +317,20 @@ $(document).ready(function() {
 			else formData.append("answers[]", entry[1]);
 		}
 
-		console.log(formData, formDatas);
-
 		let groupId = $("#groupSetFormId").val();
+		console.log(groupId);
 
 		fetch(serverName + "/api/add-questions/" + groupId, {
 			method: "POST",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token"),
-				Accept: "application/json"
+				Accept: "application/json",
 			},
-			body: formData
+			body: formData,
 		})
-			.then(response => response.json())
-			.then(json => console.log(json))
-			.catch(err => console.log(err));
+			.then((response) => response.json())
+			.then((json) => console.log(json))
+			.catch((err) => console.log(err));
 	});
 
 	// add sets ends
@@ -350,13 +339,11 @@ $(document).ready(function() {
 
 	// add student begins
 
-	$("#tabAddStudents").click(function() {
-		$("#formAddStudents")
-			.find("button[type=reset]")
-			.click();
+	$("#tabAddStudents").click(function () {
+		$("#formAddStudents").find("button[type=reset]").click();
 	});
 
-	$("#formAddStudents").submit(function(e) {
+	$("#formAddStudents").submit(function (e) {
 		e.preventDefault();
 		let stname = $("#studentAddName").val();
 		let stemail = $("#studentAddEmail").val();
@@ -368,17 +355,17 @@ $(document).ready(function() {
 			url: serverName + "/api/register/",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token"),
-				Accept: "application/json"
+				Accept: "application/json",
 			},
 			data: {
 				name: stname,
 				email: stemail,
 				password: stpassword,
 				password_confirmation: stpassword,
-				role: strole
+				role: strole,
 			},
 			cache: false,
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does match
@@ -387,24 +374,20 @@ $(document).ready(function() {
 				} else {
 					//when it does not match
 				}
-			}
+			},
 		});
 	});
 
 	// generate student password
 
-	$("#studentAddEmail,#studentAddPhone").change(function() {
+	$("#studentAddEmail,#studentAddPhone").change(function () {
 		$("#studentGeneratePassword").prop("checked", false);
 		$("#studentAddPassword").val("");
 	});
 
-	$("#studentGeneratePassword").click(function() {
-		let email = $("#studentAddEmail")
-			.val()
-			.split("@")[0];
-		let phone = $("#studentAddPhone")
-			.val()
-			.slice(-4);
+	$("#studentGeneratePassword").click(function () {
+		let email = $("#studentAddEmail").val().split("@")[0];
+		let phone = $("#studentAddPhone").val().slice(-4);
 		if (email || phone != "") {
 			$("#studentAddPassword").val(email + phone);
 		} else {
@@ -415,23 +398,23 @@ $(document).ready(function() {
 
 	// view students starts
 
-	$("#tabViewStudents").click(function() {
+	$("#tabViewStudents").click(function () {
 		let role = "student";
 		$("#studentsTableBody").empty();
 		$.ajax({
 			method: "GET",
 			url: serverName + "/api/user/showUsers/" + role,
 			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token")
+				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			cache: false,
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does not match
 				} else {
 					// when it does match
-					$.each(result, function(key, student) {
+					$.each(result, function (key, student) {
 						var NewRow = '<tr><td">' + student.id + "</td>";
 						NewRow += '<td id="studentId">' + student.id + "</td>";
 						NewRow +=
@@ -449,21 +432,21 @@ $(document).ready(function() {
 						$("#studentsTableBody").append(NewRow);
 					});
 				}
-			}
+			},
 		});
 	});
 
-	$("#studentsTableBody").on("click", "#deleteStudent", function() {
+	$("#studentsTableBody").on("click", "#deleteStudent", function () {
 		if (confirm("Are you sure you want to delete this student?")) {
 			let delId = $(this).attr("data");
 			$.ajax({
 				method: "POST",
 				url: serverName + "/api/user/delete/" + delId,
 				headers: {
-					Authorization: "Bearer " + localStorage.getItem("token")
+					Authorization: "Bearer " + localStorage.getItem("token"),
 				},
 				cache: false,
-				success: function(result) {
+				success: function (result) {
 					//checking email password
 					if (result.status) {
 						//when it does match
@@ -473,7 +456,7 @@ $(document).ready(function() {
 						//when it does not match
 						alert("There was an error deleting the student");
 					}
-				}
+				},
 			});
 		} else {
 		}
@@ -483,22 +466,22 @@ $(document).ready(function() {
 
 	// add languages tab
 	// to load all the languages on tab click
-	$("#tabAddLanguages").click(function() {
+	$("#tabAddLanguages").click(function () {
 		$("#languageTableBody").empty();
 		$.ajax({
 			method: "GET",
 			url: serverName + "/api/language/show",
 			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token")
+				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			cache: false,
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does not match
 				} else {
 					//when it does match
-					$.each(result, function(key, language) {
+					$.each(result, function (key, language) {
 						var NewRow = '<tr><td">' + language.id + "</td>";
 						NewRow += '<td id="langId">' + language.id + "</td>";
 						NewRow +=
@@ -522,12 +505,12 @@ $(document).ready(function() {
 						$("#languageTableBody").append(NewRow);
 					});
 				}
-			}
+			},
 		});
 	});
 
 	// add language button
-	$("#btnAddLanguage").click(function(e) {
+	$("#btnAddLanguage").click(function (e) {
 		e.preventDefault();
 		let language = $("#inputLanguage").val();
 
@@ -535,13 +518,13 @@ $(document).ready(function() {
 			method: "POST",
 			url: serverName + "/api/language",
 			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token")
+				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			cache: false,
 			data: {
-				language_name: language
+				language_name: language,
 			},
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does match
@@ -551,22 +534,22 @@ $(document).ready(function() {
 					//when it does not match
 					alert("There was an error adding the language");
 				}
-			}
+			},
 		});
 	});
 
 	// delete language button
-	$("#languageTableBody").on("click", "#deleteLang", function() {
+	$("#languageTableBody").on("click", "#deleteLang", function () {
 		if (confirm("Are you sure you want to delete this language?")) {
 			let delId = $(this).attr("data");
 			$.ajax({
 				method: "POST",
 				url: serverName + "/api/language/delete/" + delId,
 				headers: {
-					Authorization: "Bearer " + localStorage.getItem("token")
+					Authorization: "Bearer " + localStorage.getItem("token"),
 				},
 				cache: false,
-				success: function(result) {
+				success: function (result) {
 					//checking email password
 					if (result.status) {
 						//when it does match
@@ -576,42 +559,36 @@ $(document).ready(function() {
 						//when it does not match
 						alert("There was an error deleting the language");
 					}
-				}
+				},
 			});
 		} else {
 		}
 	});
 
 	//Open it when #opener is clicked
-	$("#languageTableBody").on("click", "#editLang", function() {
+	$("#languageTableBody").on("click", "#editLang", function () {
 		$("#editLangDialog").dialog("open");
-		let editId = $(this)
-			.parents()
-			.siblings("#langId")
-			.html();
-		let oldLang = $(this)
-			.parents()
-			.siblings("#langName")
-			.html();
+		let editId = $(this).parents().siblings("#langId").html();
+		let oldLang = $(this).parents().siblings("#langName").html();
 		$("#inputEditLanguage").val(oldLang);
 		$("#editLanguageId").val(editId);
 	});
 
 	// edit language button
-	$("#saveEditLanguage").click(function() {
+	$("#saveEditLanguage").click(function () {
 		let changedLang = $("#inputEditLanguage").val();
 		let changeId = $("#editLanguageId").val();
 		$.ajax({
 			method: "POST",
 			url: serverName + "/api/language/edit/" + changeId,
 			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token")
+				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			data: {
-				language_name: changedLang
+				language_name: changedLang,
 			},
 			cache: false,
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does match
@@ -621,7 +598,7 @@ $(document).ready(function() {
 				} else {
 					//when it does not match
 				}
-			}
+			},
 		});
 	});
 
@@ -696,23 +673,23 @@ $(document).ready(function() {
 
 	// // view students starts
 
-	$("#tabViewAdmin").click(function() {
+	$("#tabViewAdmin").click(function () {
 		let role = "admin";
 		$("#adminTableBody").empty();
 		$.ajax({
 			method: "GET",
 			url: serverName + "/api/user/showUsers/" + role,
 			headers: {
-				Authorization: "Bearer " + localStorage.getItem("token")
+				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 			cache: false,
-			success: function(result) {
+			success: function (result) {
 				//checking email password
 				if (result.status) {
 					//when it does not match
 				} else {
 					// when it does match
-					$.each(result, function(key, admin) {
+					$.each(result, function (key, admin) {
 						var NewRow = '<tr><td">' + admin.id + "</td>";
 						NewRow += '<td id="adminId">' + admin.id + "</td>";
 						NewRow += '<td id="adminName">' + admin.name + "</td>";
@@ -736,21 +713,21 @@ $(document).ready(function() {
 						$("#adminTableBody").append(NewRow);
 					});
 				}
-			}
+			},
 		});
 	});
 
-	$("#adminTableBody").on("click", "#deleteAdmin", function() {
+	$("#adminTableBody").on("click", "#deleteAdmin", function () {
 		if (confirm("Are you sure you want to delete this admin?")) {
 			let delId = $(this).attr("data");
 			$.ajax({
 				method: "POST",
 				url: serverName + "/api/user/delete/" + delId,
 				headers: {
-					Authorization: "Bearer " + localStorage.getItem("token")
+					Authorization: "Bearer " + localStorage.getItem("token"),
 				},
 				cache: false,
-				success: function(result) {
+				success: function (result) {
 					//checking email password
 					if (result.status) {
 						//when it does match
@@ -760,7 +737,7 @@ $(document).ready(function() {
 						//when it does not match
 						alert("There was an error deleting the admin");
 					}
-				}
+				},
 			});
 		} else {
 		}
@@ -769,19 +746,10 @@ $(document).ready(function() {
 	// edit password admin
 
 	//Open it when #opener is clicked
-	$("#adminTableBody").on("click", "#changeAdminPassword", function() {
-		let editId = $(this)
-			.parents()
-			.siblings("#adminId")
-			.html();
-		let editEmail = $(this)
-			.parents()
-			.siblings("#adminEmail")
-			.html();
-		let editName = $(this)
-			.parents()
-			.siblings("#adminName")
-			.html();
+	$("#adminTableBody").on("click", "#changeAdminPassword", function () {
+		let editId = $(this).parents().siblings("#adminId").html();
+		let editEmail = $(this).parents().siblings("#adminEmail").html();
+		let editName = $(this).parents().siblings("#adminName").html();
 		$("#changeAdminPasswordDialog").dialog("open");
 
 		$("#adminIdC").val(editId);
@@ -790,7 +758,7 @@ $(document).ready(function() {
 	});
 
 	// change password button
-	$("#saveNewPassword").click(function() {
+	$("#saveNewPassword").click(function () {
 		if (
 			$("#inputNewPassword").val() == $("#inputNewPasswordC").val() &&
 			$("#inputNewPasswordC").val() != ""
@@ -806,17 +774,17 @@ $(document).ready(function() {
 				url: serverName + "/api/user/edit/" + adminId,
 				headers: {
 					Authorization: "Bearer " + localStorage.getItem("token"),
-					Accept: "application/json"
+					Accept: "application/json",
 				},
 				data: {
 					name: adminName,
 					email: adminEmail,
 					password: adminPassword,
 					password_confirmation: adminPassword,
-					role: role
+					role: role,
 				},
 				cache: false,
-				success: function(result) {
+				success: function (result) {
 					//checking email password
 					if (result.status) {
 						//when it does match
@@ -826,7 +794,7 @@ $(document).ready(function() {
 					} else {
 						//when it does not match
 					}
-				}
+				},
 			});
 		} else {
 			$("#errorMessageAdminChangePassword").html("Passwords don't match");
@@ -835,7 +803,7 @@ $(document).ready(function() {
 
 	// add admin begins
 
-	$("#formAddAdmin").submit(function(e) {
+	$("#formAddAdmin").submit(function (e) {
 		e.preventDefault();
 
 		let adname = $("#adminAddName").val();
@@ -852,17 +820,17 @@ $(document).ready(function() {
 				url: serverName + "/api/register/",
 				headers: {
 					Authorization: "Bearer " + localStorage.getItem("token"),
-					Accept: "application/json"
+					Accept: "application/json",
 				},
 				data: {
 					name: adname,
 					email: ademail,
 					password: adpassword,
 					password_confirmation: adpasswordc,
-					role: adrole
+					role: adrole,
 				},
 				cache: false,
-				success: function(result) {
+				success: function (result) {
 					//checking email password
 					if (result.status) {
 						//when it does match
@@ -871,7 +839,7 @@ $(document).ready(function() {
 					} else {
 						//when it does not match
 					}
-				}
+				},
 			});
 		}
 	});
