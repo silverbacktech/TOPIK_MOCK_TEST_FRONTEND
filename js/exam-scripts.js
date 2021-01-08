@@ -83,13 +83,15 @@ $(document).ready(function() {
 														)
 												)
 												.append(
-													$("<img>", {
-														id: "theImg",
-														src:
-															serverName +
-															"/cover_img/" +
-															questions.question_image
-													})
+													(questions.question_image ? 
+														$("<img>", {
+															id: "theImg",
+															src:
+																serverName +
+																"/cover_img/" +
+																questions.question_image
+														}):'<div></div>'	
+													)
 												)
 										);
 

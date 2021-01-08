@@ -300,12 +300,14 @@ $(document).ready(function () {
 	$("#groupInputDiv").on("click", "#btnAddGroupQuestions", function () {
 		let formDatas = new FormData(questionsForm);
 		let formData = new FormData();
-
+		let i = 0;
 		for (let entry of formDatas.entries()) {
 			if (entry[0] == "question")
-				formData.append(entry[0] + "[]", entry[1]);
-			else if (entry[0] == "questionfile")
-				formData.append(entry[0] + "[]", entry[1]);
+				formData.append(entry[0] + `[]`, entry[1]);
+			else if (entry[0] == "questionfile"){
+				formData.append(entry[0] + `[${i}]`, entry[1]);
+				i++;
+			}
 			else if (entry[0] == "option1")
 				formData.append(entry[0] + "[]", entry[1]);
 			else if (entry[0] == "option2")
