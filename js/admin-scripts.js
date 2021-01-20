@@ -320,7 +320,7 @@ $(document).ready(function () {
 		}
 
 		let groupId = $("#groupSetFormId").val();
-		console.log(groupId);
+		// console.log(groupId);
 
 		fetch(serverName + "/api/add-questions/" + groupId, {
 			method: "POST",

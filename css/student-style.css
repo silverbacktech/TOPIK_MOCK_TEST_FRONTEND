@@ -33,9 +33,56 @@
 	color: black;
 }
 
-#examLogo {
-	height: 100px;
-	margin-left: 20px;
+/* exam page begins  */
+
+.ui-dialog-titlebar-close {
+	display: none !important;
+}
+
+.ui-button {
+	background: blue !important;
+	color: white !important;
+}
+
+/* .hideQuestions {
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 9;
+	background-color: rgba(0, 0, 0, 0.9); /* Black background with opacity 
+} */
+
+.top-heading {
+	background: #79c4dc;
+	color: white;
+	font-weight: 600;
+	font-size: 1.15rem;
+	text-align: center;
+	padding: 10px;
+}
+
+.top-menu {
+	background: white;
+	border: 2px solid black;
+	border-left: none;
+	padding: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	text-align: center;
+	font-weight: 500;
+}
+.top-menu-image img {
+	width: 40px;
+	border: 1px solid darkgray;
+	border-radius: 50%;
+}
+.top-menu-name > div:first-of-type {
+	width: 100%;
+	border-bottom: 2px solid black;
 }
 
 .exam-main {
@@ -45,7 +92,7 @@
 #examQuestionSection {
 	margin: 10px;
 	padding: 10px;
-	background: lightgray;
+	background: white;
 	padding-left: 20px;
 	border-radius: 10px;
 }
@@ -56,6 +103,11 @@
 }
 
 #examQuestionSection .question-part {
+	/* display: flex; */
+	/* flex-direction: column; */
+	display: none;
+}
+.question-part#reading_1 {
 	display: flex;
 	flex-direction: column;
 }
@@ -80,28 +132,89 @@
 }
 
 #examQuestionSection form img {
-	height: 300px;
-	width: 500px;
+	width: 50%;
 	align-self: center;
 	border: 1px solid black;
 	padding: 5px;
+	margin: 10px;
 }
 
 #examQuestionSection form .options {
 	display: flex;
-	width: 25%;
+	width: 100%;
 	text-transform: capitalize;
 	padding: 10px 10px;
 	text-align: center;
 }
 
-#examQuestionSection form input[type="radio"] {
-	margin: 0 30%;
+#examQuestionSection form input[type='radio'] {
+	margin: 0 20%;
 	height: 20px;
 	width: 20px;
 }
 
-#examQuestionSection form input[type="button"] {
-	margin: 2% 45%;
+#examQuestionSection form input[type='button'] {
 	height: 50px;
+}
+
+.questionNumbers {
+	padding: 10px;
+	text-align: center;
+}
+.questionNumbers h4 {
+	background: #78a8f6;
+	width: 100%;
+	padding: 5px;
+	border: 1px solid lightgrey;
+	color: white;
+}
+.readingNumbers {
+	background: white;
+	padding: 0;
+	border-right: 1px solid lightgrey;
+	display: flex;
+	flex-direction: column;
+}
+.readingNumbers div {
+	margin: 5px;
+}
+.readingNumbers button {
+	height: 30px;
+	width: 30px;
+	margin-right: 10px;
+}
+.readingNumbers input[type='checkbox'] {
+	height: 20px;
+	width: 20px;
+}
+.listeningNumbers {
+	background: white;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+}
+.listeningNumbers div {
+	margin: 5px;
+}
+.listeningNumbers button {
+	height: 30px;
+	width: 30px;
+	margin-right: 10px;
+}
+.listeningNumbers input[type='checkbox'] {
+	height: 20px;
+	width: 20px;
+}
+.listening_audio {
+	display: none;
+}
+.playBtn {
+	height: 100px;
+	width: 100px;
+	background: #f0f0f0
+		url('../images/headphones-listen-music-sound-play-512.png');
+	background-repeat: no-repeat;
+	background-size: 100%;
+	margin: auto;
+	border-radius: 10%;
 }

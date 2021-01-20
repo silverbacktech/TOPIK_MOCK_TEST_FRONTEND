@@ -16,26 +16,86 @@
 	</head>
 	<body>
 		<!-- Modal to edit language begins-->
-		<div id="messageDialog" title="Exam Instructions">
-			<p></p>
+		<div id="examInstructionDialog" title="Exam Instructions">
+			<p>These are the instructions for the exam</p>
 		</div>
+		<!-- modal overlay -->
+		<div id="modalOverlay" class="hideQuestions"></div>
+		<!-- modal ends  -->
+
+
 		<div class="examContainer">
-			<img
-				src="images/sun-png-clear-background-sun-png-2400.png"
-				alt=""
-				id="examLogo"
-			/>
+
+			<div class="top-heading">
+				Om Korean and Japanese Language Institute
+			</div>
+
+			<nav>
+				<div class="row info-nav">
+					<div class="col-1 top-menu top-menu-image">
+						<img src="images/head.png" alt="Head Icon">
+					</div>
+					<div class="col-2 top-menu top-menu-name">
+						<div><span>Samrat Pandey</span></div>
+						<div><span>NEPAL</span></div>
+					</div>
+					<div class="col-2 top-menu top-menu-reading">
+						<span>Reading</span>
+						<span id="readingNo">-</span>
+					</div>
+					<div class="col-2 top-menu top-menu-listening">
+						<span>Listening</span>
+						<span id="listeningNo">-</span>
+					</div>
+					<div class="col-2 top-menu top-menu-total">
+						<span>Total</span>
+						<span id="totalNo">-</span>
+					</div>
+					<div class="col-2 top-menu top-menu-rem">
+						<span>Remaining</span>
+						<span>-</span>
+					</div>
+					<div class="col-1 top-menu top-menu-time">
+						<span id="time">50:00</span>
+					</div>
+				</div>
+			</nav>
+
 			<main class="exam-main p-4">
-				<div id="examQuestionSection">
-					<form
-						action=""
-						id="examQuestionsForm"
-						name="examQuestionsForm"
-						data=""
-						enctype="multipart/form-data"
-					></form>
+				<div class="row">
+					<div id="examQuestionSection" class="col-8">
+						<form
+							action=""
+							id="examQuestionsForm"
+							name="examQuestionsForm"
+							data=""
+							enctype="multipart/form-data"
+						></form>
+					</div>
+
+					<div class="row col-4 questionNumbers" id="questionNos">
+						<div class="col-6 readingNumbers" id="readingNos">
+							<h4>Reading</h4>
+						</div>
+						<div class="col-6 listeningNumbers" id="listeningNos">
+							<h4>Listening</h4>
+						</div>
+
+						<div class="row col-12">
+							<div class="col-6">
+								<button id="btnPrevious">Previous</button>
+							</div>
+							<div class="col-6">
+								<button id="btnNext">Next</button>
+							</div>
+							<div class="col-12">
+								<button>Submit</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</main>
+
 			<footer class="end-note py-4 bg-light mt-auto">
 				Developed by <a href="#">SilverBack Solutions</a>
 			</footer>
