@@ -1,5 +1,8 @@
-var answerOption = [];
-var answerId = [];
+var readingAnswerOption = [];
+var listeningAnswerOption = [];
+var readingAnswerId = [];
+var listeningAnswerId = [];
+var qNo =1;
 var currentQuestion=['reading','1'];
 $(document).ready(function() {
 	var serverName = "http://127.0.0.1:8000";
@@ -13,7 +16,7 @@ $(document).ready(function() {
 	//Initialize dialog
 
 	$("#examInstructionDialog").dialog({
-		autoOpen: false,
+		autoOpen: true,
 		closeOnEscape: false,
 		draggable:false,
 		resizable: false,
@@ -30,13 +33,9 @@ $(document).ready(function() {
 		hide: {},   
 	});
 
-	// make unclickable checkbox: when made through css- checkbox greys out 
-	$("#readingNos,#listeningNos").on(
-		"click",
-		"input:checkbox",
-		function() {
-			return false;
-	});
+	// set username and other info of student 
+	$("#examStudentName").html(loggedInUser);
+	$("#examStudentId").html(loggedInUserId);
 
 	// getting parameters from url
 	var queryString = new Array();
@@ -93,20 +92,18 @@ $(document).ready(function() {
 									$("#examQuestionSection")
 										.find("#examQuestionsForm")
 										.append(
-											$("<div class='question-part' id="+'reading_'+questions.id+">")
+											$("<div class='question-part readingQuestionPart' id="+'reading_'+qNo+" data="+questions.id+">")
 												.append($("<h4 class='group-title'>").html(
 													groupName
 												))
 												.append(
-													$(
-														"<span class='question-no'>"
-													).append(questions.id),
 													$("<p>")
 														.attr(
 															"class",
 															"mt-3 mb-3 questions"
 														)
 														.html(
+															qNo+" . "+
 															questions.question_content
 														)
 														.attr(
@@ -133,37 +130,42 @@ $(document).ready(function() {
 									
 									// add questio numbers in right sidebar 
 
-									$("#questionNos")
+									$("#examAllQuestionSection")
 									.find("#readingNos")
-									.append($("<div>").append(
-										$("<button class='question-btn' id="+'readingBtn_'+questions.id+">"+questions.id+"</Button>")
-									).append($("<input type='checkbox' class='readingCheck' id=checkRed"+questions.id+">")));
+									.append(
+										$("<a class='question-btn' id="+'readingBtn_'+qNo+">"+qNo+"</a>")
+									);
 
 									// adding answer to array
-									answerOption.push(
+									readingAnswerOption.push(
 										questions.reading_answer[
 											"reading_options_id"
 										]
 									);
 
-									answerId.push(
+									readingAnswerId.push(
 										questions.reading_answer["id"]
+									);
+
+									// add place for options 
+									$("#questionOptionsSection").append(
+										$("<div class='optionsPart' id=readingOpt_"+qNo+">")
 									);
 
 									$.each(questions.reading_options, function(
 										j,
 										options
 									) {
-										$("#examQuestionSection")
-											.find('#reading_'+options.reading_questions_id)
+										$("#questionOptionsSection")
+											.find("#readingOpt_"+qNo+"")
 											.append(
 												$(
-													"<div class='options'>"
+													"<div>"
 												).append(
 													$("<input>")
 														.attr(
 															"class",
-															"form-control readingAns"
+															"form-control readingAns redOpt"+options.reading_questions_id+""
 														)
 														.attr(
 															"id",
@@ -180,7 +182,7 @@ $(document).ready(function() {
 														)
 														.attr(
 															"name",
-															"right-answer" +
+															"red-right-answer" +
 																options.reading_questions_id +
 																""
 														),
@@ -190,6 +192,7 @@ $(document).ready(function() {
 												)
 											);
 									});
+									qNo=qNo+1;
 								});
 							}); // reading questions end 
 
@@ -209,20 +212,19 @@ $(document).ready(function() {
 									$("#examQuestionSection")
 										.find("#examQuestionsForm")
 										.append(
-											$("<div class='question-part' id="+'listening_'+questions.id+">")
+											$("<div class='question-part listeningQuestionPart' id="+'listening_'+qNo+" data="+questions.id+">")
 												.append($("<h4 class='group-title'>").html(
 													groupName
 												))
 												.append(
-													$(
-														"<span class='question-no'>"
-													).append(questions.id),
 													$("<p>")
 														.attr(
 															"class",
 															"mt-3 mb-3 questions"
 														)
 														.html(
+															// questions.question_content
+															qNo+" . "+
 															// questions.question_content
 															'question content - milauna baki'
 														)
@@ -248,7 +250,7 @@ $(document).ready(function() {
 												)
 												.append(
 													(questions.audio_file ? 
-														$("<audio controls class='listening_audio' id=audio_"+questions.id+">").append($("<source>", {
+														$("<audio controls class='listening_audio' id=audio_"+qNo+">").append($("<source>", {
 															src:
 																serverName +
 																"/cover_img/" +
@@ -267,37 +269,42 @@ $(document).ready(function() {
 									
 									// add questio numbers in right sidebar 
 
-									$("#questionNos")
+									$("#examAllQuestionSection")
 									.find("#listeningNos")
-									.append($("<div>").append(
-										$("<button class='question-btn' id="+'listeningBtn_'+questions.id+">"+questions.id+"</Button>")
-									).append($("<input type='checkbox' class='listeningCheck' id=checkLis"+questions.id+">")));
+									.append(
+										$("<a class='question-btn' id="+'listeningBtn_'+qNo+">"+qNo+"</a>")
+									);
 
 									// adding answer to array
-									answerOption.push(
+									listeningAnswerOption.push(
 										questions.listening_answer[
-											"reading_options_id"
+											"listening_options_id"
 										]
 									);
 
-									answerId.push(
+									listeningAnswerId.push(
 										questions.listening_answer["id"]
+									);
+
+									// add place for options 
+									$("#questionOptionsSection").append(
+										$("<div class='optionsPart' id=listeningOpt_"+qNo+">")
 									);
 
 									$.each(questions.listening_options, function(
 										j,
 										options
 									) {
-										$("#examQuestionSection")
-											.find('#listening_'+options.listening_questions_id)
+										$("#questionOptionsSection")
+											.find("#listeningOpt_"+qNo+"")
 											.append(
 												$(
-													"<div class='options'>"
+													"<div>"
 												).append(
 													$("<input>")
 														.attr(
 															"class",
-															"form-control listeningAns"
+															"form-control listeningAns lisOpt"+options.listening_questions_id+""
 														)
 														.attr(
 															"id",
@@ -314,7 +321,7 @@ $(document).ready(function() {
 														)
 														.attr(
 															"name",
-															"right-answer" +
+															"lis-right-answer" +
 																options.listening_questions_id +
 																""
 														),
@@ -324,6 +331,7 @@ $(document).ready(function() {
 												)
 											);
 									});
+									qNo=qNo+1;
 								});
 								
 							});
@@ -332,23 +340,7 @@ $(document).ready(function() {
 							// insert the number of total questions in navigation 
 							var totalNo = listeningNo+readingNo;
 							document.getElementById('totalNo').innerHTML = totalNo;
-
-
-							// $("#examQuestionSection")
-							// 	.find("form")
-							// 	.append(
-							// 		$("<div>").append(
-							// 			$("<input>")
-							// 				.attr("class", "btn btn-success")
-							// 				.attr("type", "button")
-							// 				.attr("value", "End Reading Exam")
-							// 				.attr("name", "btn-submit-answers")
-							// 				.attr(
-							// 					"id",
-							// 					"btnSubmitReadingQuestions"
-							// 				)
-							// 		)
-							// 	);
+							document.getElementById('remainingNo').innerHTML = totalNo;
 						}
 					}
 				}
@@ -356,6 +348,7 @@ $(document).ready(function() {
 		} else {
 		}
 	});
+
 
 	// play or pause audio 
 	$("#examQuestionSection").on("click",".playBtn",function() {
@@ -369,40 +362,62 @@ $(document).ready(function() {
         }
 	});
 
-	// check right sidebar checkbox on answer selection 
+	// check right sidebar checkbox on answer selection
+	
+	// open questions bar 
+	$("#viewQuestionNumbers").click(function(){
+		$("#examQuestionsForm").toggle();
+		$("#examAllQuestionSection").toggle();
+	});
 
-	$("#examQuestionSection").on(
+	$("#questionOptionsSection").on(
 		"click",
 		".readingAns",
 		function() {
-			$("#checkRed"+$(this).attr('data')+"").prop('checked', true);
+			$("#readingBtn_"+$(this).attr('data')+"").css({'background-color': 'blue','color':'white'});
+
+			// enter remaining numbers in navigation 
+			$("#remainingNo").html(parseInt($("#totalNo").html())-$("input[type=radio]:checked").length);
 	});
-	
-	$("#examQuestionSection").on(
+
+	$("#questionOptionsSection").on(
 		"click",
 		".listeningAns",
 		function() {
-			console.log($(this).attr('data'));
-			// $("#checkLis"+$(this).attr('data')+"").prop('checked', true);
-			$("#checkLis"+$(this).attr('data')+"").prop('checked', true);
+			$("#listeningBtn_"+$(this).attr('data')+"").css({'background-color': 'blue','color':'white'});
+
+			// enter remaining numbers in navigation 
+			$("#remainingNo").html(parseInt($("#totalNo").html())-$("input[type=radio]:checked").length);
 	});
+
 	
 	// change reading/ listening question 
-	$("#questionNos").on("click",".question-btn",function() {
+	$("#examAllQuestionSection").on("click",".question-btn",function() {
+		
 		var nos = $(this).attr('id').split('_');
 		if(nos[0]=='readingBtn'){
+			$("#examAllQuestionSection").hide();
+			$("#examQuestionsForm").show();
+			
 			$(".question-part").css({"display": "none"});
 			$(".question-part#reading_"+nos[1]+"").css({"display": "flex","flex-direction":"column"});
+			$(".optionsPart").css({"display": "none"});
+			$(".optionsPart#readingOpt_"+nos[1]+"").css({"display": "flex","flex-direction":"column"});
 			currentQuestion=['reading',nos[1]];
 		}
 		else{
+			$("#examAllQuestionSection").hide();
+			$("#examQuestionsForm").show();
+
 			$(".question-part").css({"display": "none"});
 			$(".question-part#listening_"+nos[1]+"").css({"display": "flex","flex-direction":"column"});
+			$(".optionsPart").css({"display": "none"});
+			$(".optionsPart#listeningOpt_"+nos[1]+"").css({"display": "flex","flex-direction":"column"});
 			currentQuestion=['listening',nos[1]];
 		}
 	});
 
-	// change questions on button press 
+	// change questions on next previous button press 
 	$("#btnNext").click(function(){
 		var maxReading =parseInt($("#readingNo").html());
 		var maxListening =parseInt($("#listeningNo").html());
@@ -410,32 +425,40 @@ $(document).ready(function() {
 		
 		if(currentQuestion[0]=='reading'){
 			if(currentQ!=maxReading){
-				console.log("1");
 				var i =currentQ+1;
 				currentQuestion[1]=i;
 				$(".question-part").css({"display": "none"});
 				$(".question-part#reading_"+i+"").css({"display": "flex","flex-direction":"column"});
+				$(".optionsPart").css({"display": "none"});
+				$(".optionsPart#readingOpt_"+i+"").css({"display": "flex","flex-direction":"column"});
 			}else{
-				console.log("2");
-				currentQuestion=["listening",1];
-				$(".question-part").css({"display": "none"});
-				$(".question-part#listening_1").css({"display": "flex","flex-direction":"column"});
+				if(maxListening>=1){
+					currentQuestion=["listening",maxReading+1];
+					$(".question-part").css({"display": "none"});
+					$(".question-part#listening_"+currentQuestion[1]+"").css({"display": "flex","flex-direction":"column"});
+					$(".optionsPart").css({"display": "none"});
+					$(".optionsPart#listeningOpt_"+currentQuestion[1]+"").css({"display": "flex","flex-direction":"column"});
+				}else{
+
+				}
 			}
 		}else{
-			if(currentQ<maxListening){
-				console.log("3");
+			if(currentQ<maxReading+maxListening){
 				var i =currentQ+1;
 				currentQuestion[1]=i;
 				$(".question-part").css({"display": "none"});
 				$(".question-part#listening_"+i+"").css({"display": "flex","flex-direction":"column"});
+				$(".optionsPart").css({"display": "none"});
+				$(".optionsPart#listeningOpt_"+i+"").css({"display": "flex","flex-direction":"column"});
 			}else{
 				
 			}
 		}
+
+
 	})
 	$("#btnPrevious").click(function(){
 		var maxReading =parseInt($("#readingNo").html());
-		var maxListening =parseInt($("#listeningNo").html());
 		var currentQ = parseInt(currentQuestion[1]);
 		// console.log(currentQuestion)
 		
@@ -445,81 +468,108 @@ $(document).ready(function() {
 				currentQuestion[1]=i;
 				$(".question-part").css({"display": "none"});
 				$(".question-part#reading_"+i+"").css({"display": "flex","flex-direction":"column"});
+				$(".optionsPart").css({"display": "none"});
+				$(".optionsPart#readingOpt_"+i+"").css({"display": "flex","flex-direction":"column"});
 			}else{
 				
 			}
 		}else{
-			if(currentQ==1){
+			if(currentQ==maxReading+1){
 				currentQuestion=["reading",maxReading];
 				$(".question-part").css({"display": "none"});
 				$(".question-part#reading_"+maxReading+"").css({"display": "flex","flex-direction":"column"});
+				$(".optionsPart").css({"display": "none"});
+				$(".optionsPart#readingOpt_"+maxReading+"").css({"display": "flex","flex-direction":"column"});
 			}else{
 				var i =currentQ-1;
 				currentQuestion[1]=i;
 				$(".question-part").css({"display": "none"});
 				$(".question-part#listening_"+i+"").css({"display": "flex","flex-direction":"column"});
+				$(".optionsPart").css({"display": "none"});
+				$(".optionsPart#listeningOpt_"+i+"").css({"display": "flex","flex-direction":"column"});
 			}
 		}
 	})
 
 
 
-	$("#examQuestionSection").on(
-		"click",
-		"#btnSubmitReadingQuestions",
-		function() {
+	$("#btnSubmitReadingQuestions").click(function(){
 			// console.log("df");
+			let maxReading =parseInt($("#readingNo").html());
+			let maxListening =parseInt($("#listeningNo").html());
+			let redAns=[],lisAns=[];
 
-			let questions = $("span[name='question']")
-				.map(function() {
-					return $(this).attr("data");
-				})
-				.get();
-
-			let answers = $("input[type='radio']:checked")
-				.map(function() {
-					return $(this).val();
-				})
-				.get();
-
-			console.log(answerId);
-			$.ajax({
-				method: "post",
-				url: serverName + "/api/submitted-answers/" + loggedInUserId,
-				headers: {
-					Authorization: "Bearer " + localStorage.getItem("token"),
-					Accept: "application/json"
-				},
-				data: {
-					reading_question_id: questions,
-					reading_answer_id: answerId
-				},
-				cache: false,
-				success: function(result) {
-					//checking email password
-					if (result.status) {
-						alert("the answers has been submitted");
-						console.log(result);
-					} else {
-						//when it does not match
-						console.log(result);
-					}
-				}
-			});
-
-			let rightAnswer = 0;
-			for (i = 0; i < answerOption.length; i++) {
-				if (answerOption[i] == answers[i]) {
-					rightAnswer++;
+			// store answers of reading and listening in a array 
+			for(i=1;i<=maxReading;i++){
+				if($(".redOpt"+i+"").is(':checked')){
+					redAns.push($(".redOpt"+i+":checked").val());
+				}else{
+					redAns.push(null);
 				}
 			}
-			// console.log(rightAnswer);
-			alert(
-				"Total Questions: " +
-					answerOption.length +
-					" Total Correct: " +
-					rightAnswer
-			);
+			for(i=1;i<=maxListening;i++){
+				if($(".lisOpt"+i+"").is(':checked')){
+					lisAns.push($(".lisOpt"+i+":checked").val());
+				}else{
+					lisAns.push(null);
+				}
+			}
+
+			// check how many right how many wrong 
+			let redRightAnswer=0;
+			let lisRightAnswer=0;
+
+			for (i = 0; i < readingAnswerOption.length; i++) {
+				if (readingAnswerOption[i] == redAns[i]) {
+					redRightAnswer++;
+				}
+			}
+			for (i = 0; i < listeningAnswerOption.length; i++) {
+				if (listeningAnswerOption[i] == lisAns[i]) {
+					lisRightAnswer++;
+				}
+			}
+
+			alert("Total questions="+(maxReading+maxListening)+". Total Right answer="+(redRightAnswer+lisRightAnswer)+"");
+
+			// getting total questions id, both reading and listening 
+
+			let redQuestions = $(".readingQuestionPart")
+			.map(function() {
+				return $(this).attr("data");
+			})
+			.get();
+
+			let lisQuestions = $(".listeningQuestionPart")
+			.map(function() {
+				return $(this).attr("data");
+			})
+			.get();
+
+
+			// $.ajax({
+			// 	method: "post",
+			// 	url: serverName + "/api/submitted-answers/" + loggedInUserId,
+			// 	headers: {
+			// 		Authorization: "Bearer " + localStorage.getItem("token"),
+			// 		Accept: "application/json"
+			// 	},
+			// 	data: {
+			// 		reading_question_id: ,
+			// 		reading_answer_id: answerId
+			// 	},
+			// 	cache: false,
+			// 	success: function(result) {
+			// 		//checking email password
+			// 		if (result.status) {
+			// 			alert("the answers has been submitted");
+			// 			console.log(result);
+			// 		} else {
+			// 			//when it does not match
+			// 			console.log(result);
+			// 		}
+			// 	}
+			// });
 		}
 	);
 });

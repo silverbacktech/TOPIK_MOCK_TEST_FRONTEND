@@ -31,13 +31,23 @@
 			</div>
 
 			<nav>
+				<div class="row primary-imfo-nav">
+					<div class="col-3 offset-3">
+						<span id="examSetName">UBT TEST</span>
+					</div>
+					<div class="col-3">
+						<span id="examStudentId">-</span>
+					</div>
+					<div class="col-3">
+						<span id="examStudentName">-</span>
+					</div>
+				</div>
 				<div class="row info-nav">
 					<div class="col-1 top-menu top-menu-image">
 						<img src="images/head.png" alt="Head Icon">
 					</div>
 					<div class="col-2 top-menu top-menu-name">
-						<div><span>Samrat Pandey</span></div>
-						<div><span>NEPAL</span></div>
+						<span id="viewQuestionNumbers"><- View All Questions</span>
 					</div>
 					<div class="col-2 top-menu top-menu-reading">
 						<span>Reading</span>
@@ -53,7 +63,7 @@
 					</div>
 					<div class="col-2 top-menu top-menu-rem">
 						<span>Remaining</span>
-						<span>-</span>
+						<span id="remainingNo">-</span>
 					</div>
 					<div class="col-1 top-menu top-menu-time">
 						<span id="time">50:00</span>
@@ -61,9 +71,10 @@
 				</div>
 			</nav>
 
-			<main class="exam-main p-4">
+			<main class="exam-main">
 				<div class="row">
 					<div id="examQuestionSection" class="col-8">
+						<!-- form for questions  -->
 						<form
 							action=""
 							id="examQuestionsForm"
@@ -71,25 +82,33 @@
 							data=""
 							enctype="multipart/form-data"
 						></form>
+
+						<!-- for all question numbers  -->
+						<div id="examAllQuestionSection">
+							<h4 class="mb-4">Reading</h4>
+							<div class="col-12 readingNumbers questionNumbers" id="readingNos">
+								
+							</div>
+
+							<h4 class="mt-4 mb-4">Listening</h4>
+							<div class="col-12 listeningNumbers questionNumbers" id="listeningNos">
+
+							</div>
+						</div>
 					</div>
 
-					<div class="row col-4 questionNumbers" id="questionNos">
-						<div class="col-6 readingNumbers" id="readingNos">
-							<h4>Reading</h4>
-						</div>
-						<div class="col-6 listeningNumbers" id="listeningNos">
-							<h4>Listening</h4>
-						</div>
-
-						<div class="row col-12">
-							<div class="col-6">
-								<button id="btnPrevious">Previous</button>
-							</div>
-							<div class="col-6">
-								<button id="btnNext">Next</button>
-							</div>
-							<div class="col-12">
-								<button>Submit</button>
+					<div class="row col-4 questionOptions" id="questionOptionsSection">						
+						<div class="changingButtons">
+							<div class="row col-12">
+								<div class="col-xs-12 col-md-6">
+									<button id="btnPrevious">< Previous</button>
+								</div>
+								<div class="col-xs-12 col-md-6">
+									<button id="btnNext">Next ></button>
+								</div>
+								<div class="col-12">
+									<button id="btnSubmitReadingQuestions">Submit</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -97,7 +116,7 @@
 			</main>
 
 			<footer class="end-note py-4 bg-light mt-auto">
-				Developed by <a href="#">SilverBack Solutions</a>
+				Developed by <a href="#">SilverBack Technology</a>
 			</footer>
 		</div>
 		<!-- .container ends here-->
