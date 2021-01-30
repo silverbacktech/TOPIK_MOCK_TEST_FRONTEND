@@ -105,10 +105,10 @@ $(document).ready(function () {
 							"</td>";
 						NewRow +=
 							"<td>" +
-							'<button class="btn btn-primary" id="editSet" data=' +
+							'<button class="btn '+(set.status==1?"btn-success":"btn-secondary")+'" id="statusSet" data=' +
 							set.id +
-							">Edit</button>" +
-							"</td>";
+							">"+(set.status==1?"Active":"Inactive")+"</button>" +
+							"</td>";	
 
 						NewRow +=
 							"<td>" +
@@ -123,6 +123,59 @@ $(document).ready(function () {
 			},
 		});
 	});
+
+	// change set status 
+	$("#setTable").on("click", "#statusSet", function () {
+        if (confirm("Are you sure you want to change the set status?")) {
+            let delId = $(this).attr("data");
+            $.ajax({
+                method: "POST",
+                url: serverName + "/api/set/status/" + delId,
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+                cache: false,
+                success: function (result) {
+                    //checking email password
+                    if (result.status) {
+                        //when it does match
+                        $("#tabAddSets").click();
+                    } else {
+                        //when it does not match
+                        alert("There was an error changing the status");
+                    }
+                },
+            });
+        } else {
+        }
+	});
+	
+	// delete set 
+	$("#setTable").on("click", "#deleteSet", function () {
+        if (confirm("Are you sure you want to delete the set?")) {
+            let delId = $(this).attr("data");
+            $.ajax({
+                method: "POST",
+                url: serverName + "/api/set/delete/" + delId,
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+                cache: false,
+                success: function (result) {
+                    //checking email password
+                    if (result.status) {
+                        //when it does match
+                        $("#tabAddSets").click();
+                    } else {
+                        //when it does not match
+                        alert("There was an error deleting the set");
+                    }
+                },
+            });
+        } else {
+        }
+    });
+
 
 	// add set button
 	$("#btnAddSet").click(function (e) {
@@ -211,6 +264,13 @@ $(document).ready(function () {
 						$("<div>").append(
 							$("<div>").append(
 								$("<h4>").append(i),
+								$("<input>")
+									.attr("class", "form-control mt-3 mb-3")
+									.attr("type", "textbox")
+									.attr("name", "question_instruction")
+									.attr("placeholder", "Enter Question Instruction")
+							),
+							$("<div>").append(
 								$("<input>")
 									.attr("class", "form-control mt-3 mb-3")
 									.attr("type", "text")
@@ -304,6 +364,8 @@ $(document).ready(function () {
 		for (let entry of formDatas.entries()) {
 			if (entry[0] == "question")
 				formData.append(entry[0] + `[]`, entry[1]);
+			else if (entry[0] == "question_instruction")
+				formData.append(entry[0] + `[]`, entry[1]);
 			else if (entry[0] == "questionfile"){
 				formData.append(entry[0] + `[${i}]`, entry[1]);
 				i++;
@@ -336,6 +398,321 @@ $(document).ready(function () {
 	});
 
 	// add sets ends
+
+	// add listening begins 
+
+	// button add reading questions
+
+	$("#setTableBody").on("click", "#addListening", function () {
+		let groupLang = $(this).parents().siblings("#setLangName").html();
+		let groupSet = $(this).parents().siblings("#setId").html();
+		$("#lGroupSetId").val(groupSet);
+		$("#lGroupLanguageName").val(groupLang);
+		$("#tabAddListeningQuestions").click();
+	});
+
+	// add listening group + questions 
+
+	$("#lBtnAddGroup").click(function (e) {
+		e.preventDefault();
+		// insert group name into db
+		let formGDatas = new FormData();
+		
+		let gpName = $("#lInputGroupTitle").val();
+		let gpId = $("#lGroupSetId").val();
+		let gpQuestions = $("#lInputGroupQuestionNo").val();
+
+		formGDatas.append('group_name',gpName);
+		formGDatas.append('group_image',$("#lInputGroupQuestionFile")[0].files[0]);
+
+		if ((gpQuestions, gpName, gpId != "")) {
+			fetch(serverName + "/api/add-listening-group/" + gpId, {
+				method: "POST",
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+					Accept: "application/json",
+				},
+				body: formGDatas,
+			})
+				.then((response) => response.json())
+				.then((json) => {
+					console.log(json);
+					alert(json.message);
+					$("#lInputGroupTitle").attr("disabled", true);
+					$("#lGroupSetFormId").val(json.value["id"]);
+				})
+				.catch((err) => console.log(err));
+		} else {
+			alert("Fill in the required data");
+		}
+	
+		// rest
+		$("#lGroupInputDiv").find("form").empty();
+		let cols = $("#lInputGroupQuestionNo").val();
+		
+		if (cols >= 1) {
+			
+			for (let i = 0; i < cols; i++) {
+				$("#lGroupInputDiv")
+					.find("form")
+					.append(
+						$("<div id=ques-"+i+">").append(
+							$("<div>").append(
+								$("<h4>").append(i),
+								$("<input>")
+									.attr("class", "form-control mt-3 mb-3")
+									.attr("type", "text")
+									.attr("name", "questionContent")
+									.attr("placeholder", "Enter Question")
+							),
+							$("<div>").append(
+								$("<input>")
+									.attr(
+										"class",
+										"form-control-file mt-3 mb-3"
+									)
+									.attr("type", "file")
+									.attr("name", "questionImage")
+									.prop("multiple", true)
+							),
+							$("<div>").append(
+								$("<input>")
+									.attr(
+										"class",
+										"form-control-file mt-3 mb-3"
+									)
+									.attr("type", "file")
+									.attr("name", "audioFiles")
+									.prop("multiple", true)
+							),
+							$("<div>").append(
+								$("<select class='optionSelect' data="+i+">").append(
+									$('<option>', {
+										value: null,
+										text: 'Select'
+									}),
+									$('<option>', {
+										value: 1,
+										text: 'Text'
+									}),
+									$('<option>', {
+										value: 2,
+										text: 'Image'
+									}),
+									),
+							),
+							
+						)
+					);
+			}
+			$("#lGroupInputDiv")
+				.find("form")
+				.append(
+					$("<div>").append(
+						$("<input>")
+							.attr("class", "btn btn-success")
+							.attr("type", "button")
+							.attr("value", "Add Questions")
+							.attr("name", "btn-group-questions")
+							.attr("id", "btnAddGroupQuestions")
+					)
+				);
+		}
+	});
+
+	// append image or option when select changes 
+	$("#lGroupInputDiv").on("change", ".optionSelect", function () {
+		let divNo = $(this).attr('data');
+		$("#ques-"+divNo+" .lQoptions" ).remove();
+		// console.log($(this).val());
+		if($(this).val()==1){
+			
+			$("#lGroupInputDiv")
+            .find("#ques-"+divNo+"")
+            .append(
+                $("<div class='lQoptions'>").append(
+                    $("<input>")
+						.attr("class", "form-control")
+						.attr("type", "text")
+						.attr("name", "option1")
+						.attr("style", "width:25%;display:inline")
+						.attr("placeholder", "Option 1"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "text")
+						.attr("name", "option2")
+						.attr("style", "width:25%;display:inline")
+						.attr("placeholder", "Option 2"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "text")
+						.attr("name", "option3")
+						.attr("style", "width:25%;display:inline")
+						.attr("placeholder", "Option 3"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "text")
+						.attr("name", "option4")
+						.attr("style", "width:25%;display:inline")
+						.attr("placeholder", "Option 4")
+				),
+				$("<div  class='lQoptions'>").append(
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "radio")
+						.attr("value", "1")
+						.attr("name", "right-answer" + divNo)
+						.attr("style", "width:25%;display:inline"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "radio")
+						.attr("value", "2")
+						.attr("name", "right-answer" + divNo)
+						.attr("style", "width:25%;display:inline"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "radio")
+						.attr("value", "3")
+						.attr("name", "right-answer" + divNo)
+						.attr("style", "width:25%;display:inline"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "radio")
+						.attr("value", "4")
+						.attr("name", "right-answer" + divNo)
+						.attr("style", "width:25%;display:inline")
+				)
+            );
+		}else if($(this).val()==2){
+			$("#lGroupInputDiv")
+            .find("#ques-"+divNo+"")
+            .append(
+                $("<div class='lQoptions'>").append(
+                    $("<input>")
+						.attr(
+							"class",
+							"form-control-file mt-3 mb-3"
+						)
+						.attr("type", "file")
+						.attr("name", "option1")
+						.attr("style", "width:25%;display:inline")
+						.prop("multiple", true),
+					$("<input>")
+						.attr(
+							"class",
+							"form-control-file mt-3 mb-3"
+						)
+						.attr("type", "file")
+						.attr("name", "option2")
+						.attr("style", "width:25%;display:inline")
+						.prop("multiple", true),
+					$("<input>")
+						.attr(
+							"class",
+							"form-control-file mt-3 mb-3"
+						)
+						.attr("type", "file")
+						.attr("name", "option3")
+						.attr("style", "width:25%;display:inline")
+						.prop("multiple", true),
+					$("<input>")
+						.attr(
+							"class",
+							"form-control-file mt-3 mb-3"
+						)
+						.attr("type", "file")
+						.attr("name", "option4")
+						.attr("style", "width:25%;display:inline")
+						.prop("multiple", true),
+				),
+				$("<div  class='lQoptions'>").append(
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "radio")
+						.attr("value", "1")
+						.attr("name", "right-answer" + divNo)
+						.attr("style", "width:25%;display:inline"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "radio")
+						.attr("value", "2")
+						.attr("name", "right-answer" + divNo)
+						.attr("style", "width:25%;display:inline"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "radio")
+						.attr("value", "3")
+						.attr("name", "right-answer" + divNo)
+						.attr("style", "width:25%;display:inline"),
+					$("<input>")
+						.attr("class", "form-control")
+						.attr("type", "radio")
+						.attr("value", "4")
+						.attr("name", "right-answer" + divNo)
+						.attr("style", "width:25%;display:inline")
+				)
+            );
+		}else{
+
+		}
+	});
+
+	$("#lGroupInputDiv").on("click", "#btnAddGroupQuestions", function () {
+		let formDatas = new FormData(lQuestionsForm);
+		let formData = new FormData();
+		let i = 0;
+		console.log(formDatas.entries);
+		for (let entry of formDatas.entries()) {
+			if (entry[0] == "questionContent")
+				formData.append(entry[0] + `[]`, entry[1]);
+
+			else if (entry[0] == "questionImage")
+				formData.append(entry[0] + "[]", entry[1]);
+
+			else if (entry[0] == "audioFiles")
+				formData.append(entry[0] + "[]", entry[1]);
+
+			// else if (entry[0] == "questionImage"){
+			// 	formData.append(entry[0] + `[${i}]`, entry[1]);
+			// 	i++;
+			// }
+			// else if (entry[0] == "audioFiles"){
+			// 	formData.append(entry[0] + `[${i}]`, entry[1]);
+			// 	i++;
+			// }
+
+			else if (entry[0] == "option1")
+				formData.append(entry[0] + "[]", entry[1]);
+			else if (entry[0] == "option2")
+				formData.append(entry[0] + "[]", entry[1]);
+			else if (entry[0] == "option3")
+				formData.append(entry[0] + "[]", entry[1]);
+			else if (entry[0] == "option4")
+				formData.append(entry[0] + "[]", entry[1]);
+			else formData.append("answers[]", entry[1]);
+		}
+	
+		let groupId = $("#lGroupSetFormId").val();
+		for (var value of formData.values()) {
+			console.log(value);
+		 }
+
+	
+		fetch(serverName + "/api/add-listening-question/" + groupId, {
+			method: "POST",
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token"),
+				Accept: "application/json",
+			},
+			body: formData,
+		})
+			.then((response) => response.json())
+			.then((json) => console.log(json))
+			.catch((err) => console.log(err));
+	});
+
+
+	// add listening ends 
 
 	// student part begins
 
@@ -415,6 +792,7 @@ $(document).ready(function () {
 				if (result.status) {
 					//when it does not match
 				} else {
+					console.log(result);
 					// when it does match
 					$.each(result, function (key, student) {
 						var NewRow = '<tr><td">' + student.id + "</td>";
@@ -422,7 +800,14 @@ $(document).ready(function () {
 						NewRow +=
 							'<td id="studentName">' + student.name + "</td>";
 						NewRow +=
-							'<td id="studentName">' + student.email + "</td>";
+							'<td id="studentEmail">' + student.email + "</td>";
+							
+						NewRow +=
+							"<td>" +
+							'<button class="btn '+(student.status==1?"btn-success":"btn-secondary")+'" id="statusStudent" data=' +
+							student.id +
+							">"+(student.status==1?"Active":"Inactive")+"</button>" +
+							"</td>";
 
 						NewRow +=
 							"<td>" +
@@ -436,6 +821,31 @@ $(document).ready(function () {
 				}
 			},
 		});
+	});
+
+	$("#studentsTableBody").on("click", "#statusStudent", function () {
+		if (confirm("Are you sure you want to change the student status?")) {
+			let delId = $(this).attr("data");
+			$.ajax({
+				method: "POST",
+				url: serverName + "/api/user/status/" + delId,
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+				},
+				cache: false,
+				success: function (result) {
+					//checking email password
+					if (result.status) {
+						//when it does match
+						$("#tabViewStudents").click();
+					} else {
+						//when it does not match
+						alert("There was an error changing the status");
+					}
+				},
+			});
+		} else {
+		}
 	});
 
 	$("#studentsTableBody").on("click", "#deleteStudent", function () {
@@ -699,6 +1109,12 @@ $(document).ready(function () {
 							'<td id="adminEmail">' + admin.email + "</td>";
 						NewRow +=
 							"<td>" +
+							'<button class="btn '+(admin.status==1?"btn-success":"btn-secondary")+'" id="statusAdmin" data=' +
+							admin.id +
+							">"+(admin.status==1?"Active":"Inactive")+"</button>" +
+							"</td>";
+						NewRow +=
+							"<td>" +
 							'<button class="btn btn-primary" id="changeAdminPassword" data=' +
 							admin.id +
 							">Change Password</button>" +
@@ -718,6 +1134,35 @@ $(document).ready(function () {
 			},
 		});
 	});
+
+	$("#adminTableBody").on("click", "#statusAdmin", function () {
+		if($("#adminTableBody").children().length<=1){
+			// alert("Cannot change status of one admmin");
+		}else{
+			if (confirm("Are you sure you want to change the admin status?")) {
+			    let delId = $(this).attr("data");
+			    $.ajax({
+			        method: "POST",
+			        url: serverName + "/api/user/status/" + delId,
+			        headers: {
+			            Authorization: "Bearer " + localStorage.getItem("token"),
+			        },
+			        cache: false,
+			        success: function (result) {
+			            //checking email password
+			            if (result.status) {
+			                //when it does match
+			                $("#tabViewAdmin").click();
+			            } else {
+			                //when it does not match
+			                alert("There was an error changing the status");
+			            }
+			        },
+			    });
+			} else {
+			}
+		}
+    });
 
 	$("#adminTableBody").on("click", "#deleteAdmin", function () {
 		if (confirm("Are you sure you want to delete this admin?")) {

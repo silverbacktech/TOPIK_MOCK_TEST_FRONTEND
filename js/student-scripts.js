@@ -49,28 +49,29 @@ $(document).ready(function() {
 			},
 			cache: false,
 			success: function(result) {
-				//checking email password
 				if (result.status) {
 					//when it does not match
 					console.log(result);
 				} else {
 					//when it does match
 					$.each(result, function(key, set) {
-						var NewRow = '<tr><td">' + set.id + "</td>";
-						NewRow += "<td>" + set.id + "</td>";
-						NewRow +=
-							"<td id='languageRow' style='text-transform: capitalize;'>" +
-							language_name +
-							"</td>";
-						NewRow += "<td>" + set.name + "</td>";
-						NewRow +=
-							"<td>" +
-							'<button class="btn btn-success" id="beginExam" data=' +
-							set.id +
-							">Take Test</button>" +
-							"</td>";
+						if(set.status==1){
+							var NewRow = '<tr><td">' + set.id + "</td>";
+							NewRow += "<td>" + set.id + "</td>";
+							NewRow +=
+								"<td id='languageRow' style='text-transform: capitalize;'>" +
+								language_name +
+								"</td>";
+							NewRow += "<td>" + set.name + "</td>";
+							NewRow +=
+								"<td>" +
+								'<button class="btn btn-success" id="beginExam" data=' +
+								set.id +
+								">Take Test</button>" +
+								"</td>";
 
-						$("#setTableBody").append(NewRow);
+							$("#setTableBody").append(NewRow);
+						}
 					});
 				}
 			}

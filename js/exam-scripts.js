@@ -33,6 +33,22 @@ $(document).ready(function() {
 		hide: {},   
 	});
 
+	$("#timerEndDialog").dialog({
+		autoOpen: false,
+		closeOnEscape: false,
+		draggable:false,
+		resizable: false,
+		buttons: {
+			// submit test 
+			Submit:function(){
+				$( this ).dialog( "close" );
+				console.log("sf");
+			}
+		},
+		show: {},
+		hide: {},   
+	}).prev(".ui-dialog-titlebar").css({"background":"red","color":"white"});
+
 	// set username and other info of student 
 	$("#examStudentName").html(loggedInUser);
 	$("#examStudentId").html(loggedInUserId);
@@ -116,6 +132,14 @@ $(document).ready(function() {
 														)
 												)
 												.append(
+													(questions.question_instruction ? 
+														$("<p>", {
+															html: questions.question_instruction,
+															class:"question-instructions"
+														}):''	
+													)
+												)
+												.append(
 													(questions.question_image ? 
 														$("<img>", {
 															id: "theImg",
@@ -169,7 +193,7 @@ $(document).ready(function() {
 														)
 														.attr(
 															"id",
-															"right-answer"
+															"right-answer-"+options.id+""
 														)
 														.attr("type", "radio")
 														.attr(
@@ -186,7 +210,7 @@ $(document).ready(function() {
 																options.reading_questions_id +
 																""
 														),
-													$("<label for=''>").html(
+													$("<label for='right-answer-"+options.id+"'>").html(
 														options.reading_options_content
 													)
 												)
@@ -223,10 +247,8 @@ $(document).ready(function() {
 															"mt-3 mb-3 questions"
 														)
 														.html(
-															// questions.question_content
 															qNo+" . "+
-															// questions.question_content
-															'question content - milauna baki'
+															(questions.question_content!=null?questions.question_content:"")
 														)
 														.attr(
 															"data",
@@ -261,7 +283,7 @@ $(document).ready(function() {
 												)
 												.append(
 													(questions.audio_file ? 
-														$("<button type='button' class='playBtn' data='audio_"+questions.id+"'></button>"):'<div></div>'	
+														$("<button type='button' class='playBtn' data='audio_"+qNo+"'></button>"):'<div></div>'	
 													)
 												)
 										);
@@ -317,7 +339,7 @@ $(document).ready(function() {
 														)
 														.attr(
 															"data",
-															options.listening_questions_id
+															qNo
 														)
 														.attr(
 															"name",
@@ -325,9 +347,32 @@ $(document).ready(function() {
 																options.listening_questions_id +
 																""
 														),
-													$("<label for=''>").html(
-														options.option_content
-													)
+														((options.option_content.split(".").pop())=="png" ? 
+															$("<img>", {
+																id: "theImg",
+																src:
+																	serverName +
+																	"/cover_img/" +
+																	options.option_content
+															}):	(options.option_content.split(".").pop())=="jpeg" ? 
+															$("<img>", {
+																id: "theImg",
+																src:
+																	serverName +
+																	"/cover_img/" +
+																	options.option_content
+															}):(options.option_content.split(".").pop())=="jpg" ? 
+															$("<img>", {
+																id: "theImg",
+																src:
+																	serverName +
+																	"/cover_img/" +
+																	options.option_content
+															}):'<label>'+options.option_content+'</label>'
+														),
+													// $("<label for=''>").html(
+													// 	options.option_content
+													// )
 												)
 											);
 									});
@@ -352,7 +397,6 @@ $(document).ready(function() {
 
 	// play or pause audio 
 	$("#examQuestionSection").on("click",".playBtn",function() {
-		// console.log($(this).attr('data'));
 		var myAudio = document.getElementById($(this).attr('data'));
         if(myAudio.paused) {
             myAudio.play();
@@ -363,9 +407,19 @@ $(document).ready(function() {
 	});
 
 	// check right sidebar checkbox on answer selection
+
+	// pause all audio 
+	function pauseAllAudio(){
+		var sounds = document.getElementsByTagName('audio');
+  		for(i=0; i<sounds.length; i++) {
+			  sounds[i].pause();
+			  sounds[i].currentTime = 0;
+		};
+	};
 	
 	// open questions bar 
 	$("#viewQuestionNumbers").click(function(){
+		pauseAllAudio();
 		$("#examQuestionsForm").toggle();
 		$("#examAllQuestionSection").toggle();
 	});
@@ -443,6 +497,7 @@ $(document).ready(function() {
 				}
 			}
 		}else{
+			pauseAllAudio();
 			if(currentQ<maxReading+maxListening){
 				var i =currentQ+1;
 				currentQuestion[1]=i;
@@ -474,6 +529,7 @@ $(document).ready(function() {
 				
 			}
 		}else{
+			pauseAllAudio();
 			if(currentQ==maxReading+1){
 				currentQuestion=["reading",maxReading];
 				$(".question-part").css({"display": "none"});
@@ -530,7 +586,7 @@ $(document).ready(function() {
 				}
 			}
 
-			alert("Total questions="+(maxReading+maxListening)+". Total Right answer="+(redRightAnswer+lisRightAnswer)+"");
+			// alert("Total questions="+(maxReading+maxListening)+". Total Right answer="+(redRightAnswer+lisRightAnswer)+"");
 
 			// getting total questions id, both reading and listening 
 
@@ -545,6 +601,8 @@ $(document).ready(function() {
 				return $(this).attr("data");
 			})
 			.get();
+
+			console.log(redQuestions,redAns,lisQuestions,lisAns,loggedInUserId);
 
 
 			// $.ajax({

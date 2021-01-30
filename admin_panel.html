@@ -288,7 +288,7 @@
 										type="text"
 										readonly
 										class="form-control-plaintext font-weight-bold"
-										id="groupSetId"
+										id="lGroupSetId"
 										value=""
 									/>
 								</div>
@@ -297,43 +297,49 @@
 										type="text"
 										readonly
 										class="form-control-plaintext font-weight-bold"
-										id="groupLanguageName"
+										id="lGroupLanguageName"
 										value=""
 									/>
 								</div>
 							</div>
 							<div class="row">
+								<form action="" id="lGroupNameForm" name="lGroupNameForm" enctype="multipart/form-data">
+									<div class="col-md-6">
+										<input
+											type="text"
+											class="form-control mr-2"
+											id="lInputGroupTitle"
+											name="group_name"
+											placeholder="Enter the group title"
+											required
+										/>
+									</div>
+									<div class="col-md-6">
+										<input type="file" name="group_image" class="form-control" id="lInputGroupQuestionFile">
+									</div>
+								</form>
 								<div class="col-md-6">
-									<input
-										type="text"
-										class="form-control mr-2"
-										id="inputGroupTitle"
-										placeholder="Enter the group title"
-										required
-									/>
-								</div>
-								<div class="col-md-3">
 									<input
 										type="number"
 										class="form-control"
-										id="inputGroupQuestionNo"
+										id="lInputGroupQuestionNo"
 										placeholder="Question no"
 										required
 									/>
 								</div>
-								<div class="col-md-3">
+								<div class="col-md-6">
 									<input
 										class="btn btn-primary mb-3"
 										type="submit"
-										id="btnAddGroup"
+										id="lBtnAddGroup"
 										value="Submit"
 									/>
 								</div>
 							</div>
 						</form>
-						<div id="groupInputDiv">
-							<input type="hidden" id="groupSetFormId" />
-							<form action="" id="questionsForm" name="questionsForm" data="" enctype="multipart/form-data"></form>
+						<div id="lGroupInputDiv">
+							<input type="hidden" id="lGroupSetFormId" />
+							<form action="" id="lQuestionsForm" name="lQuestionsForm" data="" enctype="multipart/form-data"></form>
 						</table>
 						</div>
 					</div>
@@ -383,6 +389,7 @@
 									<th scope="col">ID</th>
 									<th scope="col">Name</th>
 									<th scope="col">Email</th>
+									<th scope="col">Status</th>
 									<th scope="col" colspan="2">Action</th>
 								</tr>
 							</thead>
@@ -471,6 +478,7 @@
 									<th scope="col">ID</th>
 									<th scope="col">Name</th>
 									<th scope="col">Email</th>
+									<th scope="col">Status</th>
 									<th scope="col" colspan="2">Action</th>
 								</tr>
 							</thead>

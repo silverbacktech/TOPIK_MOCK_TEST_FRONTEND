@@ -1,3 +1,6 @@
+body {
+	position: relative;
+}
 .exam-content {
 	height: 100%;
 	width: 100%;
@@ -45,8 +48,8 @@
 }
 
 .hideQuestions {
-	height: 100vh;
-	width: 100vw;
+	height: 100%;
+	width: 100%;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -162,6 +165,9 @@
 .optionsPart div label {
 	margin-top: 5px;
 }
+.optionsPart div img {
+	width: 50%;
+}
 .changingButtons {
 	width: 100%;
 	/* position: absolute; */
@@ -188,11 +194,19 @@
 	font-weight: bold;
 }
 
+#examQuestionSection form .question-instructions {
+	width: 80%;
+	padding: 10px;
+	margin: auto;
+	text-align: center;
+	border: 1px solid black;
+}
+
 #examQuestionSection form img {
 	width: 50%;
 	align-self: center;
 	border: 1px solid black;
-	padding: 5px;
+	/* padding: 5px; */
 	margin: 10px;
 }
 
