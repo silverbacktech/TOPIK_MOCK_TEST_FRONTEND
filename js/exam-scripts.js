@@ -23,7 +23,7 @@ $(document).ready(function() {
 		buttons: {
 			// start timer 
 			Start: function() {
-				var fiveMinutes = 60 * 50,display = document.querySelector('#time');
+				var fiveMinutes = 60 * 5,display = document.querySelector('#time');
 				startTimer(fiveMinutes, display);
 				$( this ).dialog( "close" );
 				$('#modalOverlay').removeClass('hideQuestions');
@@ -645,7 +645,7 @@ function startTimer(duration, display) {
         display.textContent = minutes + ":" + seconds;
 
         if (--timer < 0) {
-            timer = duration;
+            $("#timerEndDialog").dialog('open');
         }
     }, 1000);
 }
