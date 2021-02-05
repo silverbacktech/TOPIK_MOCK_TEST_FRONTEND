@@ -32,7 +32,7 @@ a {
 	flex-direction: column;
 	text-align: center;
 	/* position: relative; */
-	font-family: Georgia, "Times New Roman", Times, serif;
+	font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .opening-content {
@@ -144,4 +144,24 @@ a {
 	border-radius: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+#viewAnswers input[type='search'] {
+	padding: 5px;
+	border-radius: 10px;
+}
+
+#viewAnswers .paginate_button {
+	background: lightgray;
+	border: 1px solid darkgrey;
+	padding: 2px 5px;
+	margin: 2px;
+}
+
+#tabAddReadingQuestions {
+	display: none;
+}
+
+#tabAddListeningQuestions {
+	display: none;
 }

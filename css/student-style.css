@@ -206,8 +206,11 @@ body {
 	width: 50%;
 	align-self: center;
 	border: 1px solid black;
-	/* padding: 5px; */
 	margin: 10px;
+}
+.lisGroupImage {
+	width: 70% !important;
+	max-height: 130px;
 }
 
 /* section to display all question numbers  */
@@ -251,4 +254,80 @@ body {
 	background-size: 100%;
 	margin: auto;
 	border-radius: 10%;
+}
+#testAudio {
+	display: none;
+}
+#testAudioBtn {
+	height: 50px;
+	width: 50px;
+	background: #f0f0f0
+		url('../images/headphones-listen-music-sound-play-512.png');
+	background-repeat: no-repeat;
+	background-size: 100%;
+	margin: auto;
+	border: 2px solid red;
+	border-radius: 10%;
+}
+
+/* result panel  */
+.result-main {
+	width: 80%;
+	margin: 20px auto;
+	padding-bottom: 20px;
+	border-radius: 49px;
+	background: #fffefe;
+	box-shadow: 8px 8px 18px #666666, -8px -8px 18px #ffffff;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.result-main h2 {
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	width: 100%;
+	color: white;
+	background: #298e90;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: bold;
+	padding: 10px;
+}
+
+.result-main i {
+	font-size: 2rem;
+	font-weight: bold;
+	margin: 10px;
+}
+
+.result-main h4 {
+	color: darkgray;
+}
+
+.result-main span {
+	font-weight: bolder;
+	font-size: 1.25rem;
+}
+
+.result-main #attemptedQuestions {
+	color: blue;
+}
+
+.result-main #rightAnswers {
+	color: green;
+}
+
+.result-main #wrongAnswers {
+	color: red;
+}
+
+.result-main hr {
+	background: darkgrey;
+	width: 100%;
+}
+.result-main p {
+	color: gray;
 }

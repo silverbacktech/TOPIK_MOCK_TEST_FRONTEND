@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {	
 	$("#btnLogOut").click(function() {
 		localStorage.removeItem("token");
 		localStorage.removeItem("userRole");

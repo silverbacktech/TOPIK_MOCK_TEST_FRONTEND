@@ -466,6 +466,7 @@ $(document).ready(function () {
 									.attr("placeholder", "Enter Question")
 							),
 							$("<div>").append(
+								$("<span>").append("Image File"),
 								$("<input>")
 									.attr(
 										"class",
@@ -476,6 +477,7 @@ $(document).ready(function () {
 									.prop("multiple", true)
 							),
 							$("<div>").append(
+								$("<span>").append("Audio File"),
 								$("<input>")
 									.attr(
 										"class",
@@ -728,7 +730,7 @@ $(document).ready(function () {
 		let stemail = $("#studentAddEmail").val();
 		let stpassword = $("#studentAddPassword").val();
 		let strole = "student";
-		console.log(stname, stemail, stpassword, strole);
+		
 		$.ajax({
 			method: "POST",
 			url: serverName + "/api/register/",
@@ -792,7 +794,7 @@ $(document).ready(function () {
 				if (result.status) {
 					//when it does not match
 				} else {
-					console.log(result);
+					// console.log(result);
 					// when it does match
 					$.each(result, function (key, student) {
 						var NewRow = '<tr><td">' + student.id + "</td>";
@@ -1290,6 +1292,60 @@ $(document).ready(function () {
 			});
 		}
 	});
+
+
+	// view answers part begins here 
+	$("#tabViewAnswers").click(function () {
+		$('#resultTable').DataTable();
+		var table = $('#resultTable').DataTable();
+		$.ajax({
+			method: "GET",
+			url: serverName + "/api/get-details",
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+			cache: false,
+			success: function (result) {
+				//checking email password
+				if (result.status) {
+					//when it does not match
+					console.log("Something went wrong");
+				} else {
+					// console.log("result",result);
+					// when it does match
+					$.each(result, function (key, results) {
+						
+						if (result.length >= 1) {
+							var id =results.id;
+							var name= results.student.name;
+							var set = results.sets.name;
+							var date = results.created_at;
+							var sss = "<button class='btn btn-primary viewAllResult' data="+results.id+">View result</button>";
+						}
+
+						table.row.add( [
+							id+".",
+							name+".",
+							set,
+							date,
+							sss
+						] ).draw( false );
+					});
+				}
+			},
+		});
+	});
+
+	$("#viewAnswers").on("click", ".viewAllResult", function () {
+		let studentName = $(this).parents().siblings("td").text().split(".")[1];
+		let resultId = $(this).attr('data');
+		let url =
+			"adminresult.html?resultId=" +
+			encodeURIComponent(resultId)+
+			"&studentName=" +
+			encodeURIComponent(studentName);;
+			window.open(url, '_blank');
+	})
 
 	// admin part ends here
 });

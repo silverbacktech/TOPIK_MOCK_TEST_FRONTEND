@@ -7,6 +7,7 @@
 		<link rel="shortcut icon" href="#" />
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/jquery-ui.css" />
+		<link rel="stylesheet" href="css/datatable.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<link rel="stylesheet" href="css/admin-styles.css" />
 		<script src="js/checkToken.js"></script>
@@ -107,6 +108,7 @@
 									<a
 										class="show-content nav-link"
 										data="viewAnswers"
+										id="tabViewAnswers"
 										>View Answers</a
 									>
 								</div>
@@ -347,8 +349,25 @@
 					<!-- add and edit listening ends here  -->
 
 					<div class="main-content" id="viewAnswers">
-						View Answers
+						<div class="alert alert-success" role="alert">
+							<h5>Student Results</h5>
+						</div>
+
+						<table id="resultTable" class="table table-striped table-bordered" style="width:100%">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Name</th>
+									<th>Set</th>
+									<th>Date</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
 					</div>
+
+
 					<div class="main-content" id="addStudents">
 						<div class="alert alert-success" role="alert">
 							<h5>Add a New Student</h5>
@@ -494,6 +513,8 @@
 		<script src="js/jquery-3.4.1.min.js"></script>
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
+		<!-- <script src="js/bootstrapdatatable.min.js"></script> -->
+		<script src="js/jquerydatatable.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/jquery-migrate-3.0.0.min.js"></script>
 		<script src="js/custom.js"></script>

@@ -35,7 +35,8 @@ $(document).ready(function() {
 					localStorage.setItem("userName", access_name);
 					localStorage.setItem("userRole", access_role);
 					localStorage.setItem("userId", access_id);
-					console.log(result);
+					localStorage.removeItem("studentResult"); 
+					// console.log(result);
 					if (result.values["role"] == "admin") {
 						window.location.href = "admin_panel.html";
 					} else if (result.values["role"] == "student") {

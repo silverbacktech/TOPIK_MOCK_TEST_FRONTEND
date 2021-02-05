@@ -23,7 +23,7 @@ $(document).ready(function() {
 		buttons: {
 			// start timer 
 			Start: function() {
-				var fiveMinutes = 60 * 5,display = document.querySelector('#time');
+				var fiveMinutes = 60 * 50,display = document.querySelector('#time');
 				startTimer(fiveMinutes, display);
 				$( this ).dialog( "close" );
 				$('#modalOverlay').removeClass('hideQuestions');
@@ -31,6 +31,11 @@ $(document).ready(function() {
 		},
 		show: {},
 		hide: {},   
+	});
+
+	// test audio 
+	$("#testAudioBtn").click(function(){
+		$("#testAudio")[0].play();
 	});
 
 	$("#timerEndDialog").dialog({
@@ -41,8 +46,9 @@ $(document).ready(function() {
 		buttons: {
 			// submit test 
 			Submit:function(){
-				$( this ).dialog( "close" );
-				console.log("sf");
+				console.log("submit garne aba nadarai");
+				// $( this ).dialog( "close" );
+				// $('#modalOverlay').removeClass('hideQuestions');
 			}
 		},
 		show: {},
@@ -120,7 +126,7 @@ $(document).ready(function() {
 														)
 														.html(
 															qNo+" . "+
-															questions.question_content
+															(questions.question_content?questions.question_content:"")
 														)
 														.attr(
 															"data",
@@ -189,7 +195,7 @@ $(document).ready(function() {
 													$("<input>")
 														.attr(
 															"class",
-															"form-control readingAns redOpt"+options.reading_questions_id+""
+															"form-control readingAns redOpt"+qNo+""
 														)
 														.attr(
 															"id",
@@ -227,6 +233,7 @@ $(document).ready(function() {
 								listeningNo = listeningNo + parseInt(data.listening_questions.length);
 								document.getElementById('listeningNo').innerHTML = listeningNo;
 								groupName = data.group_text;
+								groupImage = data.group_image;
 								
 								$.each(data.listening_questions, function(
 									i,
@@ -241,6 +248,17 @@ $(document).ready(function() {
 													groupName
 												))
 												.append(
+													(groupImage ? 
+														$("<img>", {
+															class: "lisGroupImage",
+															src:
+																serverName +
+																"/cover_img/" +
+																groupImage
+														}):'<div></div>'	
+													)
+												)
+												.append(
 													$("<p>")
 														.attr(
 															"class",
@@ -248,7 +266,7 @@ $(document).ready(function() {
 														)
 														.html(
 															qNo+" . "+
-															(questions.question_content!=null?questions.question_content:"")
+															(questions.question_content?questions.question_content:"")
 														)
 														.attr(
 															"data",
@@ -326,7 +344,7 @@ $(document).ready(function() {
 													$("<input>")
 														.attr(
 															"class",
-															"form-control listeningAns lisOpt"+options.listening_questions_id+""
+															"form-control listeningAns lisOpt"+qNo+""
 														)
 														.attr(
 															"id",
@@ -509,7 +527,7 @@ $(document).ready(function() {
 				
 			}
 		}
-
+		$(window).scrollTop(0);
 
 	})
 	$("#btnPrevious").click(function(){
@@ -545,6 +563,7 @@ $(document).ready(function() {
 				$(".optionsPart#listeningOpt_"+i+"").css({"display": "flex","flex-direction":"column"});
 			}
 		}
+		$(window).scrollTop(0);
 	})
 
 
@@ -553,19 +572,22 @@ $(document).ready(function() {
 			// console.log("df");
 			let maxReading =parseInt($("#readingNo").html());
 			let maxListening =parseInt($("#listeningNo").html());
+			let quesAttempted =0;
 			let redAns=[],lisAns=[];
 
 			// store answers of reading and listening in a array 
 			for(i=1;i<=maxReading;i++){
 				if($(".redOpt"+i+"").is(':checked')){
 					redAns.push($(".redOpt"+i+":checked").val());
+					quesAttempted++;
 				}else{
 					redAns.push(null);
 				}
 			}
-			for(i=1;i<=maxListening;i++){
+			for(i=maxReading+1;i<=maxReading+maxListening;i++){
 				if($(".lisOpt"+i+"").is(':checked')){
 					lisAns.push($(".lisOpt"+i+":checked").val());
+					quesAttempted++;
 				}else{
 					lisAns.push(null);
 				}
@@ -586,7 +608,6 @@ $(document).ready(function() {
 				}
 			}
 
-			// alert("Total questions="+(maxReading+maxListening)+". Total Right answer="+(redRightAnswer+lisRightAnswer)+"");
 
 			// getting total questions id, both reading and listening 
 
@@ -602,32 +623,40 @@ $(document).ready(function() {
 			})
 			.get();
 
-			console.log(redQuestions,redAns,lisQuestions,lisAns,loggedInUserId);
+			// console.log(redQuestions,redAns,lisQuestions,lisAns,queryString["setId"],loggedInUserId);
 
+			let resultPageItems = (maxReading+maxListening)+"."+quesAttempted+"."+(redRightAnswer+lisRightAnswer);
 
-			// $.ajax({
-			// 	method: "post",
-			// 	url: serverName + "/api/submitted-answers/" + loggedInUserId,
-			// 	headers: {
-			// 		Authorization: "Bearer " + localStorage.getItem("token"),
-			// 		Accept: "application/json"
-			// 	},
-			// 	data: {
-			// 		reading_question_id: ,
-			// 		reading_answer_id: answerId
-			// 	},
-			// 	cache: false,
-			// 	success: function(result) {
-			// 		//checking email password
-			// 		if (result.status) {
-			// 			alert("the answers has been submitted");
-			// 			console.log(result);
-			// 		} else {
-			// 			//when it does not match
-			// 			console.log(result);
-			// 		}
-			// 	}
-			// });
+			if (confirm("Are you sure you want to submit the exam?")) {
+				$.ajax({
+					method: "post",
+					url: serverName + "/api/submitted-answers/" + loggedInUserId,
+					headers: {
+						Authorization: "Bearer " + localStorage.getItem("token"),
+						Accept: "application/json"
+					},
+					data: {
+						reading_question_id: redQuestions,
+						reading_answer_id: redAns,
+						listening_question_id: lisQuestions,
+						listening_answer_id: lisAns,
+						student_id:loggedInUserId,
+						set_id: queryString['setId'],
+					},
+					cache: false,
+					success: function(result) {
+						//checking email password
+						if (result.status) {
+							localStorage.setItem("studentResult", resultPageItems);
+							window.location.href = "resultpanel.html";
+						} else {
+							//when it does not match
+							alert("There was an error submiting the answers.");
+						}
+					}
+				});
+			} else {
+			}
 		}
 	);
 });
@@ -644,8 +673,15 @@ function startTimer(duration, display) {
 
         display.textContent = minutes + ":" + seconds;
 
-        if (--timer < 0) {
-            $("#timerEndDialog").dialog('open');
-        }
+		if(timer<60&&timer>50){
+			$("#time").css("color","red");
+			$("#testAudio")[0].play();
+		}
+        if (--timer == 0) {
+			$("#timerEndDialog").dialog('open');
+			$('#modalOverlay').addClass('hideQuestions');
+			$("#time").html("00:00");
+		}
+		
     }, 1000);
 }
