@@ -23,7 +23,7 @@ $(document).ready(function() {
 		buttons: {
 			// start timer 
 			Start: function() {
-				var fiveMinutes = 60 * 50,display = document.querySelector('#time');
+				var fiveMinutes = 60 * 1,display = document.querySelector('#time');
 				startTimer(fiveMinutes, display);
 				$( this ).dialog( "close" );
 				$('#modalOverlay').removeClass('hideQuestions');
@@ -47,6 +47,7 @@ $(document).ready(function() {
 			// submit test 
 			Submit:function(){
 				console.log("submit garne aba nadarai");
+				$("#btnSubmitReadingQuestions").click();
 				// $( this ).dialog( "close" );
 				// $('#modalOverlay').removeClass('hideQuestions');
 			}
@@ -365,7 +366,7 @@ $(document).ready(function() {
 																options.listening_questions_id +
 																""
 														),
-														((options.option_content.split(".").pop())=="png" ? 
+														((options.option_content==null)?"":(options.option_content.split(".").pop())=="png" ? 
 															$("<img>", {
 																id: "theImg",
 																src:
@@ -673,7 +674,7 @@ function startTimer(duration, display) {
 
         display.textContent = minutes + ":" + seconds;
 
-		if(timer<60&&timer>50){
+		if(timer<60&&timer>57){
 			$("#time").css("color","red");
 			$("#testAudio")[0].play();
 		}

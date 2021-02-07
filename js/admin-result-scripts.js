@@ -159,7 +159,7 @@ $(document).ready(function() {
                                 )
                                 .html(
                                     qNo+" . "+
-                                    (questions.question_content?question_content:"")
+                                    (questions.question_content?questions.question_content:"")
                                 )
                                 .attr(
                                     "data",
@@ -202,7 +202,7 @@ $(document).ready(function() {
                                     .append(
                                         // $("<span class='option' id="+questions.listening_options[i].id+">").html(
                                         // "- "+questions.listening_options[i].option_content
-                                        ((questions.listening_options[i].option_content.split(".").pop())=="png" ? 
+                                        ((questions.listening_options[i].option_content==null)?"":(questions.listening_options[i].option_content.split(".").pop())=="png" ? 
                                             $("<img>", {
                                                 id: "lis"+questions.listening_options[i].id,
                                                 class:"lisImg",

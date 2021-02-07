@@ -331,3 +331,11 @@ body {
 .result-main p {
 	color: gray;
 }
+
+/* for small devices  */
+@media only screen and (max-width: 800px) {
+	.questionNumbers {
+		grid-template-columns: repeat(5, 1fr);
+		gap: 5px;
+	}
+}

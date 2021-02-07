@@ -1296,8 +1296,8 @@ $(document).ready(function () {
 
 	// view answers part begins here 
 	$("#tabViewAnswers").click(function () {
-		$('#resultTable').DataTable();
 		var table = $('#resultTable').DataTable();
+		
 		$.ajax({
 			method: "GET",
 			url: serverName + "/api/get-details",
@@ -1313,6 +1313,7 @@ $(document).ready(function () {
 				} else {
 					// console.log("result",result);
 					// when it does match
+					table.clear();
 					$.each(result, function (key, results) {
 						
 						if (result.length >= 1) {
