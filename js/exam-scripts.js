@@ -6,7 +6,7 @@ var qNo =1;
 var currentQuestion=['reading','1'];
 var examStarted = false;
 $(document).ready(function() {
-	var serverName = "http://127.0.0.1:8000";
+	
 	var loggedInUser = localStorage.getItem("userName");
 	var loggedInUserRole = localStorage.getItem("userRole");
 	var loggedInUserId = localStorage.getItem("userId");

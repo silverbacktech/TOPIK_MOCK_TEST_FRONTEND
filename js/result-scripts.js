@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var serverName = "http://127.0.0.1:8000";
+    
 	var loggedInUser = localStorage.getItem("userName");
 	var loggedInUserRole = localStorage.getItem("userRole");
     var loggedInUserId = localStorage.getItem("userId");

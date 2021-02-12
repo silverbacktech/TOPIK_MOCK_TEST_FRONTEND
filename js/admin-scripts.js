@@ -1,6 +1,5 @@
 $(document).ready(function () {
 	// server name
-	var serverName = "http://127.0.0.1:8000";
 	let loggedInUser = localStorage.getItem("userName");
 	let loggedInUserRole = localStorage.getItem("userRole");
 	if (loggedInUserRole != "admin") {
