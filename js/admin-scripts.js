@@ -7,6 +7,8 @@ $(document).ready(function () {
 		window.location.href = "student_panel.html";
 	}
 	$("#userName").html("Welcome " + loggedInUser);
+
+	$("input[type='file']").val("");
 	//Initialize dialog
 	$("#editLangDialog").dialog({
 		autoOpen: false,
@@ -103,6 +105,14 @@ $(document).ready(function () {
 							set.id +
 							">Add Listening Questions</button>" +
 							"</td>";
+
+						NewRow +=
+							"<td>" +
+							'<button class="btn btn-primary editSetBtn" data=' +
+							set.id +
+							">Edit</button>" +
+							"</td>";
+
 						NewRow +=
 							"<td>" +
 							'<button class="btn '+(set.status==1?"btn-success":"btn-secondary")+'" id="statusSet" data=' +
@@ -149,6 +159,19 @@ $(document).ready(function () {
         } else {
         }
 	});
+
+	// delete set 
+	$("#setTable").on("click", ".editSetBtn", function () {
+        if (confirm("Are you sure you want to edit the set?")) {
+            let editId = $(this).attr("data");
+			
+			let url =
+			"editpanel.html?resultId=" +
+			encodeURIComponent(editId);
+			window.open(url, '_blank');
+        } else {
+        }
+    });
 	
 	// delete set 
 	$("#setTable").on("click", "#deleteSet", function () {

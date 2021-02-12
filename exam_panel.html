@@ -38,13 +38,13 @@
 		<div class="examContainer">
 
 			<div class="top-heading">
-				Om Korean and Japanese Language Institute
+				UBT TEST - Om Korean and Japanese Language Institute
 			</div>
 
 			<nav>
 				<div class="row primary-imfo-nav">
 					<div class="col-3 offset-3">
-						<span id="examSetName">UBT TEST</span>
+						<span id="examSetName">Set A</span>
 					</div>
 					<div class="col-3">
 						<span id="examStudentId">-</span>
@@ -57,30 +57,43 @@
 					<div class="col-1 top-menu top-menu-image">
 						<img src="images/head.png" alt="Head Icon">
 					</div>
-					<div class="col-2 top-menu top-menu-name">
-						<span id="viewQuestionNumbers"><- View All Questions</span>
+					<div class="col-3 top-menu top-menu-name">
+						<span id="viewQuestionNumbers"><- 확인문제</span>
 					</div>
-					<div class="col-2 top-menu top-menu-reading">
-						<span>Reading</span>
+					<div class="col-1 top-menu top-menu-reading">
+						<span>읽기 :</span>
 						<span id="readingNo">-</span>
 					</div>
-					<div class="col-2 top-menu top-menu-listening">
-						<span>Listening</span>
+					<div class="col-1 top-menu top-menu-listening">
+						<span>듣기 :</span>
 						<span id="listeningNo">-</span>
 					</div>
-					<div class="col-2 top-menu top-menu-total">
-						<span>Total</span>
+					<div class="col-1 top-menu top-menu-total">
+						<span>총 :</span>
 						<span id="totalNo">-</span>
 					</div>
-					<div class="col-2 top-menu top-menu-rem">
-						<span>Remaining</span>
+					<div class="col-3 top-menu top-menu-rem">
+						<span>남은 /남아있는 :</span>
 						<span id="remainingNo">-</span>
 					</div>
-					<div class="col-1 top-menu top-menu-time">
+					<div class="col-2 top-menu top-menu-time">
 						<span id="time">50:00</span>
 					</div>
 				</div>
 			</nav>
+
+			<!-- for all question numbers  -->
+			<div id="examAllQuestionSection">
+				<h4 class="mb-4">Reading</h4>
+				<div class="col-12 readingNumbers questionNumbers" id="readingNos">
+					
+				</div>
+
+				<h4 class="mt-4 mb-4">Listening</h4>
+				<div class="col-12 listeningNumbers questionNumbers" id="listeningNos">
+
+				</div>
+			</div>
 
 			<main class="exam-main">
 				<div class="row">
@@ -93,32 +106,19 @@
 							data=""
 							enctype="multipart/form-data"
 						></form>
-
-						<!-- for all question numbers  -->
-						<div id="examAllQuestionSection">
-							<h4 class="mb-4">Reading</h4>
-							<div class="col-12 readingNumbers questionNumbers" id="readingNos">
-								
-							</div>
-
-							<h4 class="mt-4 mb-4">Listening</h4>
-							<div class="col-12 listeningNumbers questionNumbers" id="listeningNos">
-
-							</div>
-						</div>
 					</div>
 
 					<div class="row col-4 questionOptions" id="questionOptionsSection">						
 						<div class="changingButtons">
 							<div class="row col-12">
 								<div class="col-sm-12 col-md-6">
-									<button id="btnPrevious">< Previous</button>
+									<button id="btnPrevious">< 이전 </button>
 								</div>
 								<div class="col-sm-12 col-md-6">
-									<button id="btnNext">Next ></button>
+									<button id="btnNext">다음 ></button>
 								</div>
 								<div class="col-12">
-									<button id="btnSubmitReadingQuestions">Submit</button>
+									<button id="btnSubmitReadingQuestions">제출 </button>
 								</div>
 							</div>
 						</div>
@@ -127,7 +127,7 @@
 			</main>
 
 			<footer class="end-note py-4 bg-light mt-auto">
-				Developed by <a href="#">SilverBack Technology</a>
+				Powered by <a href="#">SilverBack Technology</a>
 			</footer>
 		</div>
 		<!-- .container ends here-->

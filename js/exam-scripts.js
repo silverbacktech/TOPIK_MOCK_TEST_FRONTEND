@@ -4,6 +4,7 @@ var readingAnswerId = [];
 var listeningAnswerId = [];
 var qNo =1;
 var currentQuestion=['reading','1'];
+var examStarted = false;
 $(document).ready(function() {
 	var serverName = "http://127.0.0.1:8000";
 	var loggedInUser = localStorage.getItem("userName");
@@ -23,8 +24,6 @@ $(document).ready(function() {
 		buttons: {
 			// start timer 
 			Start: function() {
-				var fiveMinutes = 60 * 1,display = document.querySelector('#time');
-				startTimer(fiveMinutes, display);
 				$( this ).dialog( "close" );
 				$('#modalOverlay').removeClass('hideQuestions');
 			}
@@ -57,7 +56,7 @@ $(document).ready(function() {
 	}).prev(".ui-dialog-titlebar").css({"background":"red","color":"white"});
 
 	// set username and other info of student 
-	$("#examStudentName").html(loggedInUser);
+	$("#examStudentName").html("이름 : "+loggedInUser);
 	$("#examStudentId").html(loggedInUserId);
 
 	// getting parameters from url
@@ -196,7 +195,7 @@ $(document).ready(function() {
 													$("<input>")
 														.attr(
 															"class",
-															"form-control readingAns redOpt"+qNo+""
+															"form-control radioAns readingAns redOpt"+qNo+""
 														)
 														.attr(
 															"id",
@@ -217,9 +216,10 @@ $(document).ready(function() {
 																options.reading_questions_id +
 																""
 														),
+														$("<label for='right-answer-"+options.id+"'>").html(j+1).attr("class","radioSpan"),
 													$("<label for='right-answer-"+options.id+"'>").html(
 														options.reading_options_content
-													)
+													).attr("class","radioLabel")
 												)
 											);
 									});
@@ -345,11 +345,11 @@ $(document).ready(function() {
 													$("<input>")
 														.attr(
 															"class",
-															"form-control listeningAns lisOpt"+qNo+""
+															"form-control radioAns listeningAns lisOpt"+qNo+""
 														)
 														.attr(
 															"id",
-															"right-answer"
+															"lis-right-answer-"+options.id+""
 														)
 														.attr("type", "radio")
 														.attr(
@@ -366,6 +366,7 @@ $(document).ready(function() {
 																options.listening_questions_id +
 																""
 														),
+														$("<label for='lis-right-answer-"+options.id+"'>").html(j+1).attr("class","radioSpan"),
 														((options.option_content==null)?"":(options.option_content.split(".").pop())=="png" ? 
 															$("<img>", {
 																id: "theImg",
@@ -387,11 +388,9 @@ $(document).ready(function() {
 																	serverName +
 																	"/cover_img/" +
 																	options.option_content
-															}):'<label>'+options.option_content+'</label>'
+															}):'<label class="radioLabel" for="lis-right-answer-'+options.id+'">'+options.option_content+'</label>'
 														),
-													// $("<label for=''>").html(
-													// 	options.option_content
-													// )
+
 												)
 											);
 									});
@@ -439,7 +438,7 @@ $(document).ready(function() {
 	// open questions bar 
 	$("#viewQuestionNumbers").click(function(){
 		pauseAllAudio();
-		$("#examQuestionsForm").toggle();
+		$(".exam-main").toggle();
 		$("#examAllQuestionSection").toggle();
 	});
 
@@ -466,11 +465,17 @@ $(document).ready(function() {
 	
 	// change reading/ listening question 
 	$("#examAllQuestionSection").on("click",".question-btn",function() {
-		
+
+		if(examStarted==false){
+			var fiveMinutes = 60 * 50,display = document.querySelector('#time');
+			startTimer(fiveMinutes, display);
+			examStarted=true;
+		}
+
 		var nos = $(this).attr('id').split('_');
 		if(nos[0]=='readingBtn'){
 			$("#examAllQuestionSection").hide();
-			$("#examQuestionsForm").show();
+			$(".exam-main").show();
 			
 			$(".question-part").css({"display": "none"});
 			$(".question-part#reading_"+nos[1]+"").css({"display": "flex","flex-direction":"column"});
@@ -480,7 +485,7 @@ $(document).ready(function() {
 		}
 		else{
 			$("#examAllQuestionSection").hide();
-			$("#examQuestionsForm").show();
+			$(".exam-main").show();
 
 			$(".question-part").css({"display": "none"});
 			$(".question-part#listening_"+nos[1]+"").css({"display": "flex","flex-direction":"column"});

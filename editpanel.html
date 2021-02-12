@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Set</title>
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/admin-result.style.css">
+</head>
+<body>
+
+    <!-- modals for different things  -->
+    <div id="editGroupDialog" title="Edit this Group Name">
+        <input class="form-control" type="text" id="inputEditGroup" />
+        <input type="hidden" id="editGroupId" />
+        <button
+            class="btn btn-primary"
+            id="saveEditGroup"
+            style="float:right;margin-top:20px"
+        >
+            Save
+        </button>
+    </div>
+
+    <div id="editLisGroupDialog" title="Edit this Group Name">
+        <input class="form-control" type="text" id="inputLisEditGroup" />
+        <input class="form-control" type="file" id="fileLisEditGroup" />
+        <input type="hidden" id="editLisGroupId" />
+        <button
+            class="btn btn-primary"
+            id="saveEditLisGroup"
+            style="float:right;margin-top:20px"
+        >
+            Save
+        </button>
+    </div>
+
+    <div id="editRedQuesDialog" title="Edit question">
+        <span>Question:</span>
+        <input class="form-control" type="text" id="inputRedQues" /><br>
+        <span>Question Instruction:</span>
+        <input class="form-control" type="text" id="inputRedIns" /><br>
+        <input class="form-control" type="file" id="inputRedFile" /><br>
+        <input type="hidden" id="editRedQuesId" />
+        <input type="hidden" id="editRedQuesAnsId" />
+
+        <input type="text" id="option1">
+        <input type="radio" name="rightAnswerRed" id="rightAnswer-1"><br>
+        <input type="text" id="option2">
+        <input type="radio" name="rightAnswerRed" id="rightAnswer-2"><br>
+        <input type="text" id="option3">
+        <input type="radio" name="rightAnswerRed" id="rightAnswer-3"><br>
+        <input type="text" id="option4">
+        <input type="radio" name="rightAnswerRed" id="rightAnswer-4"><br>
+
+        <button
+            class="btn btn-primary"
+            id="saveEditRedQues"
+            style="float:right;margin-top:20px"
+        >
+            Save
+        </button>
+    </div>
+    
+    <div id="adminEditContainer">
+        <h3>OM KOREAN AND JAPANESE LANGUAGE INSTITUTE - TOPIK MOCK TEST RESULT</h3>
+        <h4 id="studentName">Student Name:</h4>
+        <h4 id="setName">Set Name:</h4>
+        <h4 id="setDate">Exam Date:</h4>
+    </div>
+
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery-migrate-3.0.0.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="js/edit-question-scripts.js"></script>
+</body>
+</html>
