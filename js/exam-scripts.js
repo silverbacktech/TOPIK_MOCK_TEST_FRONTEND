@@ -437,9 +437,11 @@ $(document).ready(function() {
 	
 	// open questions bar 
 	$("#viewQuestionNumbers").click(function(){
-		pauseAllAudio();
-		$(".exam-main").toggle();
-		$("#examAllQuestionSection").toggle();
+		if(examStarted){
+			pauseAllAudio();
+			$(".exam-main").toggle();
+			$("#examAllQuestionSection").toggle();
+		}
 	});
 
 	$("#questionOptionsSection").on(
