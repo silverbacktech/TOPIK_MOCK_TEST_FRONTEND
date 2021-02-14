@@ -58,15 +58,21 @@ a {
 	border: 1px solid black;
 }
 
+/* .ubt-format-demo {
+	height: 200px;
+	float: right;
+} */
+
 .submit-btn {
-	background: var(--logo-blue);
-	color: black;
+	background: #1771bf;
+	color: white;
 	padding: 5px 25px;
 	border: 1px solid black;
 }
 
 .submit-btn:hover {
-	background: var(--logo-blue);
+	/* background: var(--logo-blue); */
+	opacity: 0.8;
 	border: 1px solid white;
 }
 
