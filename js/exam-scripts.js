@@ -416,12 +416,34 @@ $(document).ready(function() {
 	// play or pause audio 
 	$("#examQuestionSection").on("click",".playBtn",function() {
 		var myAudio = document.getElementById($(this).attr('data'));
-        if(myAudio.paused) {
-            myAudio.play();
-        }
-        else {
-           myAudio.pause();
-        }
+		// myAudio.play();
+		// $(this).attr("disabled",true);
+        // if(myAudio.paused) {
+        //     myAudio.play();
+        // }
+        // else {
+        //    myAudio.pause();
+        // }
+
+		console.log(myAudio.currentSrc)
+		var audioSrc = myAudio.currentSrc;
+		$.ajax({
+            method: "GET",
+            url: serverName + "/api/audio-stream/"+audioSrc,
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            cache: false,
+            success: function (result) {
+                console.log(result)
+                if (result.message) {
+                    console.log(result,"a");
+                } else {
+                    // when it does not match
+                    console.log(result,"b");
+                }
+            },
+        });
 	});
 
 	// check right sidebar checkbox on answer selection
