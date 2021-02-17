@@ -29,6 +29,18 @@ $(document).ready(function() {
 		show: {},
 		hide: {},
 	}).prev(".ui-dialog-titlebar").css({"background":"blue","color":"white"});
+
+    $("#editLisQuesTextDialog").dialog({
+		autoOpen: false,
+		show: {},
+		hide: {},
+	}).prev(".ui-dialog-titlebar").css({"background":"blue","color":"white"});
+
+    $("#editLisQuesImgDialog").dialog({
+		autoOpen: false,
+		show: {},
+		hide: {},
+	}).prev(".ui-dialog-titlebar").css({"background":"blue","color":"white"});
     
     var uri = decodeURIComponent(window.location.search);
 
@@ -238,13 +250,12 @@ $(document).ready(function() {
                                 $("#adminEditContainer")
                                 .append(
                                     $("<div class='options-part listeningOptionsPart'>")
-                                    .append("<span>"+(i+1)+". </span><br>")
+                                    .append("<span id=lis"+questions.listening_options[i].id+">"+(i+1)+". </span>")
                                     .append(
                                         // $("<span class='option' id="+questions.listening_options[i].id+">").html(
                                         // "- "+questions.listening_options[i].option_content
-                                        ((questions.listening_options[i].option_content==null)?".":(questions.listening_options[i].option_content.split(".").pop())=="png" ? 
+                                        ((questions.listening_options[i].option_content==null)?"":(questions.listening_options[i].option_content.split(".").pop())=="png" ? 
                                             $("<img>", {
-                                                id: "lis"+questions.listening_options[i].id,
                                                 class:"lisImg",
                                                 src:
                                                     serverName +
@@ -252,7 +263,6 @@ $(document).ready(function() {
                                                     questions.listening_options[i].option_content
                                             }):	(questions.listening_options[i].option_content.split(".").pop())=="jpeg" ? 
                                             $("<img>", {
-                                                id: "lis"+questions.listening_options[i].id,
                                                 class:"lisImg",
                                                 src:
                                                     serverName +
@@ -260,13 +270,12 @@ $(document).ready(function() {
                                                     questions.listening_options[i].option_content
                                             }):(questions.listening_options[i].option_content.split(".").pop())=="jpg" ? 
                                             $("<img>", {
-                                                id: "lis"+questions.listening_options[i].id,
                                                 class:"lisImg",
                                                 src:
                                                     serverName +
                                                     "/cover_img/" +
                                                     questions.listening_options[i].option_content
-                                            }):"<span class='option' id=lis"+questions.listening_options[i].id+">"+questions.listening_options[i].option_content+"</span>"
+                                            }):"<span class='option'>"+questions.listening_options[i].option_content+"</span>"
                                         ),
                                     ).append("<span id=lisRight"+questions.listening_options[i].id+"></span><br>"))
                                 // );
@@ -450,7 +459,7 @@ $(document).ready(function() {
         // reading question ends 
 
 
-        // reading question begins 
+        // listening question begins 
 
         $("#adminEditContainer").on("click",".editLisQuesBtn",function(){
             console.log($(this).attr("data"));
@@ -467,26 +476,50 @@ $(document).ready(function() {
                     //checking email password
                     if (result.status) {
                         //when it does match
-                        console.log(result);
-                        // $("#inputRedQues").val(result.question.question_content);
-                        // $("#inputRedIns").val(result.question.question_instruction);
-                        // $("#editRedQuesId").val(questionNo);
-                        // $("#option1").val(result.question.reading_options[0].reading_options_content);
-                        // $("#rightAnswer-1").addClass("id-"+result.question.reading_options[0].id);
 
-                        // $("#option2").val(result.question.reading_options[1].reading_options_content);
-                        // $("#rightAnswer-2").addClass("id-"+result.question.reading_options[1].id);
+                        if(result.question.listening_options[0].option_content.split(".").pop()=="png"||result.question.listening_options[0].option_content.split(".").pop()=="jpeg"||result.question.listening_options[0].option_content.split(".").pop()=="jpg"){
 
-                        // $("#option3").val(result.question.reading_options[2].reading_options_content);
-                        // $("#rightAnswer-3").addClass("id-"+result.question.reading_options[2].id);
+                            $("#lisImgQues").val(result.question.question_content);
+                        
+                            $("#lisImgId").val(questionNo);
 
-                        // $("#option4").val(result.question.reading_options[3].reading_options_content);
-                        // $("#rightAnswer-4").addClass("id-"+result.question.reading_options[3].id);
+                            $("#lisImgrightAnswer-1").addClass("id-"+result.question.listening_options[0].id);
 
-                        // $("#rightAnswer-"+result.question.reading_answer.option_number+"").prop("checked",true);
-                        // $("#editRedQuesAnsId").val(result.question.reading_answer.reading_options_id);
+                            $("#lisImgrightAnswer-2").addClass("id-"+result.question.listening_options[1].id);
 
-                        // $("#editRedQuesDialog").dialog("open");
+                            $("#lisImgrightAnswer-3").addClass("id-"+result.question.listening_options[2].id);
+
+                            $("#lisImgrightAnswer-4").addClass("id-"+result.question.listening_options[3].id);
+
+                            $("#lisImgrightAnswer-"+result.question.listening_answer.option_number+"").prop("checked",true);
+                            $("#lisImgAnsId").val(result.question.listening_answer.reading_options_id);
+
+                            $("#editLisQuesImgDialog").dialog("open");
+
+                        }else{
+
+                            $("#lisTextQues").val(result.question.question_content);
+                        
+                            $("#lisTextId").val(questionNo);
+
+                            $("#lisTextOption1").val(result.question.listening_options[0].option_content);
+                            $("#lisTextrightAnswer-1").addClass("id-"+result.question.listening_options[0].id);
+
+                            $("#lisTextOption2").val(result.question.listening_options[1].option_content);
+                            $("#lisTextrightAnswer-2").addClass("id-"+result.question.listening_options[1].id);
+
+                            $("#lisTextOption3").val(result.question.listening_options[2].option_content);
+                            $("#lisTextrightAnswer-3").addClass("id-"+result.question.listening_options[2].id);
+
+                            $("#lisTextOption4").val(result.question.listening_options[3].option_content);
+                            $("#lisTextrightAnswer-4").addClass("id-"+result.question.listening_options[3].id);
+
+                            $("#lisTextrightAnswer-"+result.question.listening_answer.option_number+"").prop("checked",true);
+                            $("#lisTextAnsId").val(result.question.listening_answer.reading_options_id);
+
+                            $("#editLisQuesTextDialog").dialog("open");
+
+                        }
                     } else {
                         //when it does not match
                         console.log(result)
@@ -495,6 +528,37 @@ $(document).ready(function() {
             });
         });
 
+        $("#saveEditLisText").click(function(){
+            let formGDatas = new FormData();
+
+            let changeId= $("#lisTextId").val();
+            formGDatas.append('question_content',$("#lisTextQues").val());
+            formGDatas.append('option1',$("#lisTextOption1").val());
+            formGDatas.append('option2',$("#lisTextOption1").val());
+            formGDatas.append('option3',$("#lisTextOption1").val());
+            formGDatas.append('option4',$("#lisTextOption1").val());
+            formGDatas.append('answers',$('input[type=radio][name=rightAnswerLisText]:checked').attr('id').split("-")[1]);
+            formGDatas.append('questionImage',$("#lisTextFile")[0].files[0]);
+            formGDatas.append('audioFile',$("#lisTextAudio")[0].files[0]);
+            formGDatas.append('option_id',$('input[type=radio][name=rightAnswerLisText]:checked').attr('class').split("-")[1]);
+
+            fetch(serverName + "/api/individual-listening-question-edit/" + changeId, {
+				method: "POST",
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+					Accept: "application/json",
+				},
+				body: formGDatas,
+			})
+				.then((response) => response.json())
+				.then((json) => {
+                    console.log(json)
+					// $("#editLisQuesTextDialog").dialog("close");
+                    // alert("The question has been edited");
+                    // location.reload();
+				})
+				.catch((err) => console.log(err));
+        })
 
         // listening question ends 
 

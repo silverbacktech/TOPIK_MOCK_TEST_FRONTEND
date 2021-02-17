@@ -426,7 +426,8 @@ $(document).ready(function() {
         // }
 
 		console.log(myAudio.currentSrc)
-		var audioSrc = myAudio.currentSrc;
+		var audioSrc = myAudio.currentSrc.split("/").pop();
+		
 		$.ajax({
             method: "GET",
             url: serverName + "/api/audio-stream/"+audioSrc,

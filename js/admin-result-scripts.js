@@ -198,13 +198,12 @@ $(document).ready(function() {
                                 $("#adminResultContainer")
                                 .append(
                                     $("<div class='options-part listeningOptionsPart'>")
-                                    .append("<span>"+(i+1)+". </span><br>")
+                                    .append("<span id=lis"+questions.listening_options[i].id+">"+(i+1)+". </span>")
                                     .append(
                                         // $("<span class='option' id="+questions.listening_options[i].id+">").html(
                                         // "- "+questions.listening_options[i].option_content
                                         ((questions.listening_options[i].option_content==null)?"":(questions.listening_options[i].option_content.split(".").pop())=="png" ? 
                                             $("<img>", {
-                                                id: "lis"+questions.listening_options[i].id,
                                                 class:"lisImg",
                                                 src:
                                                     serverName +
@@ -212,7 +211,6 @@ $(document).ready(function() {
                                                     questions.listening_options[i].option_content
                                             }):	(questions.listening_options[i].option_content.split(".").pop())=="jpeg" ? 
                                             $("<img>", {
-                                                id: "lis"+questions.listening_options[i].id,
                                                 class:"lisImg",
                                                 src:
                                                     serverName +
@@ -220,13 +218,12 @@ $(document).ready(function() {
                                                     questions.listening_options[i].option_content
                                             }):(questions.listening_options[i].option_content.split(".").pop())=="jpg" ? 
                                             $("<img>", {
-                                                id: "lis"+questions.listening_options[i].id,
                                                 class:"lisImg",
                                                 src:
                                                     serverName +
                                                     "/cover_img/" +
                                                     questions.listening_options[i].option_content
-                                            }):"<span class='option' id=lis"+questions.listening_options[i].id+">"+questions.listening_options[i].option_content+"</span>"
+                                            }):"<span class='option'>"+questions.listening_options[i].option_content+"</span>"
                                         ),
                                     ).append("<span id=lisRight"+questions.listening_options[i].id+"></span><br>"))
                                 // );
