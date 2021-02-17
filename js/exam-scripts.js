@@ -427,6 +427,7 @@ $(document).ready(function() {
 
 		console.log(myAudio.currentSrc)
 		var audioSrc = myAudio.currentSrc.split("/").pop();
+		console.log(audioSrc);
 		
 		$.ajax({
             method: "GET",
@@ -438,7 +439,8 @@ $(document).ready(function() {
             success: function (result) {
                 console.log(result)
                 if (result.message) {
-                    console.log(result,"a");
+					console.log(result.path.play());
+					// result.path.path.play();
                 } else {
                     // when it does not match
                     console.log(result,"b");
