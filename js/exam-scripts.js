@@ -415,7 +415,6 @@ $(document).ready(function() {
 	$("#examQuestionSection").on("click",".playBtn",function() {
 		var myAudio = document.getElementById($(this).attr('data'));
 		// myAudio.play();
-		// $(this).attr("disabled",true);
         // if(myAudio.paused) {
         //     myAudio.play();
         // }
@@ -431,6 +430,8 @@ $(document).ready(function() {
 		// $(this).attr('data').play();
 		myAudio.load();
 		myAudio.play();
+
+		$(this).attr("disabled",true);
 		
 		// $.ajax({
         //     method: "GET",
