@@ -295,7 +295,7 @@ body {
 /* section for audio  */
 
 .listening_audio {
-	display: none;
+	/* display: none; */
 }
 .playBtn {
 	height: 100px;

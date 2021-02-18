@@ -291,12 +291,10 @@ $(document).ready(function() {
 												)
 												.append(
 													(questions.audio_file ? 
-														$("<audio controls class='listening_audio' id=audio_"+qNo+">").append($("<source>", {
-															src:
-																serverName +
-																"/cover_img/" +
-																questions.audio_file,
-															type:"audio/mp3"
+														$("<audio controls class='listening_audio' id=audio_"+qNo+" data-audio="+questions.audio_file+">").append($("<source>", {
+															src:"",
+															type:"audio/mp3",
+															id:"source_"+qNo+"",
 														})):'<div></div>'	
 													)
 												)
@@ -425,26 +423,35 @@ $(document).ready(function() {
         //    myAudio.pause();
         // }
 
-		console.log(myAudio.currentSrc)
-		var audioSrc = myAudio.currentSrc.split("/").pop();
+		// console.log(myAudio)
+		var audioSrc = $("#"+$(this).attr("data")+"").data("audio");
+		var htmlSrcId = "source_"+$(this).attr("data").split("_").pop();
+
+		$("#"+htmlSrcId+"").attr("src",serverName + "/api/audio-stream/"+audioSrc);
+		// $(this).attr('data').play();
+		myAudio.load();
+		myAudio.play();
 		
-		$.ajax({
-            method: "GET",
-            url: serverName + "/api/audio-stream/"+audioSrc,
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-            cache: false,
-            success: function (result) {
-                if (result.message) {
-					// console.log(result.path);
-					myAudio.play();
-                } else {
-                    // when it does not match
-                    console.log(result,"b");
-                }
-            },
-        });
+		// $.ajax({
+        //     method: "GET",
+        //     url: serverName + "/api/audio-stream/"+audioSrc,
+        //     headers: {
+        //         Authorization: "Bearer " + localStorage.getItem("token"),
+        //     },
+        //     cache: false,
+        //     success: function (result) {
+        //         if (result.message) {
+		// 			// console.log(result.path);
+		// 			// var player = new Audio();
+		// 			str = JSON.stringify(result.path);
+		// 			console.log(myAudio);
+		// 			console.log(str)
+        //         } else {
+        //             // when it does not match
+        //             console.log(result,"b");
+        //         }
+        //     },
+        // });
 	});
 
 	// check right sidebar checkbox on answer selection
