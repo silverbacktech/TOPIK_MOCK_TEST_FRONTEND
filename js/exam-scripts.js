@@ -681,6 +681,7 @@ $(document).ready(function() {
 						listening_answer_id: lisAns,
 						student_id:loggedInUserId,
 						set_id: queryString['setId'],
+						scored_points: redRightAnswer+lisRightAnswer,
 					},
 					cache: false,
 					success: function(result) {

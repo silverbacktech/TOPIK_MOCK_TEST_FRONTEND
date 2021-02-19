@@ -67,7 +67,6 @@ $(document).ready(function() {
             },
             cache: false,
             success: function (result) {
-                console.log(result)
                 if (result.message) {
                     
                     // for reading part 
@@ -154,7 +153,9 @@ $(document).ready(function() {
                     
                 } else {
                     // when it does not match
-                    console.log(result);
+                    // console.log(result);
+                    alert("error");
+                    location.reload();
                 }
             },
         });
@@ -169,7 +170,6 @@ $(document).ready(function() {
             },
             cache: false,
             success: function (result) {
-                console.log(result)
                 if (result.message) {
                      
                     // for listening part 
@@ -462,7 +462,6 @@ $(document).ready(function() {
         // listening question begins 
 
         $("#adminEditContainer").on("click",".editLisQuesBtn",function(){
-            console.log($(this).attr("data"));
             let questionNo = $(this).attr("data");
 
             $.ajax({
@@ -476,8 +475,30 @@ $(document).ready(function() {
                     //checking email password
                     if (result.status) {
                         //when it does match
+                        console.log(result);
+                        if(result.question.listening_options[0].option_content==null||result.question.listening_options[1].option_content==null||result.question.listening_options[2].option_content==null||result.question.listening_options[3].option_content==null){
+                            $("#lisTextQues").val(result.question.question_content);
+                        
+                            $("#lisTextId").val(questionNo);
 
-                        if(result.question.listening_options[0].option_content.split(".").pop()=="png"||result.question.listening_options[0].option_content.split(".").pop()=="jpeg"||result.question.listening_options[0].option_content.split(".").pop()=="jpg"){
+                            $("#lisTextOption1").val(result.question.listening_options[0].option_content);
+                            $("#lisTextrightAnswer-1").addClass("id-"+result.question.listening_options[0].id);
+
+                            $("#lisTextOption2").val(result.question.listening_options[1].option_content);
+                            $("#lisTextrightAnswer-2").addClass("id-"+result.question.listening_options[1].id);
+
+                            $("#lisTextOption3").val(result.question.listening_options[2].option_content);
+                            $("#lisTextrightAnswer-3").addClass("id-"+result.question.listening_options[2].id);
+
+                            $("#lisTextOption4").val(result.question.listening_options[3].option_content);
+                            $("#lisTextrightAnswer-4").addClass("id-"+result.question.listening_options[3].id);
+
+                            $("#lisTextrightAnswer-"+result.question.listening_answer.option_number+"").prop("checked",true);
+                            $("#lisTextAnsId").val(result.question.listening_answer.reading_options_id);
+
+                            $("#editLisQuesTextDialog").dialog("open");
+                        }
+                        else if(result.question.listening_options[0].option_content.split(".").pop()=="png"||result.question.listening_options[0].option_content.split(".").pop()=="jpeg"||result.question.listening_options[0].option_content.split(".").pop()=="jpg"){
 
                             $("#lisImgQues").val(result.question.question_content);
                         
@@ -534,9 +555,9 @@ $(document).ready(function() {
             let changeId= $("#lisTextId").val();
             formGDatas.append('question_content',$("#lisTextQues").val());
             formGDatas.append('option1',$("#lisTextOption1").val());
-            formGDatas.append('option2',$("#lisTextOption1").val());
-            formGDatas.append('option3',$("#lisTextOption1").val());
-            formGDatas.append('option4',$("#lisTextOption1").val());
+            formGDatas.append('option2',$("#lisTextOption2").val());
+            formGDatas.append('option3',$("#lisTextOption3").val());
+            formGDatas.append('option4',$("#lisTextOption4").val());
             formGDatas.append('answers',$('input[type=radio][name=rightAnswerLisText]:checked').attr('id').split("-")[1]);
             formGDatas.append('questionImage',$("#lisTextFile")[0].files[0]);
             formGDatas.append('audioFile',$("#lisTextAudio")[0].files[0]);
@@ -553,9 +574,43 @@ $(document).ready(function() {
 				.then((response) => response.json())
 				.then((json) => {
                     console.log(json)
-					// $("#editLisQuesTextDialog").dialog("close");
-                    // alert("The question has been edited");
-                    // location.reload();
+					$("#editLisQuesTextDialog").dialog("close");
+                    alert("The question has been edited");
+                    location.reload();
+				})
+				.catch((err) => console.log(err));
+        });
+
+        $("#saveEditLisImg").click(function(){
+            let formGDatas = new FormData();
+
+            let changeId= $("#lisImgId").val();
+            formGDatas.append('question_content',$("#lisImgQues").val());
+            formGDatas.append('option1',$("#lisImgOption1")[0].files[0]);
+            formGDatas.append('option2',$("#lisImgOption2")[0].files[0]);
+            formGDatas.append('option3',$("#lisImgOption3")[0].files[0]);
+            formGDatas.append('option4',$("#lisImgOption4")[0].files[0]);
+            formGDatas.append('answers',$('input[type=radio][name=rightAnswerLisImg]:checked').attr('id').split("-")[1]);
+            formGDatas.append('questionImage',$("#lisImgFile")[0].files[0]);
+            formGDatas.append('audioFile',$("#lisImgAudio")[0].files[0]);
+            formGDatas.append('option_id',$('input[type=radio][name=rightAnswerLisImg]:checked').attr('class').split("-")[1]);
+
+            console.log($("#lisImgOption1")[0].files[0])
+
+            fetch(serverName + "/api/individual-listening-question-edit/" + changeId, {
+				method: "POST",
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+					Accept: "application/json",
+				},
+				body: formGDatas,
+			})
+				.then((response) => response.json())
+				.then((json) => {
+                    console.log(json)
+					$("#editLisQuesTextDialog").dialog("close");
+                    alert("The question has been edited");
+                    location.reload();
 				})
 				.catch((err) => console.log(err));
         })

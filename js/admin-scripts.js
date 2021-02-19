@@ -8,6 +8,8 @@ $(document).ready(function () {
 	$("#userName").html("Welcome " + loggedInUser);
 
 	$("input[type='file']").val("");
+	$("input[type='text']").val("");
+	$("input[type='number']").val("");
 	//Initialize dialog
 	$("#editLangDialog").dialog({
 		autoOpen: false,
@@ -34,6 +36,10 @@ $(document).ready(function () {
 	$("#mainLogo").click(function () {
 		location.reload();
 	});
+
+	// for number validation 
+	var intRegex = /^\d+$/;
+	var floatRegex = /^((\d+(\.\d *)?)|((\d*\.)?\d+))$/;
 
 	// add sets starts
 	$("#tabAddSets").click(function () {
@@ -247,7 +253,7 @@ $(document).ready(function () {
 		let gpName = $("#inputGroupTitle").val();
 		let gpId = $("#groupSetId").val();
 		let gpQuestions = $("#inputGroupQuestionNo").val();
-		if ((gpQuestions, gpName, gpId != "")) {
+		if ((gpQuestions != "" && gpId!="" && gpName!="")) {
 			$.ajax({
 				method: "POST",
 				url: serverName + "/api/add-question-group/" + gpId,
@@ -262,12 +268,13 @@ $(document).ready(function () {
 					//checking email password
 					if (result.status) {
 						//when it does match
-						console.log("The group has been added");
+						alert("The group has been added");
 						$("#inputGroupTitle").attr("disabled", true);
 						$("#groupSetFormId").val(result.value["id"]);
 					} else {
 						//when it does not match
-						console.log("The group has not been added");
+						alert("There was an error adding the group.");
+						$("#groupInputDiv").find("form").empty();
 					}
 				},
 			});
@@ -415,8 +422,15 @@ $(document).ready(function () {
 			body: formData,
 		})
 			.then((response) => response.json())
-			.then((json) => console.log(json))
-			.catch((err) => console.log(err));
+			.then((json) => {
+				if(json.status){
+					alert(json.message);
+					location.reload();
+				}else{
+					alert(json.message);
+				}
+			})
+			.catch((err) => alert("There was an error"));
 	});
 
 	// add sets ends
@@ -447,7 +461,7 @@ $(document).ready(function () {
 		formGDatas.append('group_name',gpName);
 		formGDatas.append('group_image',$("#lInputGroupQuestionFile")[0].files[0]);
 
-		if ((gpQuestions, gpName, gpId != "")) {
+		if ((gpQuestions != "" && gpId!="" && gpName!="")) {
 			fetch(serverName + "/api/add-listening-group/" + gpId, {
 				method: "POST",
 				headers: {
@@ -458,10 +472,17 @@ $(document).ready(function () {
 			})
 				.then((response) => response.json())
 				.then((json) => {
-					console.log(json);
-					alert(json.message);
-					$("#lInputGroupTitle").attr("disabled", true);
-					$("#lGroupSetFormId").val(json.value["id"]);
+					//checking email password
+					if (json.status) {
+						//when it does match
+						alert("The group has been added");
+						$("#lInputGroupTitle").attr("disabled", true);
+						$("#lGroupSetFormId").val(json.value["id"]);
+					} else {
+						//when it does not match
+						alert("There was an error adding the group.");
+						$("#groupInputDiv").find("form").empty();
+					}
 				})
 				.catch((err) => console.log(err));
 		} else {
@@ -685,7 +706,6 @@ $(document).ready(function () {
 		let formDatas = new FormData(lQuestionsForm);
 		let formData = new FormData();
 		let i = 0;
-		console.log(formDatas.entries);
 		for (let entry of formDatas.entries()) {
 			if (entry[0] == "questionContent")
 				formData.append(entry[0] + `[]`, entry[1]);
@@ -695,15 +715,6 @@ $(document).ready(function () {
 
 			else if (entry[0] == "audioFiles")
 				formData.append(entry[0] + "[]", entry[1]);
-
-			// else if (entry[0] == "questionImage"){
-			// 	formData.append(entry[0] + `[${i}]`, entry[1]);
-			// 	i++;
-			// }
-			// else if (entry[0] == "audioFiles"){
-			// 	formData.append(entry[0] + `[${i}]`, entry[1]);
-			// 	i++;
-			// }
 
 			else if (entry[0] == "option1")
 				formData.append(entry[0] + "[]", entry[1]);
@@ -717,10 +728,6 @@ $(document).ready(function () {
 		}
 	
 		let groupId = $("#lGroupSetFormId").val();
-		for (var value of formData.values()) {
-			console.log(value);
-		 }
-
 	
 		fetch(serverName + "/api/add-listening-question/" + groupId, {
 			method: "POST",
@@ -731,8 +738,15 @@ $(document).ready(function () {
 			body: formData,
 		})
 			.then((response) => response.json())
-			.then((json) => console.log(json))
-			.catch((err) => console.log(err));
+			.then((json) => {
+				if(json.status){
+					alert(json.message);
+					location.reload();
+				}else{
+					alert(json.message);
+				}
+			})
+			.catch((err) => alert("There was an error"));
 	});
 
 

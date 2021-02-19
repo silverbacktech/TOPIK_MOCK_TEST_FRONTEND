@@ -41,10 +41,11 @@ $(document).ready(function() {
                 //checking email password
                 if (result.status) {
                     //when it does match
-
+                    console.log(result)
                     var mainResult = result.result[0];
                     let setDate = mainResult.created_at;
                     let setName = mainResult.sets.name;
+                    let scoredPoints = mainResult.scored_points;
 
                     // for reading part 
                     for (var i=0;i<mainResult.sets.reading_group.length;i++){
@@ -268,6 +269,7 @@ $(document).ready(function() {
                     $("#setName").html("Set Name:- "+setName);
                     $("#setDate").html("Date:- "+setDate);
                     $("#studentName").html("Student Name:- "+studentName);
+                    $("#setMarks").html("Marks:- "+scoredPoints);
                     
                 } else {
                     // when it does not match

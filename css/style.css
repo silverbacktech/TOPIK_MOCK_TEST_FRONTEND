@@ -152,6 +152,10 @@ a {
 	margin-bottom: 10px;
 }
 
+#btnAddGroupQuestions {
+	margin-top: 10px;
+}
+
 #viewAnswers input[type='search'] {
 	padding: 5px;
 	border-radius: 10px;
