@@ -208,7 +208,7 @@ $(document).ready(function() {
 														)
 														.attr(
 															"data",
-															options.reading_questions_id
+															qNo
 														)
 														.attr(
 															"name",
