@@ -43,7 +43,13 @@ $(document).ready(function() {
 
 	// test audio 
 	$("#testAudioBtn").click(function(){
-		$("#testAudio")[0].play();
+
+		var testAudio = document.getElementById("testAudio");
+
+		$("#testAudioSrc").attr("src",serverName + "/api/test-audio/test_audio.mp3");
+		
+		testAudio.load();
+		testAudio.play();
 	});
 
 	$("#timerEndDialog").dialog({
