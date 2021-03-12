@@ -24,4 +24,7 @@ $(document).ready(function() {
 
     $("#wrongAnswers").html(results[0]-results[2]);
 
+    // remove token after exam 
+    localStorage.removeItem("token");
+
 })

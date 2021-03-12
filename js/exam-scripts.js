@@ -14,6 +14,15 @@ $(document).ready(function() {
 		window.location.href = "admin_panel.html";
 	}
 
+	// warn user before reload / change page 
+	window.addEventListener("beforeunload", function (e) {
+		var confirmationMessage = 'Looke like you are giving your exam.'
+								+ 'If you leave your exam will restart.';
+	
+		(e || window.event).returnValue = confirmationMessage; //Gecko + IE
+		return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+	});
+
 	//Initialize dialog
 
 	$("#examInstructionDialog").dialog({
@@ -34,7 +43,13 @@ $(document).ready(function() {
 
 	// test audio 
 	$("#testAudioBtn").click(function(){
-		$("#testAudio")[0].play();
+
+		var testAudio = document.getElementById("testAudio");
+
+		$("#testAudioSrc").attr("src",serverName + "/api/test-audio/test_audio.mp3");
+		
+		testAudio.load();
+		testAudio.play();
 	});
 
 	$("#timerEndDialog").dialog({
@@ -45,7 +60,6 @@ $(document).ready(function() {
 		buttons: {
 			// submit test 
 			Submit:function(){
-				console.log("submit garne aba nadarai");
 				$("#btnSubmitReadingQuestions").click();
 				// $( this ).dialog( "close" );
 				// $('#modalOverlay').removeClass('hideQuestions');
@@ -208,7 +222,7 @@ $(document).ready(function() {
 														)
 														.attr(
 															"data",
-															options.reading_questions_id
+															qNo
 														)
 														.attr(
 															"name",
@@ -414,15 +428,6 @@ $(document).ready(function() {
 	// play or pause audio 
 	$("#examQuestionSection").on("click",".playBtn",function() {
 		var myAudio = document.getElementById($(this).attr('data'));
-		// myAudio.play();
-        // if(myAudio.paused) {
-        //     myAudio.play();
-        // }
-        // else {
-        //    myAudio.pause();
-        // }
-
-		// console.log(myAudio)
 		var audioSrc = $("#"+$(this).attr("data")+"").data("audio");
 		var htmlSrcId = "source_"+$(this).attr("data").split("_").pop();
 
@@ -438,32 +443,12 @@ $(document).ready(function() {
 				serverName = "http://192.168.1.11:8003";
 			}
 		$("#"+htmlSrcId+"").attr("src",serverName + "/api/audio-stream/"+audioSrc);
-		// $(this).attr('data').play();
+		
 		myAudio.load();
 		myAudio.play();
 
 		$(this).attr("disabled",true);
-		
-		// $.ajax({
-        //     method: "GET",
-        //     url: serverName + "/api/audio-stream/"+audioSrc,
-        //     headers: {
-        //         Authorization: "Bearer " + localStorage.getItem("token"),
-        //     },
-        //     cache: false,
-        //     success: function (result) {
-        //         if (result.message) {
-		// 			// console.log(result.path);
-		// 			// var player = new Audio();
-		// 			str = JSON.stringify(result.path);
-		// 			console.log(myAudio);
-		// 			console.log(str)
-        //         } else {
-        //             // when it does not match
-        //             console.log(result,"b");
-        //         }
-        //     },
-        // });
+		$(this).css("border","5px solid blue");
 	});
 
 	// check right sidebar checkbox on answer selection
@@ -619,7 +604,10 @@ $(document).ready(function() {
 
 
 	$("#btnSubmitReadingQuestions").click(function(){
-			// console.log("df");
+			$("#btnSubmitReadingQuestions").attr("disabled",true);
+			$("#btnSubmitReadingQuestions").css({"background":"yellow","color":"black"});
+			$("#btnSubmitReadingQuestions").html("Please wait...");
+
 			let maxReading =parseInt($("#readingNo").html());
 			let maxListening =parseInt($("#listeningNo").html());
 			let quesAttempted =0;
@@ -707,6 +695,9 @@ $(document).ready(function() {
 					}
 				});
 			} else {
+				$("#btnSubmitReadingQuestions").attr("disabled",false);
+				$("#btnSubmitReadingQuestions").css({"background":"blue","color":"white"});
+				$("#btnSubmitReadingQuestions").html("제출 (Submit)");
 			}
 		}
 	);

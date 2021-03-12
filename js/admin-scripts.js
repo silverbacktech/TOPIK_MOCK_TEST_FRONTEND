@@ -765,7 +765,7 @@ $(document).ready(function () {
 	$("#formAddStudents").submit(function (e) {
 		e.preventDefault();
 		let stname = $("#studentAddName").val();
-		let stemail = $("#studentAddEmail").val();
+		let stemail = $("#studentAddEmail").val().trim();
 		let stpassword = $("#studentAddPassword").val();
 		let strole = "student";
 		
