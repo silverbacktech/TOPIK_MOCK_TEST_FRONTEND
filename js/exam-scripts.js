@@ -434,13 +434,13 @@ $(document).ready(function() {
 		// let counter = localStorage.getItem('counter');
 		let serverName;
 			if(localStorage.getItem('userId')%3==0){
-				serverName = "http://192.168.1.11:8000";
+				serverName = "http://192.168.1.12:8000";
 			}
 			else if(localStorage.getItem('userId')%2==0){
-				serverName = "http://192.168.1.11:8002";
+				serverName = "http://192.168.1.12:8002";
 			}
 			else{
-				serverName = "http://192.168.1.11:8003";
+				serverName = "http://192.168.1.12:8003";
 			}
 		$("#"+htmlSrcId+"").attr("src",serverName + "/api/audio-stream/"+audioSrc);
 		

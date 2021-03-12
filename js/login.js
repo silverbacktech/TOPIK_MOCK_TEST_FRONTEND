@@ -15,7 +15,7 @@ $(document).ready(function() {
 		$("#login-error-message").text("");
 		let formDatas = new FormData(loginForm);
 
-		var serverName = "http://192.168.1.11:8000/api/login";
+		var serverName = "http://192.168.1.12:8000/api/login";
 
 		$.ajax({
 			method: "POST",
