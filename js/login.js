@@ -15,9 +15,11 @@ $(document).ready(function() {
 		$("#login-error-message").text("");
 		let formDatas = new FormData(loginForm);
 
+		var serverName = "http://192.168.1.11:8000/api/login";
+
 		$.ajax({
 			method: "POST",
-			url: "http://127.0.0.1:8000/api/login",
+			url: serverName,
 			cache: false,
 			data: {
 				email: formDatas.get("email"),
@@ -31,6 +33,7 @@ $(document).ready(function() {
 					let access_id = result.values["id"];
 					let access_name = result.values["name"];
 					let access_role = result.values["role"];
+					localStorage.setItem("counter",0);
 					localStorage.setItem("token", access_token);
 					localStorage.setItem("userName", access_name);
 					localStorage.setItem("userRole", access_role);

@@ -426,6 +426,17 @@ $(document).ready(function() {
 		var audioSrc = $("#"+$(this).attr("data")+"").data("audio");
 		var htmlSrcId = "source_"+$(this).attr("data").split("_").pop();
 
+		// let counter = localStorage.getItem('counter');
+		let serverName;
+			if(localStorage.getItem('userId')%3==0){
+				serverName = "http://192.168.1.11:8000";
+			}
+			else if(localStorage.getItem('userId')%2==0){
+				serverName = "http://192.168.1.11:8002";
+			}
+			else{
+				serverName = "http://192.168.1.11:8003";
+			}
 		$("#"+htmlSrcId+"").attr("src",serverName + "/api/audio-stream/"+audioSrc);
 		// $(this).attr('data').play();
 		myAudio.load();

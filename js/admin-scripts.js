@@ -425,12 +425,14 @@ $(document).ready(function () {
 			.then((json) => {
 				if(json.status){
 					alert(json.message);
-					location.reload();
+					console.log(json)
+					// location.reload();
 				}else{
+					console.log(json)
 					alert(json.message);
 				}
 			})
-			.catch((err) => alert("There was an error"));
+			.catch((err) => console.log(err));
 	});
 
 	// add sets ends
