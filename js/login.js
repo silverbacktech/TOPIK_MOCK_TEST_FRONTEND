@@ -19,7 +19,7 @@ $(document).ready(function() {
 
 		$.ajax({
 			method: "POST",
-			url: serverName,
+			url: "http://127.0.0.1:8000/api/login",
 			cache: false,
 			data: {
 				email: formDatas.get("email"),

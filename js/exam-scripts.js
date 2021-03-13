@@ -5,6 +5,7 @@ var listeningAnswerId = [];
 var qNo =1;
 var currentQuestion=['reading','1'];
 var examStarted = false;
+var isSubmitting = false;
 $(document).ready(function() {
 	
 	var loggedInUser = localStorage.getItem("userName");
@@ -14,14 +15,7 @@ $(document).ready(function() {
 		window.location.href = "admin_panel.html";
 	}
 
-	// warn user before reload / change page 
-	window.addEventListener("beforeunload", function (e) {
-		var confirmationMessage = 'Looke like you are giving your exam.'
-								+ 'If you leave your exam will restart.';
 	
-		(e || window.event).returnValue = confirmationMessage; //Gecko + IE
-		return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
-	});
 
 	//Initialize dialog
 
@@ -449,6 +443,12 @@ $(document).ready(function() {
 
 		$(this).attr("disabled",true);
 		$(this).css("border","5px solid blue");
+		$(this).after( "<span style='text-align:center'>Loading...</span>" );
+
+		function isPlaying(myAudio){
+			$(this).after("");
+		}
+
 	});
 
 	// check right sidebar checkbox on answer selection
@@ -602,8 +602,8 @@ $(document).ready(function() {
 	})
 
 
-
 	$("#btnSubmitReadingQuestions").click(function(){
+			isSubmitting=true;
 			$("#btnSubmitReadingQuestions").attr("disabled",true);
 			$("#btnSubmitReadingQuestions").css({"background":"yellow","color":"black"});
 			$("#btnSubmitReadingQuestions").html("Please wait...");
@@ -698,10 +698,22 @@ $(document).ready(function() {
 				$("#btnSubmitReadingQuestions").attr("disabled",false);
 				$("#btnSubmitReadingQuestions").css({"background":"blue","color":"white"});
 				$("#btnSubmitReadingQuestions").html("제출 (Submit)");
+				isSubmitting=false;
 			}
 		}
 	);
 });
+
+// warn user before reload / change page 
+window.onbeforeunload = function (e) {
+	if (isSubmitting==false) {
+		var message = "You have not saved your changes.", e = e || window.event;
+		if (e) {
+			e.returnValue = message;
+		}
+		return message;
+	}
+}
 
 // other functions 
 function startTimer(duration, display) {
