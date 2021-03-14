@@ -51,14 +51,14 @@ $(document).ready(function() {
 		closeOnEscape: false,
 		draggable:false,
 		resizable: false,
-		buttons: {
-			// submit test 
-			Submit:function(){
-				$("#btnSubmitReadingQuestions").click();
-				// $( this ).dialog( "close" );
-				// $('#modalOverlay').removeClass('hideQuestions');
-			}
-		},
+		// buttons: {
+		// 	// submit test 
+		// 	Submit:function(){
+		// 		$("#btnSubmitReadingQuestions").click();
+		// 		$( this ).dialog( "close" );
+		// 		$('#modalOverlay').addClass('hideQuestions');
+		// 	}
+		// },
 		show: {},
 		hide: {},   
 	}).prev(".ui-dialog-titlebar").css({"background":"red","color":"white"});
@@ -426,16 +426,16 @@ $(document).ready(function() {
 		var htmlSrcId = "source_"+$(this).attr("data").split("_").pop();
 
 		// let counter = localStorage.getItem('counter');
-		let serverName;
-			if(localStorage.getItem('userId')%3==0){
-				serverName = "http://192.168.1.12:8000";
-			}
-			else if(localStorage.getItem('userId')%2==0){
-				serverName = "http://192.168.1.12:8002";
-			}
-			else{
-				serverName = "http://192.168.1.12:8003";
-			}
+		let serverName ="http://127.0.0.1:8000/";
+			// if(localStorage.getItem('userId')%3==0){
+			// 	serverName = "http://127.0.0.1:8001/";
+			// }
+			// else if(localStorage.getItem('userId')%2==0){
+			// 	serverName = "http://127.0.0.1:8002";
+			// }
+			// else{
+			// 	serverName = "http://127.0.0.1:8003";
+			// }
 		$("#"+htmlSrcId+"").attr("src",serverName + "/api/audio-stream/"+audioSrc);
 		
 		myAudio.load();
@@ -443,12 +443,28 @@ $(document).ready(function() {
 
 		$(this).attr("disabled",true);
 		$(this).css("border","5px solid blue");
-		$(this).after( "<span style='text-align:center'>Loading...</span>" );
 
-		function isPlaying(myAudio){
-			$(this).after("");
-		}
+		var lodin = $('<span style="text-align:center">Loading...</span>');
+		var loaded = $('<span style="text-align:center">▶</span>');
 
+		$(this).after(lodin);
+		myAudio.onplaying = function() {
+			lodin.replaceWith(loaded);
+			console.log(loaded);
+			loaded.delay(2000).hide(0); 
+		};
+
+
+		
+		// $(this).after("<span style='text-align:center'>Loading...</span>")
+		// myAudio.onplay = function(){
+		// 	console.log("playin");
+		// 	console.log(audioSrc.duration())
+		// }
+		// myAudio.addEventListener("loadedmetadata", function(_event) {
+		// 	var duration = myAudio.duration;
+		// 	console.log(duration);
+		// });
 	});
 
 	// check right sidebar checkbox on answer selection
@@ -496,8 +512,8 @@ $(document).ready(function() {
 	$("#examAllQuestionSection").on("click",".question-btn",function() {
 
 		if(examStarted==false){
-			var fiveMinutes = 60 * 50,display = document.querySelector('#time');
-			startTimer(fiveMinutes, display);
+			var fiftyMinutes = 60 * 50,display = document.querySelector('#time');
+			startTimer(fiftyMinutes, display);
 			examStarted=true;
 		}
 
@@ -603,11 +619,23 @@ $(document).ready(function() {
 
 
 	$("#btnSubmitReadingQuestions").click(function(){
-			isSubmitting=true;
-			$("#btnSubmitReadingQuestions").attr("disabled",true);
-			$("#btnSubmitReadingQuestions").css({"background":"yellow","color":"black"});
-			$("#btnSubmitReadingQuestions").html("Please wait...");
+		isSubmitting=true;
+		$("#btnSubmitReadingQuestions").attr("disabled",true);
+		$("#btnSubmitReadingQuestions").css({"background":"yellow","color":"black"});
+		$("#btnSubmitReadingQuestions").html("Please wait...");
+		if (confirm("Are you sure you want to submit the exam?")) {
+			ajaxSubmit();
+		}
+		else {
+			$("#btnSubmitReadingQuestions").attr("disabled",false);
+			$("#btnSubmitReadingQuestions").css({"background":"blue","color":"white"});
+			$("#btnSubmitReadingQuestions").html("제출 (Submit)");
+			isSubmitting=false;
+		}
+	});
 
+	function ajaxSubmit(){
+			$('#modalOverlay').addClass('hideQuestions');
 			let maxReading =parseInt($("#readingNo").html());
 			let maxListening =parseInt($("#listeningNo").html());
 			let quesAttempted =0;
@@ -665,7 +693,7 @@ $(document).ready(function() {
 
 			let resultPageItems = (maxReading+maxListening)+"."+quesAttempted+"."+(redRightAnswer+lisRightAnswer);
 
-			if (confirm("Are you sure you want to submit the exam?")) {
+			
 				$.ajax({
 					method: "post",
 					url: serverName + "/api/submitted-answers/" + loggedInUserId,
@@ -694,14 +722,33 @@ $(document).ready(function() {
 						}
 					}
 				});
-			} else {
-				$("#btnSubmitReadingQuestions").attr("disabled",false);
-				$("#btnSubmitReadingQuestions").css({"background":"blue","color":"white"});
-				$("#btnSubmitReadingQuestions").html("제출 (Submit)");
-				isSubmitting=false;
+	}
+
+	// other functions 
+	function startTimer(duration, display) {
+		var timer = duration, minutes, seconds;
+		setInterval(function () {
+			minutes = parseInt(timer / 60, 10);
+			seconds = parseInt(timer % 60, 10);
+
+			minutes = minutes < 10 ? "0" + minutes : minutes;
+			seconds = seconds < 10 ? "0" + seconds : seconds;
+
+			display.textContent = minutes + ":" + seconds;
+
+			if(timer<60&&timer>57){
+				$("#time").css("color","red");
+				$("#testAudio")[0].play();
 			}
-		}
-	);
+			if (--timer == 0) {
+				$("#timerEndDialog").dialog('open');
+				$("#time").html("00:00");
+				isSubmitting=true;
+				ajaxSubmit();
+			}
+		
+    }, 1000);
+}
 });
 
 // warn user before reload / change page 
@@ -715,27 +762,4 @@ window.onbeforeunload = function (e) {
 	}
 }
 
-// other functions 
-function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
 
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = minutes + ":" + seconds;
-
-		if(timer<60&&timer>57){
-			$("#time").css("color","red");
-			$("#testAudio")[0].play();
-		}
-        if (--timer == 0) {
-			$("#timerEndDialog").dialog('open');
-			$('#modalOverlay').addClass('hideQuestions');
-			$("#time").html("00:00");
-		}
-		
-    }, 1000);
-}
