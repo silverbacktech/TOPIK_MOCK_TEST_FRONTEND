@@ -621,11 +621,11 @@ $(document).ready(function() {
 
 
 	$("#btnSubmitReadingQuestions").click(function(){
-		isSubmitting=true;
 		$("#btnSubmitReadingQuestions").attr("disabled",true);
 		$("#btnSubmitReadingQuestions").css({"background":"yellow","color":"black"});
 		$("#btnSubmitReadingQuestions").html("Please wait...");
 		if (confirm("Are you sure you want to submit the exam?")) {
+			isSubmitting=true;
 			ajaxSubmit();
 		}
 		else {
@@ -638,6 +638,7 @@ $(document).ready(function() {
 
 	function ajaxSubmit(){
 			$('#modalOverlay').addClass('hideQuestions');
+			alert("Submitting");
 			let maxReading =parseInt($("#readingNo").html());
 			let maxListening =parseInt($("#listeningNo").html());
 			let quesAttempted =0;
@@ -737,6 +738,18 @@ $(document).ready(function() {
 						}
 					}
 				});
+
+				reSubmit();
+	}
+
+	// resubmit on 20seconds again 
+	function reSubmit(){
+		if(isSubmitting==true){
+			setInterval(function(){
+				alert("Resubmitting, check your internet connection");
+				ajaxSubmit();
+			}, 20000);
+		}
 	}
 
 	// other functions 
