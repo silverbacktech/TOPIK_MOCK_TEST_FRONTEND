@@ -1,4 +1,4 @@
-var serverName = "http://127.0.0.1:8000";
+var serverName = "http://192.168.1.12";
 $(document).ready(function() {	
 	$("#btnLogOut").click(function() {
 		localStorage.removeItem("token");
