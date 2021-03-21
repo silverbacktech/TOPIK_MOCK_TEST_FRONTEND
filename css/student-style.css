@@ -384,9 +384,46 @@ body {
 	color: gray;
 }
 
+.result-reading {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	gap: 10px;
+}
+
+.result-listening {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	gap: 10px;
+}
+
+.rslt {
+	background: #eee;
+	height: 40px;
+	width: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.rslt1 {
+	background: lightgreen;
+}
+
+.rslt2 {
+	background: lightsalmon;
+}
+
 /* for small devices  */
 @media only screen and (max-width: 800px) {
 	.questionNumbers {
+		grid-template-columns: repeat(5, 1fr);
+		gap: 5px;
+	}
+	.result-reading {
+		grid-template-columns: repeat(5, 1fr);
+		gap: 5px;
+	}
+	.result-listening {
 		grid-template-columns: repeat(5, 1fr);
 		gap: 5px;
 	}

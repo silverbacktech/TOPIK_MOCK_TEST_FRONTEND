@@ -4,6 +4,8 @@ $(document).ready(function() {
 	var loggedInUserRole = localStorage.getItem("userRole");
     var loggedInUserId = localStorage.getItem("userId");
     var result = localStorage.getItem("studentResult");
+    var readingResult = localStorage.getItem("reading").split(',');
+    var listeningResult = localStorage.getItem("listening").split(',');
     console.log(result);
 	if (loggedInUserRole != "student") {
         window.location.href = "admin_panel.html";
@@ -24,7 +26,18 @@ $(document).ready(function() {
 
     $("#wrongAnswers").html(results[0]-results[2]);
 
+    console.log(readingResult,readingResult.length,listeningResult,listeningResult.length);
+
+
+    for(var i=0;i<readingResult.length;i++){
+        console.log("dataL",readingResult[i])
+        $(".result-reading").append($("<p class='rslt rslt"+readingResult[i]+"'>"+parseInt(i+1)+"</p>"))
+    }
+    for(var i=0;i<listeningResult.length;i++){
+        $(".result-listening").append($("<p class='rslt rslt"+listeningResult[i]+"'>"+parseInt(i+1)+"</p>"))
+    }
+
     // remove token after exam 
-    localStorage.removeItem("token");
+    // localStorage.removeItem("token");
 
 })

@@ -2,6 +2,8 @@ var readingAnswerOption = [];
 var listeningAnswerOption = [];
 var readingAnswerId = [];
 var listeningAnswerId = [];
+var redStudentResult = [];
+var lisStudentResult = [];
 var qNo =1;
 var currentQuestion=['reading','1'];
 var examStarted = false;
@@ -308,7 +310,7 @@ $(document).ready(function() {
 												)
 												.append(
 													(questions.audio_file ? 
-														$("<button type='button' class='playBtn' data='audio_"+qNo+"'></button>"):'<div></div>'	
+														$("<button type='button' class='playBtn' data='audio_"+qNo+"' data-btn='audio_"+qNo+"'></button>"):'<div></div>'	
 													)
 												)
 										);
@@ -421,9 +423,10 @@ $(document).ready(function() {
 
 	// play or pause audio 
 	$("#examQuestionSection").on("click",".playBtn",function() {
-		var myAudio = document.getElementById($(this).attr('data'));
-		var audioSrc = $("#"+$(this).attr("data")+"").data("audio");
-		var htmlSrcId = "source_"+$(this).attr("data").split("_").pop();
+		var audioId = $(this).attr('data');
+		var myAudio = document.getElementById(audioId);
+		var audioSrc = $("#"+audioId+"").data("audio");
+		var htmlSrcId = "source_"+audioId.split("_").pop();
 
 		// let counter = localStorage.getItem('counter');
 		let serverName ="http://127.0.0.1:8000/";
@@ -441,16 +444,15 @@ $(document).ready(function() {
 		myAudio.load();
 		myAudio.play();
 
-		$(this).attr("disabled",true);
-		$(this).css("border","5px solid blue");
-
 		var lodin = $('<span style="text-align:center">Loading...</span>');
 		var loaded = $('<span style="text-align:center">▶</span>');
 
 		$(this).after(lodin);
-		myAudio.onplaying = function() {
+			myAudio.onplaying = function() {
+			$("[data-btn='" + audioId + "']").attr("disabled",true);
+			$("[data-btn='" + audioId + "']").css("border","5px solid blue");
+			
 			lodin.replaceWith(loaded);
-			console.log(loaded);
 			loaded.delay(2000).hide(0); 
 		};
 
@@ -662,15 +664,27 @@ $(document).ready(function() {
 			// check how many right how many wrong 
 			let redRightAnswer=0;
 			let lisRightAnswer=0;
-
+			
+			// 1 right answer | 0 unanswered | 2 wrong 
 			for (i = 0; i < readingAnswerOption.length; i++) {
 				if (readingAnswerOption[i] == redAns[i]) {
 					redRightAnswer++;
+					redStudentResult.push(1);
+				}else if(redAns[i]==null){
+					redStudentResult.push(0);
+				}else{
+					redStudentResult.push(2);
 				}
 			}
+			
 			for (i = 0; i < listeningAnswerOption.length; i++) {
 				if (listeningAnswerOption[i] == lisAns[i]) {
 					lisRightAnswer++;
+					lisStudentResult.push(1);
+				}else if(lisAns[i]==null){
+					lisStudentResult.push(0);
+				}else{
+					lisStudentResult.push(2);
 				}
 			}
 
@@ -692,7 +706,6 @@ $(document).ready(function() {
 			// console.log(redQuestions,redAns,lisQuestions,lisAns,queryString["setId"],loggedInUserId);
 
 			let resultPageItems = (maxReading+maxListening)+"."+quesAttempted+"."+(redRightAnswer+lisRightAnswer);
-
 			
 				$.ajax({
 					method: "post",
@@ -715,6 +728,8 @@ $(document).ready(function() {
 						//checking email password
 						if (result.status) {
 							localStorage.setItem("studentResult", resultPageItems);
+							localStorage.setItem("reading",redStudentResult);
+							localStorage.setItem("listening",lisStudentResult);
 							window.location.href = "resultpanel.html";
 						} else {
 							//when it does not match
