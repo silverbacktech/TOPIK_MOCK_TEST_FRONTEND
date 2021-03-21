@@ -429,7 +429,7 @@ $(document).ready(function() {
 		var htmlSrcId = "source_"+audioId.split("_").pop();
 
 		// let counter = localStorage.getItem('counter');
-		let serverName ="http://127.0.0.1:8000/";
+		let serverName ="http://192.168.1.12/";
 			// if(localStorage.getItem('userId')%3==0){
 			// 	serverName = "http://127.0.0.1:8001/";
 			// }
@@ -447,7 +447,13 @@ $(document).ready(function() {
 		var lodin = $('<span style="text-align:center">Loading...</span>');
 		var loaded = $('<span style="text-align:center">▶</span>');
 
+		$(this).attr("disabled",true);
 		$(this).after(lodin);
+		lodin.delay(5000).hide(0);
+		setTimeout(function() {
+			$("[data-btn='" + audioId + "']").attr("disabled",false);
+		}, 5000);
+
 			myAudio.onplaying = function() {
 			$("[data-btn='" + audioId + "']").attr("disabled",true);
 			$("[data-btn='" + audioId + "']").css("border","5px solid blue");
