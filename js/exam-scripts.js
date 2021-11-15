@@ -423,13 +423,14 @@ $(document).ready(function() {
 
 	// play or pause audio 
 	$("#examQuestionSection").on("click",".playBtn",function() {
+		var played = false;
 		var audioId = $(this).attr('data');
 		var myAudio = document.getElementById(audioId);
 		var audioSrc = $("#"+audioId+"").data("audio");
 		var htmlSrcId = "source_"+audioId.split("_").pop();
 
 		// let counter = localStorage.getItem('counter');
-		let serverName ="http://192.168.1.12/";
+		let serverName ="http://192.168.10.82/";
 			// if(localStorage.getItem('userId')%3==0){
 			// 	serverName = "http://127.0.0.1:8001/";
 			// }
@@ -451,10 +452,13 @@ $(document).ready(function() {
 		$(this).after(lodin);
 		lodin.delay(5000).hide(0);
 		setTimeout(function() {
-			$("[data-btn='" + audioId + "']").attr("disabled",false);
+			if(played == false){
+				$("[data-btn='" + audioId + "']").attr("disabled",false);
+			}
 		}, 5000);
 
-			myAudio.onplaying = function() {
+		myAudio.onplaying = function() {
+			played = true;
 			$("[data-btn='" + audioId + "']").attr("disabled",true);
 			$("[data-btn='" + audioId + "']").css("border","5px solid blue");
 			

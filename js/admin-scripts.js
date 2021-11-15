@@ -745,6 +745,7 @@ $(document).ready(function () {
 					alert(json.message);
 					location.reload();
 				}else{
+					console.log(json)
 					alert(json.message);
 				}
 			})
@@ -768,14 +769,14 @@ $(document).ready(function () {
 		let stemail = $("#studentAddEmail").val().trim();
 		let stpassword = $("#studentAddPassword").val();
 		let strole = "student";
-		
+		console.log(stemail);
 		$.ajax({
 			method: "POST",
-			url: serverName + "/api/register/",
+			url: serverName + "/api/register",
 			headers: {
 				Authorization: "Bearer " + localStorage.getItem("token"),
-				Accept: "application/json",
 			},
+			cache: false,
 			data: {
 				name: stname,
 				email: stemail,
@@ -783,15 +784,15 @@ $(document).ready(function () {
 				password_confirmation: stpassword,
 				role: strole,
 			},
-			cache: false,
 			success: function (result) {
 				//checking email password
 				if (result.status) {
-					//when it does match
+								//when it does match
 					alert("The student has been added");
 					$("#tabViewStudents").click();
 				} else {
 					//when it does not match
+					alert("There was an error adding the student");
 				}
 			},
 		});
@@ -1304,11 +1305,11 @@ $(document).ready(function () {
 		} else {
 			$.ajax({
 				method: "POST",
-				url: serverName + "/api/register/",
+				url: serverName + "/api/register",
 				headers: {
 					Authorization: "Bearer " + localStorage.getItem("token"),
-					Accept: "application/json",
 				},
+				cache: false,
 				data: {
 					name: adname,
 					email: ademail,
@@ -1316,15 +1317,15 @@ $(document).ready(function () {
 					password_confirmation: adpasswordc,
 					role: adrole,
 				},
-				cache: false,
 				success: function (result) {
 					//checking email password
 					if (result.status) {
-						//when it does match
+									//when it does match
 						alert("The admin has been added");
 						$("#tabViewAdmin").click();
 					} else {
 						//when it does not match
+						alert("There was an error adding the admin");
 					}
 				},
 			});

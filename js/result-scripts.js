@@ -28,13 +28,15 @@ $(document).ready(function() {
 
     // console.log(readingResult,readingResult.length,listeningResult,listeningResult.length);
 
-
+    var num=1;
     for(var i=0;i<readingResult.length;i++){
         // console.log("dataL",readingResult[i])
-        $(".result-reading").append($("<p class='rslt rslt"+readingResult[i]+"'>"+parseInt(i+1)+"</p>"))
+        $(".result-reading").append($("<p class='rslt rslt"+readingResult[i]+"'>"+num+"</p>"));
+        num=num+1;
     }
     for(var i=0;i<listeningResult.length;i++){
-        $(".result-listening").append($("<p class='rslt rslt"+listeningResult[i]+"'>"+parseInt(i+1)+"</p>"))
+        $(".result-listening").append($("<p class='rslt rslt"+listeningResult[i]+"'>"+num+"</p>"));
+        num=num+1;
     }
 
     // remove token after exam 
